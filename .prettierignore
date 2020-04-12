@@ -1,0 +1,7 @@
+next
+.now
+dist
+public
+*.json
+*.d.ts
+*.yml

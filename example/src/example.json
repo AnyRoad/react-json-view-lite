@@ -1,0 +1,14 @@
+[
+  {
+    "first": null,
+    "second": {
+      "third": 1234,
+      "boolean": true,
+      "field": [
+        {
+          "string": "123233"
+        }
+      ]
+    } 
+  }
+]

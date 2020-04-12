@@ -1,0 +1,35 @@
+/* add css module styles here (optional) */
+
+.basic-element-style {
+  margin: 0 10px;
+  padding: 0;
+}
+
+.label-light {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.value-null-light {
+  color: #df113a;
+}
+
+.value-undefined-light {
+  color: #df113a;
+}
+
+.value-string-light {
+  color: #43413d;
+}
+
+.value-number-light {
+  color: #0b75f5;
+}
+
+.value-boolean-light {
+  color: #08c6ce;
+}
+
+.value-other-light {
+  color: #43413d;
+}
