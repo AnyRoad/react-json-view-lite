@@ -5,7 +5,7 @@ import { JsonView } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 
 const App = () => {
-  return <JsonView data={json} />;
+  return <JsonView data={json} shouldInitiallyExpand={(level) => level < 2} />;
 };
 
 export default App;

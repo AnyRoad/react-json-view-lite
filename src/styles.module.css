@@ -1,12 +1,32 @@
 /* add css module styles here (optional) */
 
+.container-light {
+  background: #eee;
+  line-height: 1.3;
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.container-dark {
+  background: #444;
+  line-height: 1.3;
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
 .basic-element-style {
   margin: 0 10px;
   padding: 0;
 }
 
 .label-light {
-  font-weight: bold;
+  font-weight: 600;
   margin-right: 5px;
 }
 
@@ -32,4 +52,34 @@
 
 .value-other-light {
   color: #43413d;
+}
+
+.label-dark {
+  font-weight: bolder;
+  margin-right: 5px;
+  color: #bcbec2;
+}
+
+.value-null-dark {
+  color: #df113a;
+}
+
+.value-undefined-dark {
+  color: #df113a;
+}
+
+.value-string-dark {
+  color: #4f71b6;
+}
+
+.value-number-dark {
+  color: #0b75f5;
+}
+
+.value-boolean-dark {
+  color: #f48a0a;
+}
+
+.value-other-dark {
+  color: #bcbec2;
 }

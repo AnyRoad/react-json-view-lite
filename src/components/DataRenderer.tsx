@@ -1,14 +1,9 @@
 import * as React from 'react';
-import * as DataTypeDetection from './DataTypeDetection';
-
-interface ObjectProps {
-  field?: string;
-  value: object;
-  isLastElement?: boolean;
-  style?: StyleProps;
-}
+import * as DataTypeDetection from '../DataTypeDetection';
+import { useBool } from '../hooks';
 
 export interface StyleProps {
+  container: string;
   basicChildStyle: string;
   label: string;
   nullValue: string;
@@ -19,65 +14,104 @@ export interface StyleProps {
   otherValue: string;
 }
 
-function JsonObject({ field, value, style, isLastElement }: ObjectProps) {
+export interface JsonRenderProps<T> {
+  field?: string;
+  value: T;
+  lastElement?: boolean;
+  level?: number;
+  style?: StyleProps;
+  shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
+}
+
+function JsonObject({
+  field,
+  value,
+  style,
+  lastElement,
+  shouldInitiallyExpand,
+  level,
+}: JsonRenderProps<object>) {
+  const [expanded, toggleExpanded] = useBool(() =>
+    shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true,
+  );
+
   const fields = Object.keys(value);
+  const expandIcon = expanded ? '\u25BE' : '\u25B8';
   return (
     <div className={style?.basicChildStyle}>
+      <span className={style?.label} onClick={toggleExpanded}>
+        {expandIcon}
+      </span>
       {field && <span className={style?.label}>{field}:</span>}
-      {`{`}
+      <span className={style?.label}>{`{`}</span>
       <div>
-        {fields.map((key, index) => (
-          <DataRender
-            key={key}
-            field={key}
-            data={value[key]}
-            style={style}
-            isLastElement={index === fields.length - 1}
-          />
-        ))}
+        {expanded &&
+          fields.map((key, index) => (
+            <DataRender
+              key={key}
+              field={key}
+              value={value[key]}
+              style={style}
+              lastElement={index === fields.length - 1}
+              level={(level || 0) + 1}
+              shouldInitiallyExpand={shouldInitiallyExpand}
+            />
+          ))}
+        {!expanded && <span>...</span>}
       </div>
-      {`}`}
-      {!isLastElement && ','}
+      <span className={style?.label}>{`}`}</span>
+      {!lastElement && <span className={style?.label}>,</span>}
     </div>
   );
 }
 
-interface ArrayProps {
-  field?: string;
-  values: Array<any>;
-  isLastElement?: boolean;
-  style?: StyleProps;
-}
+function JsonArray({
+  field,
+  value,
+  style,
+  lastElement,
+  level,
+  shouldInitiallyExpand,
+}: JsonRenderProps<Array<any>>) {
+  const [expanded, toggleExpanded] = useBool(() =>
+    shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true,
+  );
 
-function JsonArray({ field, values, style, isLastElement }: ArrayProps) {
+  const expandIcon = expanded ? '\u25BE' : '\u25B8';
+
   return (
     <div className={style?.basicChildStyle}>
+      <span className={style?.label} onClick={toggleExpanded}>
+        {expandIcon}
+      </span>
       {field && <span className={style?.label}>{field}:</span>}
-      {`[`}
+      <span className={style?.label}>{`[`}</span>
       <div>
-        {values.map((value, index) => (
-          <DataRender
-            key={index}
-            data={value}
-            style={style}
-            isLastElement={index === values.length - 1}
-          />
-        ))}
+        {expanded &&
+          value.map((element, index) => (
+            <DataRender
+              key={index}
+              value={element}
+              style={style}
+              lastElement={index === value.length - 1}
+              level={(level || 0) + 1}
+              shouldInitiallyExpand={shouldInitiallyExpand}
+            />
+          ))}
+        {!expanded && <span>...</span>}
       </div>
-      {`]`}
-      {!isLastElement && ','}
+      <span className={style?.label}>{`]`}</span>
+      {!lastElement && <span className={style?.label}>,</span>}
     </div>
   );
 }
 
-interface PrimitiveValueProps {
-  field?: string;
-  value: string | number | boolean | null | undefined;
-  isLastElement?: boolean;
-  style?: StyleProps;
-}
-
-function JsonPrimitiveValue({ field, value, style, isLastElement }: PrimitiveValueProps) {
+function JsonPrimitiveValue({
+  field,
+  value,
+  style,
+  lastElement,
+}: JsonRenderProps<string | number | boolean | null | undefined>) {
   let stringValue = value;
   let valueStyle = style?.otherValue;
 
@@ -104,52 +138,20 @@ function JsonPrimitiveValue({ field, value, style, isLastElement }: PrimitiveVal
     <div className={style?.basicChildStyle}>
       {field && <span className={style?.label}>{field}:</span>}
       <span className={valueStyle}>{stringValue}</span>
-      {!isLastElement && ','}
+      {!lastElement && <span className={style?.label}>,</span>}
     </div>
   );
 }
 
-export interface JsonRenderProps {
-  field?: string;
-  data: any;
-  isLastElement?: boolean;
-  style?: StyleProps;
-}
-
-export default function DataRender({
-  field,
-  data,
-  style,
-  isLastElement,
-}: JsonRenderProps) {
-  if (DataTypeDetection.isArray(data)) {
-    return (
-      <JsonArray
-        field={field}
-        values={data}
-        style={style}
-        isLastElement={isLastElement}
-      />
-    );
+export default function DataRender(props: JsonRenderProps<any>) {
+  const value = props.value;
+  if (DataTypeDetection.isArray(value)) {
+    return <JsonArray {...props} />;
   }
 
-  if (DataTypeDetection.isObject(data)) {
-    return (
-      <JsonObject
-        field={field}
-        value={data}
-        style={style}
-        isLastElement={isLastElement}
-      />
-    );
+  if (DataTypeDetection.isObject(value)) {
+    return <JsonObject {...props} />;
   }
 
-  return (
-    <JsonPrimitiveValue
-      field={field}
-      value={data}
-      style={style}
-      isLastElement={isLastElement}
-    />
-  );
+  return <JsonPrimitiveValue {...props} />;
 }
