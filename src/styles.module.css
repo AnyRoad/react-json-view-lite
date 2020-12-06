@@ -1,8 +1,7 @@
 /* add css module styles here (optional) */
 
-.container-light {
-  background: #eee;
-  line-height: 1.3;
+.container-base {
+  line-height: 1.2;
   white-space: pre-wrap; /* Since CSS 2.1 */
   white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
   white-space: -pre-wrap; /* Opera 4-6 */
@@ -10,14 +9,25 @@
   word-wrap: break-word;
 }
 
-.container-dark {
-  background: #444;
-  line-height: 1.3;
-  white-space: pre-wrap; /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap;
-  word-wrap: break-word;
+.punctuation-base {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.expander-base {
+  font-size: 1.2em;
+  margin-right: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.container-light {
+  composes: container-base;
+  background: #eee;
+}
+
+.expander-light {
+  composes: expander-base;
 }
 
 .basic-element-style {
@@ -30,6 +40,10 @@
   margin-right: 5px;
 }
 
+.punctuation-light {
+  composes: punctuation-base;
+}
+
 .value-null-light {
   color: #df113a;
 }
@@ -39,7 +53,7 @@
 }
 
 .value-string-light {
-  color: #43413d;
+  color: rgb(42, 63, 60);
 }
 
 .value-number-light {
@@ -47,39 +61,55 @@
 }
 
 .value-boolean-light {
-  color: #08c6ce;
+  color: rgb(70, 144, 56);
 }
 
 .value-other-light {
   color: #43413d;
 }
 
+.container-dark {
+  background: rgb(0, 43, 54);
+  composes: container-base;
+}
+
+.expander-dark {
+  composes: expander-base;
+  font-size: 1.2em;
+  color: rgb(253, 246, 227);
+}
+
 .label-dark {
   font-weight: bolder;
   margin-right: 5px;
-  color: #bcbec2;
+  color: rgb(253, 246, 227);
+}
+
+.punctuation-dark {
+  composes: punctuation-base;
+  color: rgb(253, 246, 227);
 }
 
 .value-null-dark {
-  color: #df113a;
+  color: rgb(129, 181, 172);
 }
 
 .value-undefined-dark {
-  color: #df113a;
+  color: rgb(129, 181, 172);
 }
 
 .value-string-dark {
-  color: #4f71b6;
+  color: rgb(203, 75, 22);
 }
 
 .value-number-dark {
-  color: #0b75f5;
+  color: rgb(211, 54, 130);
 }
 
 .value-boolean-dark {
-  color: #f48a0a;
+  color: rgb(174, 129, 255);
 }
 
 .value-other-dark {
-  color: #bcbec2;
+  color: rgb(38, 139, 210);
 }

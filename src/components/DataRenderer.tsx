@@ -5,6 +5,7 @@ import { useBool } from '../hooks';
 export interface StyleProps {
   container: string;
   basicChildStyle: string;
+  expander: string;
   label: string;
   nullValue: string;
   undefinedValue: string;
@@ -12,6 +13,7 @@ export interface StyleProps {
   stringValue: string;
   booleanValue: string;
   otherValue: string;
+  punctuation: string;
 }
 
 export interface JsonRenderProps<T> {
@@ -39,14 +41,15 @@ function JsonObject({
   const expandIcon = expanded ? '\u25BE' : '\u25B8';
   return (
     <div className={style?.basicChildStyle}>
-      <span className={style?.label} onClick={toggleExpanded}>
+      <span className={style?.expander} onClick={toggleExpanded}>
         {expandIcon}
       </span>
       {field && <span className={style?.label}>{field}:</span>}
-      <span className={style?.label}>{`{`}</span>
-      <div>
-        {expanded &&
-          fields.map((key, index) => (
+      <span className={style?.punctuation}>{`{`}</span>
+
+      {expanded && (
+        <div>
+          {fields.map((key, index) => (
             <DataRender
               key={key}
               field={key}
@@ -57,10 +60,12 @@ function JsonObject({
               shouldInitiallyExpand={shouldInitiallyExpand}
             />
           ))}
-        {!expanded && <span>...</span>}
-      </div>
-      <span className={style?.label}>{`}`}</span>
-      {!lastElement && <span className={style?.label}>,</span>}
+        </div>
+      )}
+
+      {!expanded && <span className={style?.punctuation}>...</span>}
+      <span className={style?.punctuation}>{`}`}</span>
+      {!lastElement && <span className={style?.punctuation}>,</span>}
     </div>
   );
 }
@@ -81,14 +86,14 @@ function JsonArray({
 
   return (
     <div className={style?.basicChildStyle}>
-      <span className={style?.label} onClick={toggleExpanded}>
+      <span className={style?.expander} onClick={toggleExpanded}>
         {expandIcon}
       </span>
       {field && <span className={style?.label}>{field}:</span>}
-      <span className={style?.label}>{`[`}</span>
-      <div>
-        {expanded &&
-          value.map((element, index) => (
+      <span className={style?.punctuation}>{`[`}</span>
+      {expanded && (
+        <div>
+          {value.map((element, index) => (
             <DataRender
               key={index}
               value={element}
@@ -98,10 +103,11 @@ function JsonArray({
               shouldInitiallyExpand={shouldInitiallyExpand}
             />
           ))}
-        {!expanded && <span>...</span>}
-      </div>
-      <span className={style?.label}>{`]`}</span>
-      {!lastElement && <span className={style?.label}>,</span>}
+        </div>
+      )}
+      {!expanded && <span className={style?.punctuation}>...</span>}
+      <span className={style?.punctuation}>{`]`}</span>
+      {!lastElement && <span className={style?.punctuation}>,</span>}
     </div>
   );
 }
