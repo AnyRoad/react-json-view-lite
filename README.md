@@ -1,8 +1,24 @@
-# react-json-view-lite
+<div align="center">
+  <a href="https://npmjs.org/package/react-json-view-lite">
+    <img alt="npm" src="https://img.shields.io/npm/v/react-json-view-lite.svg" />
+  </a>
+  <a href="https://npmjs.org/package/react-json-view-lite">
+    <img alt="no dependencies" src="https://badgen.net/bundlephobia/dependency-count/react-json-view-lite" />
+  </a>
+  <a href="https://npmjs.org/package/react-json-view-lite">
+    <img alt="size" src="https://badgen.net/bundlephobia/minzip/react-json-view-lite" />
+  </a>
+  <a href="https://bundlephobia.com/result?p=react-json-view-lite">
+    <img alt="tree-shakeable" src="https://badgen.net/bundlephobia/tree-shaking/react-json-view-lite" />
+  </a>
+  <a href="https://npmjs.org/package/react-json-view-lite">
+    <img alt="types included" src="https://badgen.net/npm/types/react-json-view-lite" />
+  </a>
+</div>
 
-> JSON viewer component for React focused on performance for big source data rather than provide a lot of options.
-
-[![NPM](https://img.shields.io/npm/v/react-json-view-lite.svg)](https://www.npmjs.com/package/react-json-view-lite) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+<div align="center">
+  <strong>react-json-view-lite</strong> is a tiny component for React allowing to render JSON as a tree. It focused more on the performance for large JSON inputs rather than customization and rich features.
+</div>
 
 ## Install
 

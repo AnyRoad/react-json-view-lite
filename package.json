@@ -5,6 +5,7 @@
   "author": "AnyRoad",
   "license": "MIT",
   "repository": "AnyRoad/react-json-view-lite",
+  "keywords": ["React", "json", "viewer", "fast"],
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
