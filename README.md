@@ -37,7 +37,7 @@ npm install --save react-json-view-lite
 ```tsx
 import React, { Component } from 'react';
 
-import { JsonView } from 'react-json-view-lite';
+import { JsonView, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 
 const json = {
@@ -47,7 +47,13 @@ const json = {
 
 class Example extends JsonView {
   render() {
-    return <JsonView data={json} shouldInitiallyExpand={(level) => true} />;
+    return (
+      <JsonView
+        data={json}
+        style={defaultStyles}
+        shouldInitiallyExpand={(level) => true}
+      />
+    );
   }
 }
 ```
