@@ -3,7 +3,7 @@ import DataRender, { StyleProps } from './components/DataRenderer';
 import styles from './styles.module.css';
 
 interface Props {
-  data: any;
+  data: Object | Array<any>;
   style: StyleProps;
   shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
 }
