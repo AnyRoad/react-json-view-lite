@@ -1,7 +1,7 @@
 import * as React from 'react';
-import json from './example.json';
+import json from './hugeJson.json';
 
-import { JsonView, darkStyles, defaultStyles } from 'react-json-view-lite';
+import { JsonView, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 
 const App = () => {
@@ -12,7 +12,6 @@ const App = () => {
         shouldInitiallyExpand={(level) => true}
         style={defaultStyles}
       />
-      <JsonView data={json} shouldInitiallyExpand={(level) => true} style={darkStyles} />
     </React.Fragment>
   );
 };

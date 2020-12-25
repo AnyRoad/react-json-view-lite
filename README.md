@@ -65,7 +65,7 @@ export default App;
 
 | Name                  | Type                                                     | Default Value | Description                                                                                                                                   |
 | --------------------- | -------------------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| data                  | `Object | Array<any>`                                    |               | Data which should be rendered                                                                                                                 |
+| data                  | `Object` \| `Array<any>`                                 |               | Data which should be rendered                                                                                                                 |
 | style                 | StyleProps                                               | defaultStyles | CSS classes for rendering. Library provides two build-in implementations: darkStyles, defaultStyles                                           |
 | shouldInitiallyExpand | `(level: number, value: any, field?: string) => boolean` | undefined     | Optional. Function which will be initially called for each Object and Array of the data in order to calculate should if this node be expanded |
 

@@ -8,7 +8,12 @@
     "react-dom": "file:../node_modules/react-dom",
     "react-scripts": "file:../node_modules/react-scripts",
     "react-json-view-lite": "file:..",
-    "react-component-benchmark": "file:../../react-component-benchmark/"
+    "react-component-benchmark": "file:../../react-component-benchmark/",
+    "react-json-pretty": "2.2.0",
+    "react-json-inspector": "7.1.1",
+    "react-json-tree": "0.13.0",
+    "react-json-view": "1.19.1",
+    "react-json-tree-viewer": "0.0.7"
   },
   "scripts": {
     "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
