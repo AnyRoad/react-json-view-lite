@@ -445,6 +445,14 @@ function addRandomContent(sizeLimit, maxPropertiesForObject, result, currentSize
   return newSize;
 }
 
+function generateRandomString(maxLength) {
+  const stringStart = getRandom(stringSample.length - 2);
+  return stringSample.substring(
+    stringStart,
+    stringStart + getRandom(Math.min(maxLength, stringSample.length - stringStart)),
+  );
+}
+
 function addRandomField(result, maxPropertiesForObject) {
   const objectKeys = Object.keys(result);
   const complexFields = objectKeys.filter(
@@ -471,11 +479,7 @@ function addRandomField(result, maxPropertiesForObject) {
       newValueLen = newValue.toString().length;
       break;
     case Actions.AddString:
-      const stringStart = getRandom(stringSample.length - 2);
-      newValue = stringSample.substring(
-        stringStart,
-        stringStart + getRandom(Math.min(200, stringSample.length - stringStart)),
-      );
+      newValue = generateRandomString(200);
       newValueLen = newValue.length + extraStringBytes;
       break;
     case Actions.AddNumber:
@@ -545,6 +549,31 @@ function generateJson(sizeLimit, maxPropertiesForObject, fileName) {
   writeFile(json, fileName);
 }
 
+function generateArrayJson(arraySize, fileName) {
+  const array = [];
+
+  function generatePhoneNumber() {
+    const phoneNumber = [];
+    for (let i = 0; i < 10; i++) {
+      phoneNumber.push(getRandom(9));
+    }
+    return phoneNumber.join('');
+  }
+
+  for (let i = 0; i < arraySize; i++) {
+    array.push({
+      firstName: generateRandomString(10),
+      secondName: generateRandomString(10),
+      phone: generatePhoneNumber(),
+      address: generateRandomString(200),
+      age: getRandom(100, 0),
+    });
+  }
+
+  const json = JSON.stringify(array);
+  writeFile(json, fileName);
+}
+
 function writeFile(content, fileName) {
   const data = new Uint8Array(Buffer.from(content));
   fs.writeFile(fileName, data, (err) => {
@@ -553,4 +582,5 @@ function writeFile(content, fileName) {
   });
 }
 
-generateJson(300 * 1024, 50, './src/hugeJson.json');
+// generateJson(300 * 1024, 50, './src/hugeJson.json');
+generateArrayJson(1_000, './src/hugeArray.json');

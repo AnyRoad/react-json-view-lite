@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Benchmark, { BenchmarkType } from 'react-component-benchmark';
-import json from './hugeJson.json';
+import json from './hugeArray.json';
 
 import { JsonView } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
@@ -28,7 +28,7 @@ propertiesByComponent.set('Inspector', {
 });
 propertiesByComponent.set('JSONTree', {
   component: JSONTree,
-  props: { data: json, shouldExpandNode: () => true },
+  props: { data: json, shouldExpandNode: () => true, collectionLimit: 20_000 },
 });
 propertiesByComponent.set('ReactJsonView', {
   component: ReactJson,
@@ -37,6 +37,7 @@ propertiesByComponent.set('ReactJsonView', {
     enableClipboard: false,
     displayObjectSize: false,
     displayDataTypes: false,
+    groupArraysAfterLength: 20_000,
   },
 });
 propertiesByComponent.set('ReactJsonTreeViewer', {
@@ -84,7 +85,7 @@ export default class Perf extends React.Component {
           componentProps={properties.props}
           onComplete={this._handleComplete}
           ref={this._setBenchRef}
-          samples={1}
+          samples={5}
           timeout={100000}
           type={benchmarkType}
         />
