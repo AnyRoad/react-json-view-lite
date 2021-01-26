@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as DataTypeDetection from '../DataTypeDetection';
-import { useBool } from '../hooks';
+import * as DataTypeDetection from './DataTypeDetection';
+import { useBool } from './hooks';
 
 export interface StyleProps {
   container: string;
@@ -22,11 +22,7 @@ export interface JsonRenderProps<T> {
   lastElement?: boolean;
   level?: number;
   style?: StyleProps;
-  shouldInitiallyExpand?: (
-    level: number,
-    value: any,
-    field?: string
-  ) => boolean;
+  shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
 }
 
 function JsonObject({
@@ -38,9 +34,7 @@ function JsonObject({
   level
 }: JsonRenderProps<Object>) {
   const [expanded, toggleExpanded] = useBool(() =>
-    shouldInitiallyExpand
-      ? shouldInitiallyExpand(level || 0, value, field)
-      : true
+    shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true
   );
 
   const fields = Object.keys(value);
@@ -85,9 +79,7 @@ function JsonArray({
   shouldInitiallyExpand
 }: JsonRenderProps<Array<any>>) {
   const [expanded, toggleExpanded] = useBool(() =>
-    shouldInitiallyExpand
-      ? shouldInitiallyExpand(level || 0, value, field)
-      : true
+    shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true
   );
 
   const expandIcon = expanded ? '\u25BE' : '\u25B8';

@@ -13,10 +13,7 @@ import JSONTree from 'react-json-tree';
 import ReactJson from 'react-json-view';
 import Rjv from 'react-json-tree-viewer';
 
-const propertiesByComponent = new Map<
-  string,
-  { component: any; props: Object }
->();
+const propertiesByComponent = new Map<string, { component: any; props: Object }>();
 propertiesByComponent.set('JsonView', {
   component: JsonView,
   props: { data: json }
@@ -85,10 +82,7 @@ export default class Perf extends React.Component<Props, State> {
             </option>
           ))}
         </select>
-        <select
-          onChange={this._handleChangeComponent}
-          value={this.state.component}
-        >
+        <select onChange={this._handleChangeComponent} value={this.state.component}>
           {componentNames.map((component) => (
             <option key={component} value={component}>
               {component}
@@ -125,11 +119,7 @@ export default class Perf extends React.Component<Props, State> {
     delete results.samples;
     this.setState({
       results:
-        this.state.results +
-        '\n\n' +
-        this.state.component +
-        '\n' +
-        JSON.stringify(results, null, 2)
+        this.state.results + '\n\n' + this.state.component + '\n' + JSON.stringify(results, null, 2)
     });
   };
 

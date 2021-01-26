@@ -1,15 +1,11 @@
 import * as React from 'react';
-import DataRender, { StyleProps } from './components/DataRenderer';
+import DataRender, { StyleProps } from './DataRenderer';
 import styles from './styles.module.css';
 
 interface Props {
   data: Object | Array<any>;
   style: StyleProps;
-  shouldInitiallyExpand?: (
-    level: number,
-    value: any,
-    field?: string
-  ) => boolean;
+  shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
 }
 
 export const defaultStyles: StyleProps = {
@@ -40,11 +36,7 @@ export const darkStyles: StyleProps = {
   punctuation: styles['punctuation-dark']
 };
 
-export const JsonView = ({
-  data,
-  style = defaultStyles,
-  shouldInitiallyExpand
-}: Props) => {
+export const JsonView = ({ data, style = defaultStyles, shouldInitiallyExpand }: Props) => {
   return (
     <div className={style.container}>
       <DataRender

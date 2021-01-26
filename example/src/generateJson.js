@@ -435,12 +435,7 @@ function getRandom(max, min) {
   return Math.floor(Math.random() * (max + 1 - realMin)) + realMin;
 }
 
-function addRandomContent(
-  sizeLimit,
-  maxPropertiesForObject,
-  result,
-  currentSize
-) {
+function addRandomContent(sizeLimit, maxPropertiesForObject, result, currentSize) {
   let newSize = currentSize;
 
   while (newSize < sizeLimit) {
@@ -454,8 +449,7 @@ function generateRandomString(maxLength) {
   const stringStart = getRandom(stringSample.length - 2);
   return stringSample.substring(
     stringStart,
-    stringStart +
-      getRandom(Math.min(maxLength, stringSample.length - stringStart))
+    stringStart + getRandom(Math.min(maxLength, stringSample.length - stringStart))
   );
 }
 
@@ -471,8 +465,7 @@ function addRandomField(result, maxPropertiesForObject) {
       : complexFields.length === 0
       ? Actions.AddObject
       : Actions.GoToSubNode;
-  const maxAction =
-    complexFields.length > 0 ? Actions.GoToSubNode5 : Actions.AddObject;
+  const maxAction = complexFields.length > 0 ? Actions.GoToSubNode5 : Actions.AddObject;
 
   const action = getRandom(maxAction, minAction);
   const newPropertyName = generateNewPropertyName(objectKeys);
@@ -535,9 +528,7 @@ function addRandomField(result, maxPropertiesForObject) {
   if (action < Actions.GoToSubNode) {
     result[newPropertyName] = newValue;
     addedSize +=
-      extraPropertyBytes +
-      newPropertyName.length +
-      (objectKeys.length > 0 ? commaBytes : 0);
+      extraPropertyBytes + newPropertyName.length + (objectKeys.length > 0 ? commaBytes : 0);
   }
 
   return addedSize;
@@ -546,12 +537,7 @@ function addRandomField(result, maxPropertiesForObject) {
 /* eslint-disable no-unused-vars */
 function generateJson(sizeLimit, maxPropertiesForObject, fileName) {
   const result = {};
-  const size = addRandomContent(
-    sizeLimit,
-    maxPropertiesForObject,
-    result,
-    emptyObjectBytes
-  );
+  const size = addRandomContent(sizeLimit, maxPropertiesForObject, result, emptyObjectBytes);
   console.log(`size = ${size}`);
 
   const json = JSON.stringify(result);
