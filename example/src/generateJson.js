@@ -400,7 +400,7 @@ const propertyNames = [
   'wound',
   'xylophone',
   'zebra',
-  'zoo',
+  'zoo'
 ];
 
 const extraPropertyBytes = 3;
@@ -420,12 +420,12 @@ const Actions = {
   GoToSubNode2: 7,
   GoToSubNode3: 8,
   GoToSubNode4: 9,
-  GoToSubNode5: 10,
+  GoToSubNode5: 10
 };
 
 function generateNewPropertyName(existingProperties) {
   const availableProperties = propertyNames.filter(
-    (prop) => existingProperties.indexOf(prop) === -1,
+    (prop) => existingProperties.indexOf(prop) === -1
   );
   return availableProperties[getRandom(availableProperties.length - 1)];
 }
@@ -435,7 +435,12 @@ function getRandom(max, min) {
   return Math.floor(Math.random() * (max + 1 - realMin)) + realMin;
 }
 
-function addRandomContent(sizeLimit, maxPropertiesForObject, result, currentSize) {
+function addRandomContent(
+  sizeLimit,
+  maxPropertiesForObject,
+  result,
+  currentSize
+) {
   let newSize = currentSize;
 
   while (newSize < sizeLimit) {
@@ -449,14 +454,15 @@ function generateRandomString(maxLength) {
   const stringStart = getRandom(stringSample.length - 2);
   return stringSample.substring(
     stringStart,
-    stringStart + getRandom(Math.min(maxLength, stringSample.length - stringStart)),
+    stringStart +
+      getRandom(Math.min(maxLength, stringSample.length - stringStart))
   );
 }
 
 function addRandomField(result, maxPropertiesForObject) {
   const objectKeys = Object.keys(result);
   const complexFields = objectKeys.filter(
-    (field) => result[field] && typeof result[field] === 'object',
+    (field) => result[field] && typeof result[field] === 'object'
   );
 
   const minAction =
@@ -465,10 +471,11 @@ function addRandomField(result, maxPropertiesForObject) {
       : complexFields.length === 0
       ? Actions.AddObject
       : Actions.GoToSubNode;
-  const maxAction = complexFields.length > 0 ? Actions.GoToSubNode5 : Actions.AddObject;
+  const maxAction =
+    complexFields.length > 0 ? Actions.GoToSubNode5 : Actions.AddObject;
 
   const action = getRandom(maxAction, minAction);
-  let newPropertyName = generateNewPropertyName(objectKeys);
+  const newPropertyName = generateNewPropertyName(objectKeys);
 
   let newValue;
   let newValueLen = 0;
@@ -502,7 +509,7 @@ function addRandomField(result, maxPropertiesForObject) {
     case Actions.GoToSubNode2:
     case Actions.GoToSubNode3:
     case Actions.GoToSubNode4:
-    case Actions.GoToSubNode5:
+    case Actions.GoToSubNode5: {
       const subNodeName = complexFields[getRandom(complexFields.length - 1)];
       const subNode = result[subNodeName];
       if (Array.isArray(subNode)) {
@@ -512,13 +519,14 @@ function addRandomField(result, maxPropertiesForObject) {
         } else {
           newValueLen = addRandomField(
             subNode[getRandom(subNode.length - 1)],
-            maxPropertiesForObject,
+            maxPropertiesForObject
           );
         }
       } else {
         newValueLen = addRandomField(subNode, maxPropertiesForObject);
       }
       break;
+    }
     default:
       console.log('action=', action);
       break;
@@ -535,13 +543,14 @@ function addRandomField(result, maxPropertiesForObject) {
   return addedSize;
 }
 
+/* eslint-disable no-unused-vars */
 function generateJson(sizeLimit, maxPropertiesForObject, fileName) {
   const result = {};
   const size = addRandomContent(
     sizeLimit,
     maxPropertiesForObject,
     result,
-    emptyObjectBytes,
+    emptyObjectBytes
   );
   console.log(`size = ${size}`);
 
@@ -566,7 +575,7 @@ function generateArrayJson(arraySize, fileName) {
       secondName: generateRandomString(10),
       phone: generatePhoneNumber(),
       address: generateRandomString(200),
-      age: getRandom(100, 0),
+      age: getRandom(100, 0)
     });
   }
 

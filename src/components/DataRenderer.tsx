@@ -22,7 +22,11 @@ export interface JsonRenderProps<T> {
   lastElement?: boolean;
   level?: number;
   style?: StyleProps;
-  shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
+  shouldInitiallyExpand?: (
+    level: number,
+    value: any,
+    field?: string
+  ) => boolean;
 }
 
 function JsonObject({
@@ -31,10 +35,12 @@ function JsonObject({
   style,
   lastElement,
   shouldInitiallyExpand,
-  level,
+  level
 }: JsonRenderProps<Object>) {
   const [expanded, toggleExpanded] = useBool(() =>
-    shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true,
+    shouldInitiallyExpand
+      ? shouldInitiallyExpand(level || 0, value, field)
+      : true
   );
 
   const fields = Object.keys(value);
@@ -76,10 +82,12 @@ function JsonArray({
   style,
   lastElement,
   level,
-  shouldInitiallyExpand,
+  shouldInitiallyExpand
 }: JsonRenderProps<Array<any>>) {
   const [expanded, toggleExpanded] = useBool(() =>
-    shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true,
+    shouldInitiallyExpand
+      ? shouldInitiallyExpand(level || 0, value, field)
+      : true
   );
 
   const expandIcon = expanded ? '\u25BE' : '\u25B8';
@@ -116,7 +124,7 @@ function JsonPrimitiveValue({
   field,
   value,
   style,
-  lastElement,
+  lastElement
 }: JsonRenderProps<string | number | boolean | null | undefined>) {
   let stringValue = value;
   let valueStyle = style?.otherValue;

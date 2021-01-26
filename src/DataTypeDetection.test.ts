@@ -62,7 +62,7 @@ describe('isNumber', () => {
 describe('isString', () => {
   it('should return `true` for string values', () => {
     expect(DataTypeDetection.isString(stringValue)).toBe(true);
-    expect(DataTypeDetection.isString(new String(stringValue))).toBe(true);
+    expect(DataTypeDetection.isString(String(stringValue))).toBe(true);
   });
 
   it('should return `false` for non-string values', () => {

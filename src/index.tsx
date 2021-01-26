@@ -5,7 +5,11 @@ import styles from './styles.module.css';
 interface Props {
   data: Object | Array<any>;
   style: StyleProps;
-  shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
+  shouldInitiallyExpand?: (
+    level: number,
+    value: any,
+    field?: string
+  ) => boolean;
 }
 
 export const defaultStyles: StyleProps = {
@@ -19,7 +23,7 @@ export const defaultStyles: StyleProps = {
   numberValue: styles['value-number-light'],
   otherValue: styles['value-other-light'],
   expander: styles['expander-light'],
-  punctuation: styles['punctuation-light'],
+  punctuation: styles['punctuation-light']
 };
 
 export const darkStyles: StyleProps = {
@@ -33,13 +37,13 @@ export const darkStyles: StyleProps = {
   numberValue: styles['value-number-dark'],
   otherValue: styles['value-other-dark'],
   expander: styles['expander-dark'],
-  punctuation: styles['punctuation-dark'],
+  punctuation: styles['punctuation-dark']
 };
 
 export const JsonView = ({
   data,
   style = defaultStyles,
-  shouldInitiallyExpand,
+  shouldInitiallyExpand
 }: Props) => {
   return (
     <div className={style.container}>
