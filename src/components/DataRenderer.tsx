@@ -32,7 +32,7 @@ function JsonObject({
   lastElement,
   shouldInitiallyExpand,
   level,
-}: JsonRenderProps<object>) {
+}: JsonRenderProps<Object>) {
   const [expanded, toggleExpanded] = useBool(() =>
     shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true,
   );
@@ -90,7 +90,7 @@ function JsonArray({
         {expandIcon}
       </span>
       {field && <span className={style?.label}>{field}:</span>}
-      <span className={style?.punctuation}>{`[`}</span>
+      <span className={style?.punctuation}>[</span>
       {expanded && (
         <div>
           {value.map((element, index) => (
@@ -106,7 +106,7 @@ function JsonArray({
         </div>
       )}
       {!expanded && <span className={style?.punctuation}>...</span>}
-      <span className={style?.punctuation}>{`]`}</span>
+      <span className={style?.punctuation}>]</span>
       {!lastElement && <span className={style?.punctuation}>,</span>}
     </div>
   );

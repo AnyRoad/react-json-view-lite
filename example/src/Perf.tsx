@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Benchmark, { BenchmarkType } from 'react-component-benchmark';
+import Benchmark, { BenchmarkType } from '@anyroad/react-component-benchmark';
 import json from './hugeArray.json';
 
 import { JsonView } from 'react-json-view-lite';
@@ -13,22 +13,25 @@ import JSONTree from 'react-json-tree';
 import ReactJson from 'react-json-view';
 import Rjv from 'react-json-tree-viewer';
 
-const propertiesByComponent = new Map();
+const propertiesByComponent = new Map<
+  string,
+  { component: any; props: Object }
+>();
 propertiesByComponent.set('JsonView', {
   component: JsonView,
-  props: { data: json },
+  props: { data: json }
 });
 propertiesByComponent.set('JSONPretty', {
   component: JSONPretty,
-  props: { data: json },
+  props: { data: json }
 });
 propertiesByComponent.set('Inspector', {
   component: Inspector,
-  props: { data: json, isExpanded: () => true },
+  props: { data: json, isExpanded: () => true }
 });
 propertiesByComponent.set('JSONTree', {
   component: JSONTree,
-  props: { data: json, shouldExpandNode: () => true, collectionLimit: 20_000 },
+  props: { data: json, shouldExpandNode: () => true, collectionLimit: 20_000 }
 });
 propertiesByComponent.set('ReactJsonView', {
   component: ReactJson,
@@ -37,30 +40,39 @@ propertiesByComponent.set('ReactJsonView', {
     enableClipboard: false,
     displayObjectSize: false,
     displayDataTypes: false,
-    groupArraysAfterLength: 20_000,
-  },
+    groupArraysAfterLength: 20_000
+  }
 });
 propertiesByComponent.set('ReactJsonTreeViewer', {
   component: Rjv,
-  props: { data: json },
+  props: { data: json }
 });
 
 const componentNames = Array.from(propertiesByComponent.keys());
 
-export default class Perf extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      benchmarkType: BenchmarkType.MOUNT,
-      results: '',
-      component: 'JsonView',
-    };
-  }
+interface Props {}
+
+interface State {
+  benchmarkType: string;
+  results: string;
+  component: string;
+}
+// { [key: string]: string }
+export default class Perf extends React.Component<Props, State> {
+  state = {
+    benchmarkType: BenchmarkType.MOUNT,
+    results: '',
+    component: 'JsonView'
+  };
+
+  _benchmarkRef: any;
 
   render() {
     const { benchmarkType } = this.state;
-    const properties = propertiesByComponent.get(this.state.component);
-    const Target = properties.component;
+    const properties = propertiesByComponent.get(this.state.component) || {
+      component: JsonView,
+      props: { data: json }
+    };
 
     return (
       <div>
@@ -73,7 +85,10 @@ export default class Perf extends React.Component {
             </option>
           ))}
         </select>
-        <select onChange={this._handleChangeComponent} value={this.state.component}>
+        <select
+          onChange={this._handleChangeComponent}
+          value={this.state.component}
+        >
           {componentNames.map((component) => (
             <option key={component} value={component}>
               {component}
@@ -98,15 +113,15 @@ export default class Perf extends React.Component {
     this._benchmarkRef.start();
   };
 
-  _handleChangeType = (event) => {
+  _handleChangeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({ benchmarkType: event.target.value });
   };
 
-  _handleChangeComponent = (event) => {
+  _handleChangeComponent = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({ component: event.target.value });
   };
 
-  _handleComplete = (results) => {
+  _handleComplete = (results: any) => {
     delete results.samples;
     this.setState({
       results:
@@ -114,11 +129,11 @@ export default class Perf extends React.Component {
         '\n\n' +
         this.state.component +
         '\n' +
-        JSON.stringify(results, null, 2),
+        JSON.stringify(results, null, 2)
     });
   };
 
-  _setBenchRef = (ref) => {
+  _setBenchRef = (ref: any) => {
     this._benchmarkRef = ref;
   };
 }

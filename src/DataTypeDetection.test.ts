@@ -18,8 +18,8 @@ describe('isBoolean', () => {
   it('should return `true` for boolean values', () => {
     expect(DataTypeDetection.isBoolean(trueValue)).toBe(true);
     expect(DataTypeDetection.isBoolean(falseValue)).toBe(true);
-    expect(DataTypeDetection.isBoolean(new Boolean(trueValue))).toBe(true);
-    expect(DataTypeDetection.isBoolean(new Boolean(falseValue))).toBe(true);
+    expect(DataTypeDetection.isBoolean(Boolean(trueValue))).toBe(true);
+    expect(DataTypeDetection.isBoolean(Boolean(falseValue))).toBe(true);
   });
 
   it('should return `false` for non-boolean values', () => {
@@ -40,8 +40,8 @@ describe('isNumber', () => {
   it('should return `true` for number values', () => {
     expect(DataTypeDetection.isNumber(numberValue)).toBe(true);
     expect(DataTypeDetection.isNumber(floatNumberValue)).toBe(true);
-    expect(DataTypeDetection.isNumber(new Number(numberValue))).toBe(true);
-    expect(DataTypeDetection.isNumber(new Number(floatNumberValue))).toBe(true);
+    expect(DataTypeDetection.isNumber(Number(numberValue))).toBe(true);
+    expect(DataTypeDetection.isNumber(Number(floatNumberValue))).toBe(true);
   });
 
   it('should return `false` for non-number values', () => {
