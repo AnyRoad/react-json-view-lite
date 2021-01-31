@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 interface Props {
   data: Object | Array<any>;
-  style: StyleProps;
+  style?: StyleProps;
   shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
 }
 
