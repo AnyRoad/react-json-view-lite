@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as DataTypeDetection from './DataTypeDetection';
 import { useBool } from './hooks';
 
+const expandedIcon = '\u25BE';
+const collapsedIcon = '\u25B8';
+
 export interface StyleProps {
   container: string;
   basicChildStyle: string;
@@ -25,37 +28,51 @@ export interface JsonRenderProps<T> {
   shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
 }
 
-function JsonObject({
+export interface ExpandableRenderProps {
+  field?: string;
+  value: Array<any> | object;
+  data: Array<[string | undefined, any]>;
+  openBracket: string;
+  closeBracket: string;
+  lastElement: boolean;
+  level: number;
+  style?: StyleProps;
+  shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
+}
+
+function renderExpandableObject({
   field,
   value,
-  style,
+  data,
   lastElement,
-  shouldInitiallyExpand,
-  level
-}: JsonRenderProps<Object>) {
+  openBracket,
+  closeBracket,
+  level,
+  style,
+  shouldInitiallyExpand
+}: ExpandableRenderProps) {
   const [expanded, toggleExpanded] = useBool(() =>
-    shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true
+    shouldInitiallyExpand ? shouldInitiallyExpand(level, value, field) : true
   );
 
-  const fields = Object.keys(value);
-  const expandIcon = expanded ? '\u25BE' : '\u25B8';
+  const expandIcon = expanded ? expandedIcon : collapsedIcon;
   return (
     <div className={style?.basicChildStyle}>
       <span className={style?.expander} onClick={toggleExpanded}>
         {expandIcon}
       </span>
       {field && <span className={style?.label}>{field}:</span>}
-      <span className={style?.punctuation}>{`{`}</span>
+      <span className={style?.punctuation}>{openBracket}</span>
 
       {expanded && (
         <div>
-          {fields.map((key, index) => (
+          {data.map((dataElement, index) => (
             <DataRender
-              key={key}
-              field={key}
-              value={value[key]}
+              key={dataElement[0] || index}
+              field={dataElement[0]}
+              value={dataElement[1]}
               style={style}
-              lastElement={index === fields.length - 1}
+              lastElement={index === data.length - 1}
               level={(level || 0) + 1}
               shouldInitiallyExpand={shouldInitiallyExpand}
             />
@@ -64,10 +81,31 @@ function JsonObject({
       )}
 
       {!expanded && <span className={style?.punctuation}>...</span>}
-      <span className={style?.punctuation}>{`}`}</span>
+      <span className={style?.punctuation}>{closeBracket}</span>
       {!lastElement && <span className={style?.punctuation}>,</span>}
     </div>
   );
+}
+
+function JsonObject({
+  field,
+  value,
+  style,
+  lastElement,
+  shouldInitiallyExpand,
+  level
+}: JsonRenderProps<Object>) {
+  return renderExpandableObject({
+    field,
+    value,
+    lastElement: lastElement || false,
+    level: level || 0,
+    openBracket: '{',
+    closeBracket: '}',
+    style,
+    shouldInitiallyExpand,
+    data: Object.keys(value).map((key) => [key, value[key]])
+  });
 }
 
 function JsonArray({
@@ -78,38 +116,17 @@ function JsonArray({
   level,
   shouldInitiallyExpand
 }: JsonRenderProps<Array<any>>) {
-  const [expanded, toggleExpanded] = useBool(() =>
-    shouldInitiallyExpand ? shouldInitiallyExpand(level || 0, value, field) : true
-  );
-
-  const expandIcon = expanded ? '\u25BE' : '\u25B8';
-
-  return (
-    <div className={style?.basicChildStyle}>
-      <span className={style?.expander} onClick={toggleExpanded}>
-        {expandIcon}
-      </span>
-      {field && <span className={style?.label}>{field}:</span>}
-      <span className={style?.punctuation}>[</span>
-      {expanded && (
-        <div>
-          {value.map((element, index) => (
-            <DataRender
-              key={index}
-              value={element}
-              style={style}
-              lastElement={index === value.length - 1}
-              level={(level || 0) + 1}
-              shouldInitiallyExpand={shouldInitiallyExpand}
-            />
-          ))}
-        </div>
-      )}
-      {!expanded && <span className={style?.punctuation}>...</span>}
-      <span className={style?.punctuation}>]</span>
-      {!lastElement && <span className={style?.punctuation}>,</span>}
-    </div>
-  );
+  return renderExpandableObject({
+    field,
+    value,
+    lastElement: lastElement || false,
+    level: level || 0,
+    openBracket: '[',
+    closeBracket: ']',
+    style,
+    shouldInitiallyExpand,
+    data: value.map((element) => [undefined, element])
+  });
 }
 
 function JsonPrimitiveValue({

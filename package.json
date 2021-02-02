@@ -6,6 +6,7 @@
   "license": "MIT",
   "repository": "AnyRoad/react-json-view-lite",
   "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
   "engines": {
