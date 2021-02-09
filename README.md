@@ -5,6 +5,7 @@
   <a href="https://npmjs.org/package/react-json-view-lite">
     <img alt="no dependencies" src="https://badgen.net/bundlephobia/dependency-count/react-json-view-lite" />
   </a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FAnyRoad%2Freact-json-view-lite?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FAnyRoad%2Freact-json-view-lite.svg?type=shield"/></a>
   <a href="https://npmjs.org/package/react-json-view-lite">
     <img alt="size" src="https://badgen.net/bundlephobia/minzip/react-json-view-lite" />
   </a>
@@ -101,3 +102,6 @@ Here is the size benchmark (using [bundlephobia.com](https://bundlephobia.com)) 
 ## License
 
 MIT © [AnyRoad](https://github.com/AnyRoad)
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAnyRoad%2Freact-json-view-lite.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FAnyRoad%2Freact-json-view-lite?ref=badge_large)
