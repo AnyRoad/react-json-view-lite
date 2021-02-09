@@ -12,7 +12,7 @@
     <img alt="build" src="https://travis-ci.com/AnyRoad/react-json-view-lite.svg?branch=release" />
   </a>
   <a href="https://codecov.io/gh/anyroad/react-json-view-lite">
-    <img alt="coverage" src="https://img.shields.io/codecov/c/github/anyroad/react-json-view-lite.svg" />
+    <img alt="coverage" src="https://codecov.io/gh/AnyRoad/react-json-view-lite/branch/release/graph/badge.svg" />
   </a>
   <a href="https://bundlephobia.com/result?p=react-json-view-lite">
     <img alt="tree-shakeable" src="https://badgen.net/bundlephobia/tree-shaking/react-json-view-lite" />

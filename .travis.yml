@@ -1,5 +1,5 @@
 language: node_js
-scripts:
+before_script:
   - npm install codecov -g
 sudo: false
 node_js:
