@@ -20,6 +20,9 @@
   <a href="https://npmjs.org/package/react-json-view-lite">
     <img alt="types included" src="https://badgen.net/npm/types/react-json-view-lite" />
   </a>
+  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2FAnyRoad%2Freact-json-view-lite?ref=badge_shield" alt="FOSSA Status">
+    <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FAnyRoad%2Freact-json-view-lite.svg?type=shield"/>
+  </a>
 </div>
 
 <div>
