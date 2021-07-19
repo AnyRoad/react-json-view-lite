@@ -8,7 +8,7 @@
   <a href="https://npmjs.org/package/react-json-view-lite">
     <img alt="size" src="https://badgen.net/bundlephobia/minzip/react-json-view-lite" />
   </a>
-  <a href="https://github.com/anyroad/react-json-view-lite">
+  <a href="https://travis-ci.com/github/AnyRoad/react-json-view-lite">
     <img alt="build" src="https://travis-ci.com/AnyRoad/react-json-view-lite.svg?branch=release" />
   </a>
   <a href="https://codecov.io/gh/anyroad/react-json-view-lite">
