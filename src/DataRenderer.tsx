@@ -51,8 +51,13 @@ function renderExpandableObject({
   style,
   shouldInitiallyExpand
 }: ExpandableRenderProps) {
-  const [expanded, toggleExpanded] = useBool(() =>
+  const [expanded, toggleExpanded, setExpanded] = useBool(() =>
     shouldInitiallyExpand ? shouldInitiallyExpand(level, value, field) : true
+  );
+
+  React.useEffect(
+    () => shouldInitiallyExpand && setExpanded(shouldInitiallyExpand(level, value, field)),
+    [shouldInitiallyExpand]
   );
 
   const expandIcon = expanded ? expandedIcon : collapsedIcon;

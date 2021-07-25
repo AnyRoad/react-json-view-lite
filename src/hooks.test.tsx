@@ -42,4 +42,26 @@ describe('useBool', () => {
     });
     expect(value!).toBe(true);
   });
+
+  it('change value when calling setValue()', () => {
+    let value: boolean;
+    let setValue: (value: boolean) => void = () => {};
+
+    const HookComponent = () => {
+      [value, , setValue] = useBool(() => true);
+      return <div />;
+    };
+
+    render(<HookComponent />);
+    act(() => {
+      setValue(false);
+    });
+
+    expect(value!).toBe(false);
+
+    act(() => {
+      setValue(true);
+    });
+    expect(value!).toBe(true);
+  });
 });
