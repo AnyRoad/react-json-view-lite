@@ -75,10 +75,36 @@ describe('DataRender', () => {
     expect(screen.queryByText('123')).not.toBeInTheDocument();
   });
 
+  it('should render nested objects collapsed and expand it once property changed', () => {
+    const { rerender } = render(
+      <DataRender value={{ obj: { test: 123 } }} shouldInitiallyExpand={(level) => level === 0} />
+    );
+    expect(screen.getByText(/obj/)).toBeInTheDocument();
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+
+    rerender(<DataRender value={{ obj: { test: 123 } }} shouldInitiallyExpand={() => true} />);
+    expect(screen.getByText(/obj/)).toBeInTheDocument();
+    expect(screen.queryByText(/test/)).toBeInTheDocument();
+    expect(screen.queryByText('123')).toBeInTheDocument();
+  });
+
   it('should render nested arrays collapsed', () => {
     render(<DataRender value={{ test: [123] }} shouldInitiallyExpand={(level) => level === 0} />);
     expect(screen.queryByText(/test/)).toBeInTheDocument();
     expect(screen.queryByText('123')).not.toBeInTheDocument();
+  });
+
+  it('should render nested arrays collapsed and expand it once property changed', () => {
+    const { rerender } = render(
+      <DataRender value={{ test: [123] }} shouldInitiallyExpand={(level) => level === 0} />
+    );
+    expect(screen.queryByText(/test/)).toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+
+    rerender(<DataRender value={{ test: [123] }} shouldInitiallyExpand={() => true} />);
+    expect(screen.queryByText(/test/)).toBeInTheDocument();
+    expect(screen.queryByText('123')).toBeInTheDocument();
   });
 
   it('should render top arrays collapsed', () => {

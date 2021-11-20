@@ -15,4 +15,16 @@ describe('JsonView', () => {
     expect(screen.getByText(/test/)).toBeInTheDocument();
     expect(screen.getByText('true')).toBeInTheDocument();
   });
+
+  it('should render object and call shouldInitiallyExpand only once', () => {
+    let invoked = 0;
+    const shouldInitiallyExpand = () => {
+      ++invoked;
+      return true;
+    };
+    render(<JsonView data={{ test: true }} shouldInitiallyExpand={shouldInitiallyExpand} />);
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+    expect(screen.getByText('true')).toBeInTheDocument();
+    expect(invoked).toBe(1);
+  });
 });
