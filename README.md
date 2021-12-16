@@ -20,10 +20,15 @@
   <a href="https://npmjs.org/package/react-json-view-lite">
     <img alt="types included" src="https://badgen.net/npm/types/react-json-view-lite" />
   </a>
+
+  <a href="https://npmjs.org/package/react-json-view-lite">
+    <img alt="downloads per month" src="https://img.shields.io/npm/dm/react-json-view-lite" />
+  </a>
+  
 </div>
 
 <div>
-  <strong>react-json-view-lite</strong> is a tiny component for React allowing to render JSON as a tree. It focused more on the performance for large JSON inputs rather than customization and rich features. It is written in TypeScript and has no dependencies.
+  <strong>react-json-view-lite</strong> is a tiny component for React allowing to render JSON as a tree. It focused on the balance between performance for large JSON inputs and functionality. It might not have all the rich features (suce as customization, copy, json editinng) but still provides more than just rendering json with highlighting - e.g. ability to collapse/expand nested objects and override css. It is written in TypeScript and has no dependencies.
 </div>
 
 ## Install
@@ -42,17 +47,13 @@ import 'react-json-view-lite/dist/index.css';
 
 const json = {
   a: 1,
-  b: 'example',
+  b: 'example'
 };
 
 const App = () => {
   return (
     <React.Fragment>
-      <JsonView
-        data={json}
-        shouldInitiallyExpand={(level) => true}
-        style={defaultStyles}
-      />
+      <JsonView data={json} shouldInitiallyExpand={(level) => true} style={defaultStyles} />
       <JsonView data={json} shouldInitiallyExpand={(level) => true} style={darkStyles} />
     </React.Fragment>
   );
@@ -60,6 +61,12 @@ const App = () => {
 
 export default App;
 ```
+
+### Demo
+
+https://codesandbox.io/s/react-json-view-lite-example-wvdjl
+
+(thanks to @idindrakusuma)
 
 ### Props
 
@@ -87,9 +94,11 @@ export default App;
 
 ## Comparison with other libraries
 
+### Size and dependencies
+
 Here is the size benchmark (using [bundlephobia.com](https://bundlephobia.com)) against similar React libraries (found by https://www.npmjs.com/search?q=react%20json&ranking=popularity):
 
-| Name                     | Bundle size                                                                                                                                  | Bundle size (gzip)                                                                                                                              | Dependencies                                                                                                                                              |
+| Library                  | Bundle size                                                                                                                                  | Bundle size (gzip)                                                                                                                              | Dependencies                                                                                                                                              |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **react-json-view-lite** | [![](https://badgen.net/bundlephobia/min/react-json-view-lite?color=6ead0a&label=)](https://bundlephobia.com/result?p=react-json-view-lite)  | [![](https://badgen.net/bundlephobia/minzip/react-json-view-lite?color=6ead0a&label=)](https://bundlephobia.com/result?p=react-json-view-lite)  | [![](https://badgen.net/bundlephobia/dependency-count/react-json-view-lite?color=6ead0a&label=)](https://bundlephobia.com/result?p=react-json-view-lite)  |
 | react-json-pretty        | [![](https://badgen.net/bundlephobia/min/react-json-pretty?color=red&label=)](https://bundlephobia.com/result?p=react-json-pretty)           | [![](https://badgen.net/bundlephobia/minzip/react-json-pretty?color=red&label=)](https://bundlephobia.com/result?p=react-json-pretty)           | [![](https://badgen.net/bundlephobia/dependency-count/react-json-pretty?color=red&label=)](https://bundlephobia.com/result?p=react-json-pretty)           |
@@ -97,6 +106,21 @@ Here is the size benchmark (using [bundlephobia.com](https://bundlephobia.com)) 
 | react-json-tree          | [![](https://badgen.net/bundlephobia/min/react-json-tree?color=red&label=)](https://bundlephobia.com/result?p=react-json-tree)               | [![](https://badgen.net/bundlephobia/minzip/react-json-tree?color=red&label=)](https://bundlephobia.com/result?p=react-json-tree)               | [![](https://badgen.net/bundlephobia/dependency-count/react-json-tree?color=red&label=)](https://bundlephobia.com/result?p=react-json-tree)               |
 | react-json-view          | [![](https://badgen.net/bundlephobia/min/react-json-view?color=red&label=)](https://bundlephobia.com/result?p=react-json-view)               | [![](https://badgen.net/bundlephobia/minzip/react-json-view?color=red&label=)](https://bundlephobia.com/result?p=react-json-view)               | [![](https://badgen.net/bundlephobia/dependency-count/react-json-view?color=red&label=)](https://bundlephobia.com/result?p=react-json-view)               |
 | react-json-tree-viewer   | [![](https://badgen.net/bundlephobia/min/react-json-tree-viewer?color=red&label=)](https://bundlephobia.com/result?p=react-json-tree-viewer) | [![](https://badgen.net/bundlephobia/minzip/react-json-tree-viewer?color=red&label=)](https://bundlephobia.com/result?p=react-json-tree-viewer) | [![](https://badgen.net/bundlephobia/dependency-count/react-json-tree-viewer?color=red&label=)](https://bundlephobia.com/result?p=react-json-tree-viewer) |
+
+### Performance
+
+Performance was mesaures using the [react-component-benchmark](https://github.com/paularmstrong/react-component-benchmark) library. Every component was rendered 50 times using the [300Kb json file](https://github.com/AnyRoad/react-json-view-lite/blob/release/example/src/hugeJson.json) as data source. All numbers are in milliseconds. Tests were performed on Macbook Air M1 16Gb RAM usging Chrome v96.0.4664.110(official build, arm64). Every component was tested 2 times but there was no significant differences in the results.
+
+| Library                  | Min   | Max   | Average | Median | P90   |
+| ------------------------ | ----- | ----- | ------- | ------ | ----- |
+| **react-json-view-lite** | 81    | 604   | 195     | 82     | 582   |
+| react-json-pretty        | 22    | 59    | 32      | 24     | 56    |
+| react-json-inspector     | 682   | 1 109 | 758     | 711    | 905   |
+| react-json-tree          | 565   | 1 217 | 658     | 620    | 741   |
+| react-json-view          | 1 403 | 1 722 | 1529    | 1 540  | 1 631 |
+| react-json-tree-viewer   | 266   | 663   | 320     | 278    | 455   |
+
+As you can see `react-json-pretty` renders faster than other libraries but it does not have ability to collapse/expand nested objects so it might be good choice if you need just json syntax highlighting.
 
 ## License
 
