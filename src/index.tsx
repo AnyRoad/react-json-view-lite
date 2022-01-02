@@ -19,7 +19,8 @@ export const defaultStyles: StyleProps = {
   numberValue: styles['value-number-light'],
   otherValue: styles['value-other-light'],
   expander: styles['expander-light'],
-  punctuation: styles['punctuation-light']
+  punctuation: styles['punctuation-light'],
+  pointer: styles.pointer
 };
 
 export const darkStyles: StyleProps = {
@@ -33,10 +34,18 @@ export const darkStyles: StyleProps = {
   numberValue: styles['value-number-dark'],
   otherValue: styles['value-other-dark'],
   expander: styles['expander-dark'],
-  punctuation: styles['punctuation-dark']
+  punctuation: styles['punctuation-dark'],
+  pointer: styles.pointer
 };
 
-export const JsonView = ({ data, style = defaultStyles, shouldInitiallyExpand }: Props) => {
+export const allExpanded = () => true;
+export const collapseAllNested = (level: number) => level < 1;
+
+export const JsonView = ({
+  data,
+  style = defaultStyles,
+  shouldInitiallyExpand = allExpanded
+}: Props) => {
   return (
     <div className={style.container}>
       <DataRender

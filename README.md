@@ -70,11 +70,20 @@ https://codesandbox.io/s/react-json-view-lite-example-wvdjl
 
 ### Props
 
-| Name                  | Type                                                     | Default Value | Description                                                                                                                                   |
-| --------------------- | -------------------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| data                  | `Object` \| `Array<any>`                                 |               | Data which should be rendered                                                                                                                 |
-| style                 | StyleProps                                               | defaultStyles | CSS classes for rendering. Library provides two build-in implementations: darkStyles, defaultStyles                                           |
-| shouldInitiallyExpand | `(level: number, value: any, field?: string) => boolean` | undefined     | Optional. Function which will be initially called for each Object and Array of the data in order to calculate should if this node be expanded |
+| Name                  | Type                                                     | Default Value | Description                                                                                                                                                                                                                                                                                                                    |
+| --------------------- | -------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| data                  | `Object` \| `Array<any>`                                 |               | Data which should be rendered                                                                                                                                                                                                                                                                                                  |
+| style                 | StyleProps                                               | defaultStyles | Optional. CSS classes for rendering. Library provides two build-in implementations: `darkStyles`, `defaultStyles` (see below)                                                                                                                                                                                                  |
+| shouldInitiallyExpand | `(level: number, value: any, field?: string) => boolean` | allExpanded   | Optional. Function which will be initially called for each Object and Array of the data in order to calculate should if this node be expanded. `level` startes from `0`, `field` does not have a value for the array element. Library provides two build-in implementations: `allExpanded` and `collapseAllNested` (see below) |
+
+### Extra exported
+
+| Name              | Type                         | Description                                         |
+| ----------------- | ---------------------------- | --------------------------------------------------- |
+| defaultStyles     | StyleProps                   | Default styles for light background                 |
+| darkStyles        | StyleProps                   | Default styles for dark background                  |
+| allExpanded       | `() => boolean`              | Always returns `true`                               |
+| collapseAllNested | `(level: number) => boolean` | Returns `true` only for the first level (`level=0`) |
 
 ### StyleProps
 
@@ -90,7 +99,8 @@ https://codesandbox.io/s/react-json-view-lite-example-wvdjl
 | stringValue     | string | CSS class name for rendering string values                                                                        |
 | booleanValue    | string | CSS class name for rendering boolean values                                                                       |
 | otherValue      | string | CSS class name for rendering all other values except Object, Arrray, null, undefined, numeric, boolean and string |
-| punctuation     | string | CSS class name for rendering `,`, `[`, `]`, `{`, `}`                                                              |
+| punctuation     | string | CSS class name for rendering `,`, `[`, `]`, `{`, `}`, `...`                                                       |
+| pointer         | string | extra CSS class name for parts which are used for expanding/collapsing: `▸`, `▾` and `...`                        |
 
 ## Comparison with other libraries
 

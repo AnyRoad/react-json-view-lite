@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Benchmark, { BenchmarkType } from '@anyroad/react-component-benchmark';
-import json from './hugeArray.json';
+import Benchmark, { BenchmarkType, BenchResultsType } from 'react-component-benchmark';
+import json from './hugeJson.json';
 
 import { JsonView } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
@@ -13,7 +13,7 @@ import JSONTree from 'react-json-tree';
 import ReactJson from 'react-json-view';
 import Rjv from 'react-json-tree-viewer';
 
-const propertiesByComponent = new Map<string, { component: any; props: Object }>();
+const propertiesByComponent = new Map<string, { component: any; props: Record<string, unknown> }>();
 propertiesByComponent.set('JsonView', {
   component: JsonView,
   props: { data: json }
@@ -94,8 +94,8 @@ export default class Perf extends React.Component<Props, State> {
           componentProps={properties.props}
           onComplete={this._handleComplete}
           ref={this._setBenchRef}
-          samples={5}
-          timeout={100000}
+          samples={50}
+          timeout={200000}
           type={benchmarkType}
         />
         <pre>{this.state.results}</pre>
@@ -115,11 +115,34 @@ export default class Perf extends React.Component<Props, State> {
     this.setState({ component: event.target.value });
   };
 
-  _handleComplete = (results: any) => {
-    delete results.samples;
+  _handleComplete = (results: BenchResultsType) => {
+    const values = results.samples.map((s) => s.elapsed).sort((a, b) => a - b);
+    results.samples = [];
+    const p70 = values[Math.floor(values.length * 0.7)];
+    const p95 = values[Math.floor(values.length * 0.95)];
+    const p99 = values[Math.floor(values.length * 0.99)];
+    const p50 = values[Math.floor(values.length * 0.5)];
+    const p90 = values[Math.floor(values.length * 0.9)];
+    const extras = JSON.stringify(
+      {
+        p50,
+        p70,
+        p90,
+        p95,
+        p99
+      },
+      null,
+      2
+    );
     this.setState({
       results:
-        this.state.results + '\n\n' + this.state.component + '\n' + JSON.stringify(results, null, 2)
+        this.state.results +
+        '\n\n' +
+        this.state.component +
+        '\n' +
+        JSON.stringify(results, null, 2) +
+        '\n' +
+        extras
     });
   };
 

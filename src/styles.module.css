@@ -17,8 +17,11 @@
 .expander-base {
   font-size: 1.2em;
   margin-right: 5px;
-  cursor: pointer;
   user-select: none;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .container-light {
