@@ -4,6 +4,15 @@
   "description": "JSON viewer component for React focused on performance for large volume input while still providing few customiziation features",
   "author": "AnyRoad",
   "license": "MIT",
+  "keywords": [
+    "react",
+    "json",
+    "component",
+    "view",
+    "json-view",
+    "json-tree",
+    "lite"
+  ],
   "repository": "AnyRoad/react-json-view-lite",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
