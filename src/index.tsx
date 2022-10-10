@@ -2,7 +2,7 @@ import * as React from 'react';
 import DataRender, { StyleProps } from './DataRenderer';
 import styles from './styles.module.css';
 
-interface Props {
+export interface Props {
   data: Object | Array<any>;
   style?: StyleProps;
   shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;

@@ -62,6 +62,10 @@ const App = () => {
 export default App;
 ```
 
+### StoryBook
+
+https://anyroad.github.io/react-json-view-lite/
+
 ### Demo
 
 https://codesandbox.io/s/react-json-view-lite-example-wvdjl
