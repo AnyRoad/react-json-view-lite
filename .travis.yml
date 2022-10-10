@@ -1,12 +1,13 @@
 language: node_js
 before_script:
   - npm install codecov -g
+  - npm install yarn -g
 sudo: false
 node_js:
-  - 12
-  - 10
+  - 14
+  - 16
 install:
-  - npm install
+  - yarn install
 script:
-  - npm test
+  - yarn test
   - codecov -f coverage/*.json
