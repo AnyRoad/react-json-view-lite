@@ -1,13 +1,28 @@
 import * as React from 'react';
-import DataRender from './DataRenderer';
+import DataRender, { JsonRenderProps } from './DataRenderer';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-const commonProps = {
+const commonProps: JsonRenderProps<any> = {
   lastElement: false,
   level: 0,
-  style: {},
-  shouldInitiallyExpand: () => true
+  style: {
+    container: '',
+    basicChildStyle: '',
+    expander: '',
+    label: '',
+    nullValue: '',
+    undefinedValue: '',
+    numberValue: '',
+    stringValue: '',
+    booleanValue: '',
+    otherValue: '',
+    punctuation: '',
+    pointer: ''
+  },
+  shouldInitiallyExpand: () => true,
+  value: undefined,
+  field: undefined
 };
 
 describe('DataRender', () => {
@@ -173,6 +188,31 @@ describe('DataRender', () => {
     expect(screen.getByText(/test/)).toBeInTheDocument();
   });
 
+  it('should expand objects by pressing Spacebar on', () => {
+    render(
+      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={() => false} />
+    );
+    expect(screen.getByText(/.../)).toBeInTheDocument();
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+
+    fireEvent.keyDown(screen.getByText('...'), { key: ' ', code: 'Space' });
+
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+  });
+
+  it('should not expand objects by pressing other keys on', () => {
+    render(
+      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={() => false} />
+    );
+    expect(screen.getByText(/.../)).toBeInTheDocument();
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+
+    fireEvent.keyDown(screen.getByText('...'), { key: 'Enter', code: 'Enter' });
+
+    expect(screen.getByText(/.../)).toBeInTheDocument();
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+  });
+
   it('should expand arrays by clicking on', () => {
     render(
       <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={() => false} />
@@ -183,5 +223,34 @@ describe('DataRender', () => {
     fireEvent.click(screen.getByText('...'));
     expect(screen.getByText(/test/)).toBeInTheDocument();
     expect(screen.getByText(/array/)).toBeInTheDocument();
+  });
+
+  it('should expand arrays by pressing Spacebar on', () => {
+    render(
+      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={() => false} />
+    );
+    expect(screen.getByText(/.../)).toBeInTheDocument();
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/array/)).not.toBeInTheDocument();
+
+    fireEvent.keyDown(screen.getByText('...'), { key: ' ', code: 'Space' });
+
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+    expect(screen.getByText(/array/)).toBeInTheDocument();
+  });
+
+  it('should not expand arrays by pressing other keys on', () => {
+    render(
+      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={() => false} />
+    );
+    expect(screen.getByText(/.../)).toBeInTheDocument();
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/array/)).not.toBeInTheDocument();
+
+    fireEvent.keyDown(screen.getByText('...'), { key: 'Enter', code: 'Enter' });
+
+    expect(screen.getByText(/.../)).toBeInTheDocument();
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/array/)).not.toBeInTheDocument();
   });
 });

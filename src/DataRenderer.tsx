@@ -73,9 +73,21 @@ function renderExpandableObject({
   const childLevel = level + 1;
   const lastIndex = data.length - 1;
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (e.key === ' ') {
+      toggleExpanded();
+    }
+  };
+
   return (
-    <div className={style.basicChildStyle}>
-      <span className={combineStyles(style.expander, style.pointer)} onClick={toggleExpanded}>
+    <div className={style.basicChildStyle} role='list'>
+      <span
+        className={combineStyles(style.expander, style.pointer)}
+        role='button'
+        onClick={toggleExpanded}
+        onKeyDown={onKeyDown}
+        tabIndex={0}
+      >
         {expandIcon}
       </span>
       {field && <span className={style.label}>{field}:</span>}
@@ -96,7 +108,13 @@ function renderExpandableObject({
           ))}
         </div>
       ) : (
-        <span className={combineStyles(style.punctuation, style.pointer)} onClick={toggleExpanded}>
+        <span
+          className={combineStyles(style.punctuation, style.pointer)}
+          role='button'
+          tabIndex={0}
+          onClick={toggleExpanded}
+          onKeyDown={onKeyDown}
+        >
           ...
         </span>
       )}
@@ -178,7 +196,7 @@ function JsonPrimitiveValue({
   }
 
   return (
-    <div className={style.basicChildStyle}>
+    <div className={style.basicChildStyle} role='listitem'>
       {field && <span className={style.label}>{field}:</span>}
       <span className={valueStyle}>{stringValue}</span>
       {!lastElement && <span className={style.label}>,</span>}

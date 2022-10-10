@@ -55,7 +55,6 @@
     "@storybook/react": "^6.5.12",
     "@storybook/testing-library": "^0.0.13",
     "@storybook/theming": "^6.5.12",
-    "storybook-css-modules": "^1.0.8",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.4.0",
     "@testing-library/user-event": "14.4.3",
@@ -72,8 +71,9 @@
     "eslint-config-standard": "17.0.0",
     "eslint-config-standard-react": "11.0.1",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-n": "15.3.0",
+    "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "6.0.1",
     "eslint-plugin-react": "7.31.9",
@@ -85,6 +85,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
+    "storybook-css-modules": "^1.0.8",
     "typescript": "4.8.4"
   },
   "files": [
