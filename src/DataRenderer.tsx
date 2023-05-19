@@ -199,7 +199,7 @@ function JsonPrimitiveValue({
     <div className={style.basicChildStyle} role='listitem'>
       {field && <span className={style.label}>{field}:</span>}
       <span className={valueStyle}>{stringValue}</span>
-      {!lastElement && <span className={style.label}>,</span>}
+      {!lastElement && <span className={style.punctuation}>,</span>}
     </div>
   );
 }
