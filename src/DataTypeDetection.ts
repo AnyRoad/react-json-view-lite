@@ -6,6 +6,10 @@ export const isNumber = (data: any) => {
   return typeof data === 'number' || data instanceof Number;
 };
 
+export const isBigInt = (data: any) => {
+  return typeof data === 'bigint' || data instanceof BigInt;
+};
+
 export const isString = (data: any) => {
   return typeof data === 'string' || data instanceof String;
 };
