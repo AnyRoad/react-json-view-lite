@@ -50,6 +50,12 @@ describe('DataRender', () => {
     expect(screen.getByText('42')).toBeInTheDocument();
   });
 
+  it('should render bigints', () => {
+    render(<DataRender {...commonProps} value={{ test: BigInt(42) }} />);
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+    expect(screen.getByText('42n')).toBeInTheDocument();
+  });
+
   it('should render nulls', () => {
     render(<DataRender {...commonProps} value={{ test: null }} />);
     expect(screen.getByText(/test/)).toBeInTheDocument();

@@ -191,6 +191,9 @@ function JsonPrimitiveValue({
   } else if (DataTypeDetection.isNumber(value)) {
     stringValue = value.toString();
     valueStyle = style.numberValue;
+  } else if (DataTypeDetection.isBigInt(value)) {
+    stringValue = `${value.toString()}n`;
+    valueStyle = style.numberValue;
   } else {
     stringValue = value.toString();
   }
