@@ -1,5 +1,6 @@
 import * as React from 'react';
 import DataRender, { JsonRenderProps } from './DataRenderer';
+import { allExpanded, collapseAllNested } from './index';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -20,10 +21,12 @@ const commonProps: JsonRenderProps<any> = {
     punctuation: '',
     pointer: ''
   },
-  shouldInitiallyExpand: () => true,
+  shouldInitiallyExpand: allExpanded,
   value: undefined,
   field: undefined
 };
+
+const collapseAll = () => false;
 
 describe('DataRender', () => {
   it('should render booleans: true', () => {
@@ -99,7 +102,7 @@ describe('DataRender', () => {
       <DataRender
         {...commonProps}
         value={{ obj: { test: 123 } }}
-        shouldInitiallyExpand={(level) => level === 0}
+        shouldInitiallyExpand={collapseAllNested}
       />
     );
     expect(screen.getByText(/obj/)).toBeInTheDocument();
@@ -112,7 +115,7 @@ describe('DataRender', () => {
       <DataRender
         {...commonProps}
         value={{ obj: { test: 123 } }}
-        shouldInitiallyExpand={(level) => level === 0}
+        shouldInitiallyExpand={collapseAllNested}
       />
     );
     expect(screen.getByText(/obj/)).toBeInTheDocument();
@@ -123,7 +126,7 @@ describe('DataRender', () => {
       <DataRender
         {...commonProps}
         value={{ obj: { test: 123 } }}
-        shouldInitiallyExpand={() => true}
+        shouldInitiallyExpand={allExpanded}
       />
     );
     expect(screen.getByText(/obj/)).toBeInTheDocument();
@@ -136,7 +139,7 @@ describe('DataRender', () => {
       <DataRender
         {...commonProps}
         value={{ test: [123] }}
-        shouldInitiallyExpand={(level) => level === 0}
+        shouldInitiallyExpand={collapseAllNested}
       />
     );
     expect(screen.queryByText(/test/)).toBeInTheDocument();
@@ -148,21 +151,21 @@ describe('DataRender', () => {
       <DataRender
         {...commonProps}
         value={{ test: [123] }}
-        shouldInitiallyExpand={(level) => level === 0}
+        shouldInitiallyExpand={collapseAllNested}
       />
     );
     expect(screen.queryByText(/test/)).toBeInTheDocument();
     expect(screen.queryByText('123')).not.toBeInTheDocument();
 
     rerender(
-      <DataRender {...commonProps} value={{ test: [123] }} shouldInitiallyExpand={() => true} />
+      <DataRender {...commonProps} value={{ test: [123] }} shouldInitiallyExpand={allExpanded} />
     );
     expect(screen.queryByText(/test/)).toBeInTheDocument();
     expect(screen.queryByText('123')).toBeInTheDocument();
   });
 
   it('should render top arrays collapsed', () => {
-    render(<DataRender {...commonProps} value={[123]} shouldInitiallyExpand={() => false} />);
+    render(<DataRender {...commonProps} value={[123]} shouldInitiallyExpand={collapseAll} />);
     expect(screen.queryByText('123')).not.toBeInTheDocument();
   });
 
@@ -186,7 +189,7 @@ describe('DataRender', () => {
 
   it('should expand objects by clicking on', () => {
     render(
-      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={() => false} />
+      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
     );
     expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
@@ -196,7 +199,7 @@ describe('DataRender', () => {
 
   it('should expand objects by pressing Spacebar on', () => {
     render(
-      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={() => false} />
+      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
     );
     expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
@@ -208,7 +211,7 @@ describe('DataRender', () => {
 
   it('should not expand objects by pressing other keys on', () => {
     render(
-      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={() => false} />
+      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
     );
     expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
@@ -221,7 +224,7 @@ describe('DataRender', () => {
 
   it('should expand arrays by clicking on', () => {
     render(
-      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={() => false} />
+      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
     );
     expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
@@ -233,7 +236,7 @@ describe('DataRender', () => {
 
   it('should expand arrays by pressing Spacebar on', () => {
     render(
-      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={() => false} />
+      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
     );
     expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
@@ -247,7 +250,7 @@ describe('DataRender', () => {
 
   it('should not expand arrays by pressing other keys on', () => {
     render(
-      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={() => false} />
+      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
     );
     expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();

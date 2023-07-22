@@ -42,7 +42,7 @@ npm install --save react-json-view-lite
 ```tsx
 import * as React from 'react';
 
-import { JsonView, darkStyles, defaultStyles } from 'react-json-view-lite';
+import { JsonView, allExpanded, darkStyles, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 
 const json = {
@@ -53,14 +53,17 @@ const json = {
 const App = () => {
   return (
     <React.Fragment>
-      <JsonView data={json} shouldInitiallyExpand={(level) => true} style={defaultStyles} />
-      <JsonView data={json} shouldInitiallyExpand={(level) => true} style={darkStyles} />
+      <JsonView data={json} shouldInitiallyExpand={allExpanded} style={defaultStyles} />
+      <JsonView data={json} shouldInitiallyExpand={allExpanded} style={darkStyles} />
     </React.Fragment>
   );
 };
 
 export default App;
 ```
+
+Please note that in JavaScript, an anonymous function like `function() {}` or `() => {}` always creates a different function every time component is rendered, so you might need to use
+[useCallback](https://react.dev/reference/react/useCallback) React Hook for the `shouldInitiallyExpand` parameter or extract the function outside the functional component.
 
 ### StoryBook
 

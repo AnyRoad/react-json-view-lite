@@ -80,8 +80,10 @@ CollapsedNestedObjects.args = {
 };
 
 export const CollapsedRoot = Template.bind({});
+const collapseAll = () => false;
+
 CollapsedRoot.args = {
   data: jsonData,
   style: defaultStyles,
-  shouldInitiallyExpand: () => false
+  shouldInitiallyExpand: collapseAll
 };
