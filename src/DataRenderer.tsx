@@ -198,6 +198,10 @@ function JsonPrimitiveValue({
     stringValue = value.toString();
   }
 
+  if (field === '') {
+    field = '""';
+  }
+
   return (
     <div className={style.basicChildStyle} role='listitem'>
       {field && <span className={style.label}>{field}:</span>}

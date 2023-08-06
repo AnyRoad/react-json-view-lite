@@ -1,3 +1,9 @@
+## 0.9.8
+
+### Bug Fixes
+
+- Fixed [bug when empty object key was not rendered correctly](https://github.com/AnyRoad/react-json-view-lite/issues/9)
+
 ## 0.9.7
 
 ### New Features

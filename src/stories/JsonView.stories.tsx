@@ -44,6 +44,7 @@ const Template: ComponentStory<typeof JsonView> = (args) => <JsonView {...args} 
 
 const jsonData = {
   'string property': 'my string',
+  '': 'empty name property',
   'number property': 42.42,
   'boolean property': true,
   'null property': null,

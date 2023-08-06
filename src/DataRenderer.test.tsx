@@ -77,6 +77,12 @@ describe('DataRender', () => {
     expect(screen.getByText(/2020/)).toBeInTheDocument();
   });
 
+  it('should render object with empty key string', () => {
+    render(<DataRender {...commonProps} value={{ '': 'empty key' }} />);
+    expect(screen.getByText(/""/)).toBeInTheDocument();
+    expect(screen.getByText(/empty key/)).toBeInTheDocument();
+  });
+
   it('should render arrays', () => {
     render(<DataRender {...commonProps} value={[1, 2, 3]} />);
     expect(screen.getByText('1')).toBeInTheDocument();
