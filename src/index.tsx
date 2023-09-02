@@ -18,9 +18,10 @@ export const defaultStyles: StyleProps = {
   booleanValue: styles['value-boolean-light'],
   numberValue: styles['value-number-light'],
   otherValue: styles['value-other-light'],
-  expander: styles['expander-light'],
   punctuation: styles['punctuation-light'],
-  pointer: styles.pointer
+  collapseIcon: styles['collapse-icon-light'],
+  expandIcon: styles['expand-icon-light'],
+  collapsedContent: styles['collapsed-content-light']
 };
 
 export const darkStyles: StyleProps = {
@@ -33,9 +34,10 @@ export const darkStyles: StyleProps = {
   booleanValue: styles['value-boolean-dark'],
   numberValue: styles['value-number-dark'],
   otherValue: styles['value-other-dark'],
-  expander: styles['expander-dark'],
   punctuation: styles['punctuation-dark'],
-  pointer: styles.pointer
+  collapseIcon: styles['collapse-icon-dark'],
+  expandIcon: styles['expand-icon-dark'],
+  collapsedContent: styles['collapsed-content-dark']
 };
 
 export const allExpanded = () => true;

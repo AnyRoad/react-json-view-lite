@@ -2,13 +2,9 @@ import * as React from 'react';
 import * as DataTypeDetection from './DataTypeDetection';
 import { useBool } from './hooks';
 
-const expandedIcon = '\u25BE';
-const collapsedIcon = '\u25B8';
-
 export interface StyleProps {
   container: string;
   basicChildStyle: string;
-  expander: string;
   label: string;
   nullValue: string;
   undefinedValue: string;
@@ -17,7 +13,9 @@ export interface StyleProps {
   booleanValue: string;
   otherValue: string;
   punctuation: string;
-  pointer: string;
+  expandIcon: string;
+  collapseIcon: string;
+  collapsedContent: string;
 }
 
 export interface JsonRenderProps<T> {
@@ -39,10 +37,6 @@ export interface ExpandableRenderProps {
   level: number;
   style: StyleProps;
   shouldInitiallyExpand: (level: number, value: any, field?: string) => boolean;
-}
-
-function combineStyles(style1: string, style2: string): string {
-  return `${style1 || ''} ${style2 || ''}`;
 }
 
 function renderExpandableObject({
@@ -69,7 +63,7 @@ function renderExpandableObject({
     }
   }, [shouldInitiallyExpand]);
 
-  const expandIcon = expanded ? expandedIcon : collapsedIcon;
+  const expanderIconStyle = expanded ? style.collapseIcon : style.expandIcon;
   const childLevel = level + 1;
   const lastIndex = data.length - 1;
 
@@ -82,14 +76,12 @@ function renderExpandableObject({
   return (
     <div className={style.basicChildStyle} role='list'>
       <span
-        className={combineStyles(style.expander, style.pointer)}
+        className={expanderIconStyle}
         role='button'
         onClick={toggleExpanded}
         onKeyDown={onKeyDown}
         tabIndex={0}
-      >
-        {expandIcon}
-      </span>
+      />
       {field && <span className={style.label}>{field}:</span>}
       <span className={style.punctuation}>{openBracket}</span>
 
@@ -109,14 +101,12 @@ function renderExpandableObject({
         </div>
       ) : (
         <span
-          className={combineStyles(style.punctuation, style.pointer)}
+          className={style.collapsedContent}
           role='button'
           tabIndex={0}
           onClick={toggleExpanded}
           onKeyDown={onKeyDown}
-        >
-          ...
-        </span>
+        />
       )}
 
       <span className={style.punctuation}>{closeBracket}</span>

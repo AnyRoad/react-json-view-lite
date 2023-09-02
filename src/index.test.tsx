@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { JsonView, defaultStyles, allExpanded, collapseAllNested } from '.';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 describe('JsonView', () => {
   it('should render object', () => {
     render(<JsonView style={defaultStyles} data={{ test: true }} />);
-    expect(screen.getByText(/test/)).toBeInTheDocument();
-    expect(screen.getByText('true')).toBeInTheDocument();
+    expect(screen.getByText(/test/)).toBeDefined();
+    expect(screen.getByText('true')).toBeDefined();
   });
 
   it('should render object with default styles', () => {

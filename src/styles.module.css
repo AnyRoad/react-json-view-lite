@@ -1,4 +1,4 @@
-/* add css module styles here (optional) */
+/* base styles */
 
 .container-base {
   line-height: 1.2;
@@ -14,14 +14,33 @@
   font-weight: bold;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .expander-base {
+  composes: pointer;
   font-size: 1.2em;
   margin-right: 5px;
   user-select: none;
 }
 
-.pointer {
-  cursor: pointer;
+.expand-icon::after {
+  content: '▸';
+}
+
+.collapse-icon::after {
+  content: '▾';
+}
+
+.collapsed-content-base {
+  composes: pointer;
+  margin-right: 5px;
+}
+
+.collapsed-content-base::after {
+  content: '...';
+  font-size: 0.8em;
 }
 
 .container-light {
@@ -29,22 +48,21 @@
   background: #eee;
 }
 
-.expander-light {
-  composes: expander-base;
-}
-
 .basic-element-style {
   margin: 0 10px;
   padding: 0;
 }
 
+/* default light style */
 .label-light {
   font-weight: 600;
   margin-right: 5px;
+  color: #000000;
 }
 
 .punctuation-light {
   composes: punctuation-base;
+  color: #000000;
 }
 
 .value-null-light {
@@ -71,14 +89,43 @@
   color: #43413d;
 }
 
+.collapse-icon-light {
+  composes: expander-base;
+  composes: expand-icon;
+  color: #000000;
+}
+
+.expand-icon-light {
+  composes: expander-base;
+  composes: expand-icon;
+  color: #000000;
+}
+
+.collapsed-content-light {
+  composes: collapsed-content-base;
+  color: #000000;
+}
+
+/* default dark style */
 .container-dark {
   background: rgb(0, 43, 54);
   composes: container-base;
 }
 
-.expander-dark {
+.expand-icon-dark {
   composes: expander-base;
-  font-size: 1.2em;
+  composes: expand-icon;
+  color: rgb(253, 246, 227);
+}
+
+.collapse-icon-dark {
+  composes: expander-base;
+  composes: collapse-icon;
+  color: rgb(253, 246, 227);
+}
+
+.collapsed-content-dark {
+  composes: collapsed-content-base;
   color: rgb(253, 246, 227);
 }
 

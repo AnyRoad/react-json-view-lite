@@ -1,8 +1,8 @@
 import * as React from 'react';
 import DataRender, { JsonRenderProps } from './DataRenderer';
-import { allExpanded, collapseAllNested } from './index';
+import { allExpanded, collapseAllNested, defaultStyles } from './index';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 const commonProps: JsonRenderProps<any> = {
   lastElement: false,
@@ -10,7 +10,6 @@ const commonProps: JsonRenderProps<any> = {
   style: {
     container: '',
     basicChildStyle: '',
-    expander: '',
     label: '',
     nullValue: '',
     undefinedValue: '',
@@ -19,7 +18,9 @@ const commonProps: JsonRenderProps<any> = {
     booleanValue: '',
     otherValue: '',
     punctuation: '',
-    pointer: ''
+    expandIcon: defaultStyles.expandIcon,
+    collapseIcon: defaultStyles.collapseIcon,
+    collapsedContent: defaultStyles.collapsedContent
   },
   shouldInitiallyExpand: allExpanded,
   value: undefined,
@@ -178,18 +179,24 @@ describe('DataRender', () => {
   it('should collapse ojbects', () => {
     render(<DataRender {...commonProps} value={{ test: true }} />);
     expect(screen.getByText(/test/)).toBeInTheDocument();
-    fireEvent.click(screen.getByText('\u25BE'));
+    fireEvent.click(screen.getByRole('button'));
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText('\u25B8'));
+    const buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    fireEvent.click(buttons[0]);
     expect(screen.getByText(/test/)).toBeInTheDocument();
   });
 
   it('should collapse arrays', () => {
     render(<DataRender {...commonProps} value={[1, 2, 3]} />);
     expect(screen.getByText('1')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('\u25BE'));
+    fireEvent.click(screen.getByRole('button'));
     expect(screen.queryByText('1')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText('\u25B8'));
+    const buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    fireEvent.click(buttons[0]);
     expect(screen.getByText('1')).toBeInTheDocument();
   });
 
@@ -197,9 +204,11 @@ describe('DataRender', () => {
     render(
       <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
     );
-    expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText('...'));
+    const buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    fireEvent.keyDown(buttons[0], { key: ' ', code: 'Space' });
     expect(screen.getByText(/test/)).toBeInTheDocument();
   });
 
@@ -207,10 +216,11 @@ describe('DataRender', () => {
     render(
       <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
     );
-    expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-
-    fireEvent.keyDown(screen.getByText('...'), { key: ' ', code: 'Space' });
+    const buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    fireEvent.keyDown(buttons[1], { key: ' ', code: 'Space' });
 
     expect(screen.getByText(/test/)).toBeInTheDocument();
   });
@@ -219,12 +229,14 @@ describe('DataRender', () => {
     render(
       <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
     );
-    expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-
-    fireEvent.keyDown(screen.getByText('...'), { key: 'Enter', code: 'Enter' });
-
-    expect(screen.getByText(/.../)).toBeInTheDocument();
+    let buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    fireEvent.keyDown(buttons[1], { key: 'Enter', code: 'Enter' });
+    buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
   });
 
@@ -232,10 +244,15 @@ describe('DataRender', () => {
     render(
       <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
     );
-    expect(screen.getByText(/.../)).toBeInTheDocument();
+    let buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText('...'));
+    fireEvent.click(buttons[0]);
+    buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBe(1);
+    expect(buttons[0]).toHaveClass('collapse-icon-light');
     expect(screen.getByText(/test/)).toBeInTheDocument();
     expect(screen.getByText(/array/)).toBeInTheDocument();
   });
@@ -244,12 +261,16 @@ describe('DataRender', () => {
     render(
       <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
     );
-    expect(screen.getByText(/.../)).toBeInTheDocument();
+    let buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
 
-    fireEvent.keyDown(screen.getByText('...'), { key: ' ', code: 'Space' });
-
+    fireEvent.keyDown(buttons[1], { key: ' ', code: 'Space' });
+    buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBe(1);
+    expect(buttons[0]).toHaveClass('collapse-icon-light');
     expect(screen.getByText(/test/)).toBeInTheDocument();
     expect(screen.getByText(/array/)).toBeInTheDocument();
   });
@@ -258,13 +279,17 @@ describe('DataRender', () => {
     render(
       <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
     );
-    expect(screen.getByText(/.../)).toBeInTheDocument();
+    let buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
 
-    fireEvent.keyDown(screen.getByText('...'), { key: 'Enter', code: 'Enter' });
+    fireEvent.keyDown(buttons[1], { key: 'Enter', code: 'Enter' });
+    buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('expand-icon-light');
+    expect(buttons[1]).toHaveClass('collapsed-content-light');
 
-    expect(screen.getByText(/.../)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
   });
