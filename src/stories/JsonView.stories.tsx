@@ -42,9 +42,15 @@ export default {
 
 const Template: StoryFn<typeof JsonView> = (args) => <JsonView {...args} />;
 
+// eslint-disable-next-line no-extend-native
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
 const jsonData = {
   'string property': 'my string',
   '': 'empty name property',
+  'bigint property': BigInt('9007199254740991'),
   'number property': 42.42,
   'boolean property': true,
   'null property': null,
