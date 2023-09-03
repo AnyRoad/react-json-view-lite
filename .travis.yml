@@ -1,11 +1,11 @@
 language: node_js
 before_script:
   - npm install codecov -g
-  - npm install yarn -g
+  - corepack enable
+  - yarn init -2
 sudo: false
 node_js:
-  - 14
-  - 16
+  - 18
 install:
   - yarn install
 script:

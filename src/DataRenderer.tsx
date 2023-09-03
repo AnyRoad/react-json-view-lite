@@ -39,7 +39,7 @@ export interface ExpandableRenderProps {
   shouldInitiallyExpand: (level: number, value: any, field?: string) => boolean;
 }
 
-function renderExpandableObject({
+function ExpandableObject({
   field,
   value,
   data,
@@ -61,6 +61,7 @@ function renderExpandableObject({
     } else {
       setExpanded(shouldInitiallyExpand(level, value, field));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldInitiallyExpand]);
 
   const expanderIconStyle = expanded ? style.collapseIcon : style.expandIcon;
@@ -123,7 +124,7 @@ function JsonObject({
   shouldInitiallyExpand,
   level
 }: JsonRenderProps<Object>) {
-  return renderExpandableObject({
+  return ExpandableObject({
     field,
     value,
     lastElement: lastElement || false,
@@ -132,7 +133,7 @@ function JsonObject({
     closeBracket: '}',
     style,
     shouldInitiallyExpand,
-    data: Object.keys(value).map((key) => [key, value[key]])
+    data: Object.keys(value).map((key) => [key, value[key as keyof typeof value]])
   });
 }
 
@@ -144,7 +145,7 @@ function JsonArray({
   level,
   shouldInitiallyExpand
 }: JsonRenderProps<Array<any>>) {
-  return renderExpandableObject({
+  return ExpandableObject({
     field,
     value,
     lastElement: lastElement || false,

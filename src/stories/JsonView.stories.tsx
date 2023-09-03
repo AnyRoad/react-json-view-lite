@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import { JsonView, defaultStyles, darkStyles, allExpanded, collapseAllNested } from '../index';
 
@@ -38,9 +38,9 @@ export default {
       </div>
     )
   ]
-} as ComponentMeta<typeof JsonView>;
+} as Meta<typeof JsonView>;
 
-const Template: ComponentStory<typeof JsonView> = (args) => <JsonView {...args} />;
+const Template: StoryFn<typeof JsonView> = (args) => <JsonView {...args} />;
 
 const jsonData = {
   'string property': 'my string',
