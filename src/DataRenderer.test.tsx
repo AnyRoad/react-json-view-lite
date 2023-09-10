@@ -22,7 +22,7 @@ const commonProps: JsonRenderProps<any> = {
     collapseIcon: defaultStyles.collapseIcon,
     collapsedContent: defaultStyles.collapsedContent
   },
-  shouldInitiallyExpand: allExpanded,
+  shouldExpandNode: allExpanded,
   value: undefined,
   field: undefined
 };
@@ -109,7 +109,7 @@ describe('DataRender', () => {
       <DataRender
         {...commonProps}
         value={{ obj: { test: 123 } }}
-        shouldInitiallyExpand={collapseAllNested}
+        shouldExpandNode={collapseAllNested}
       />
     );
     expect(screen.getByText(/obj/)).toBeInTheDocument();
@@ -122,7 +122,7 @@ describe('DataRender', () => {
       <DataRender
         {...commonProps}
         value={{ obj: { test: 123 } }}
-        shouldInitiallyExpand={collapseAllNested}
+        shouldExpandNode={collapseAllNested}
       />
     );
     expect(screen.getByText(/obj/)).toBeInTheDocument();
@@ -130,11 +130,7 @@ describe('DataRender', () => {
     expect(screen.queryByText('123')).not.toBeInTheDocument();
 
     rerender(
-      <DataRender
-        {...commonProps}
-        value={{ obj: { test: 123 } }}
-        shouldInitiallyExpand={allExpanded}
-      />
+      <DataRender {...commonProps} value={{ obj: { test: 123 } }} shouldExpandNode={allExpanded} />
     );
     expect(screen.getByText(/obj/)).toBeInTheDocument();
     expect(screen.queryByText(/test/)).toBeInTheDocument();
@@ -143,11 +139,7 @@ describe('DataRender', () => {
 
   it('should render nested arrays collapsed', () => {
     render(
-      <DataRender
-        {...commonProps}
-        value={{ test: [123] }}
-        shouldInitiallyExpand={collapseAllNested}
-      />
+      <DataRender {...commonProps} value={{ test: [123] }} shouldExpandNode={collapseAllNested} />
     );
     expect(screen.queryByText(/test/)).toBeInTheDocument();
     expect(screen.queryByText('123')).not.toBeInTheDocument();
@@ -155,24 +147,20 @@ describe('DataRender', () => {
 
   it('should render nested arrays collapsed and expand it once property changed', () => {
     const { rerender } = render(
-      <DataRender
-        {...commonProps}
-        value={{ test: [123] }}
-        shouldInitiallyExpand={collapseAllNested}
-      />
+      <DataRender {...commonProps} value={{ test: [123] }} shouldExpandNode={collapseAllNested} />
     );
     expect(screen.queryByText(/test/)).toBeInTheDocument();
     expect(screen.queryByText('123')).not.toBeInTheDocument();
 
     rerender(
-      <DataRender {...commonProps} value={{ test: [123] }} shouldInitiallyExpand={allExpanded} />
+      <DataRender {...commonProps} value={{ test: [123] }} shouldExpandNode={allExpanded} />
     );
     expect(screen.queryByText(/test/)).toBeInTheDocument();
     expect(screen.queryByText('123')).toBeInTheDocument();
   });
 
   it('should render top arrays collapsed', () => {
-    render(<DataRender {...commonProps} value={[123]} shouldInitiallyExpand={collapseAll} />);
+    render(<DataRender {...commonProps} value={[123]} shouldExpandNode={collapseAll} />);
     expect(screen.queryByText('123')).not.toBeInTheDocument();
   });
 
@@ -201,9 +189,7 @@ describe('DataRender', () => {
   });
 
   it('should expand objects by clicking on', () => {
-    render(
-      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
-    );
+    render(<DataRender {...commonProps} value={{ test: true }} shouldExpandNode={collapseAll} />);
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     const buttons = screen.getAllByRole('button');
     expect(buttons[0]).toHaveClass('expand-icon-light');
@@ -213,9 +199,7 @@ describe('DataRender', () => {
   });
 
   it('should expand objects by pressing Spacebar on', () => {
-    render(
-      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
-    );
+    render(<DataRender {...commonProps} value={{ test: true }} shouldExpandNode={collapseAll} />);
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     const buttons = screen.getAllByRole('button');
     expect(buttons[0]).toHaveClass('expand-icon-light');
@@ -226,9 +210,7 @@ describe('DataRender', () => {
   });
 
   it('should not expand objects by pressing other keys on', () => {
-    render(
-      <DataRender {...commonProps} value={{ test: true }} shouldInitiallyExpand={collapseAll} />
-    );
+    render(<DataRender {...commonProps} value={{ test: true }} shouldExpandNode={collapseAll} />);
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     let buttons = screen.getAllByRole('button');
     expect(buttons[0]).toHaveClass('expand-icon-light');
@@ -242,7 +224,7 @@ describe('DataRender', () => {
 
   it('should expand arrays by clicking on', () => {
     render(
-      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
+      <DataRender {...commonProps} value={['test', 'array']} shouldExpandNode={collapseAll} />
     );
     let buttons = screen.getAllByRole('button');
     expect(buttons[0]).toHaveClass('expand-icon-light');
@@ -259,7 +241,7 @@ describe('DataRender', () => {
 
   it('should expand arrays by pressing Spacebar on', () => {
     render(
-      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
+      <DataRender {...commonProps} value={['test', 'array']} shouldExpandNode={collapseAll} />
     );
     let buttons = screen.getAllByRole('button');
     expect(buttons[0]).toHaveClass('expand-icon-light');
@@ -277,7 +259,7 @@ describe('DataRender', () => {
 
   it('should not expand arrays by pressing other keys on', () => {
     render(
-      <DataRender {...commonProps} value={['test', 'array']} shouldInitiallyExpand={collapseAll} />
+      <DataRender {...commonProps} value={['test', 'array']} shouldExpandNode={collapseAll} />
     );
     let buttons = screen.getAllByRole('button');
     expect(buttons[0]).toHaveClass('expand-icon-light');

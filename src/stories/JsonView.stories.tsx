@@ -11,8 +11,8 @@ export default {
       name: 'data',
       description: 'Data to render in the control. Should be an object or array.'
     },
-    shouldInitiallyExpand: {
-      name: 'shouldInitiallyExpand',
+    shouldExpandNode: {
+      name: 'shouldExpandNode',
       source: {
         type: 'code'
       },
@@ -70,7 +70,7 @@ export const Basic = Template.bind({});
 Basic.args = {
   data: jsonData,
   style: defaultStyles,
-  shouldInitiallyExpand: allExpanded
+  shouldExpandNode: allExpanded
 };
 
 export const DarkTheme = Template.bind({});
@@ -83,7 +83,7 @@ export const CollapsedNestedObjects = Template.bind({});
 CollapsedNestedObjects.args = {
   data: jsonData,
   style: defaultStyles,
-  shouldInitiallyExpand: collapseAllNested
+  shouldExpandNode: collapseAllNested
 };
 
 export const CollapsedRoot = Template.bind({});
@@ -92,5 +92,5 @@ const collapseAll = () => false;
 CollapsedRoot.args = {
   data: jsonData,
   style: defaultStyles,
-  shouldInitiallyExpand: collapseAll
+  shouldExpandNode: collapseAll
 };

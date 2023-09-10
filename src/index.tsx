@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 export interface Props {
   data: Object | Array<any>;
   style?: StyleProps;
-  shouldInitiallyExpand?: (level: number, value: any, field?: string) => boolean;
+  shouldExpandNode?: (level: number, value: any, field?: string) => boolean;
 }
 
 export const defaultStyles: StyleProps = {
@@ -46,7 +46,7 @@ export const collapseAllNested = (level: number) => level < 1;
 export const JsonView = ({
   data,
   style = defaultStyles,
-  shouldInitiallyExpand = allExpanded
+  shouldExpandNode = allExpanded
 }: Props) => {
   return (
     <div className={style.container}>
@@ -55,7 +55,7 @@ export const JsonView = ({
         style={style}
         lastElement
         level={0}
-        shouldInitiallyExpand={shouldInitiallyExpand}
+        shouldExpandNode={shouldExpandNode}
       />
     </div>
   );

@@ -37,6 +37,14 @@
 npm install --save react-json-view-lite
 ```
 
+## Migration from the 0.9.x versions
+
+1. Property `shouldInitiallyExpand` has different name `shouldExpandNode` in order to emphasize that it will be called every time properties change.
+2. If you use custom styles:
+   - `pointer` and `expander` are no longer used
+   - component uses `collapseIcon`, `expandIcon`, `collapsedContent` styles in order to customize expand/collapse icon and collpased content placeholder which were previously hardcode to the `▸`, `▾` and `...`.
+     Default style values use `::after` pseudo-classes to set the content.
+
 ## Usage
 
 ```tsx
@@ -53,8 +61,8 @@ const json = {
 const App = () => {
   return (
     <React.Fragment>
-      <JsonView data={json} shouldInitiallyExpand={allExpanded} style={defaultStyles} />
-      <JsonView data={json} shouldInitiallyExpand={allExpanded} style={darkStyles} />
+      <JsonView data={json} shouldExpandNode={allExpanded} style={defaultStyles} />
+      <JsonView data={json} shouldExpandNode={allExpanded} style={darkStyles} />
     </React.Fragment>
   );
 };
@@ -63,25 +71,19 @@ export default App;
 ```
 
 Please note that in JavaScript, an anonymous function like `function() {}` or `() => {}` always creates a different function every time component is rendered, so you might need to use
-[useCallback](https://react.dev/reference/react/useCallback) React Hook for the `shouldInitiallyExpand` parameter or extract the function outside the functional component.
+[useCallback](https://react.dev/reference/react/useCallback) React Hook for the `shouldExpandNode` parameter or extract the function outside the functional component.
 
 ### StoryBook
 
 https://anyroad.github.io/react-json-view-lite/
 
-### Demo
-
-https://codesandbox.io/s/react-json-view-lite-example-wvdjl
-
-(thanks to @idindrakusuma)
-
 ### Props
 
-| Name                  | Type                                                     | Default Value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| --------------------- | -------------------------------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| data                  | `Object` \| `Array<any>`                                 |               | Data which should be rendered                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| style                 | StyleProps                                               | defaultStyles | Optional. CSS classes for rendering. Library provides two build-in implementations: `darkStyles`, `defaultStyles` (see below)                                                                                                                                                                                                                                                                                                                  |
-| shouldInitiallyExpand | `(level: number, value: any, field?: string) => boolean` | allExpanded   | Optional. Function which will be initially called for each Object and Array of the data in order to calculate should if this node be expanded. **Note** that this function will be called again to update the each node state once the property value changed. `level` startes from `0`, `field` does not have a value for the array element. Library provides two build-in implementations: `allExpanded` and `collapseAllNested` (see below) |
+| Name             | Type                                                     | Default Value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------------- | -------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| data             | `Object` \| `Array<any>`                                 |               | Data which should be rendered                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| style            | StyleProps                                               | defaultStyles | Optional. CSS classes for rendering. Library provides two build-in implementations: `darkStyles`, `defaultStyles` (see below)                                                                                                                                                                                                                                                                                                                                 |
+| shouldExpandNode | `(level: number, value: any, field?: string) => boolean` | allExpanded   | Optional. Function which will be called during initial rendering for each Object and Array of the data in order to calculate should if this node be expanded. **Note** that this function will be called again to update the each node state once the property value changed. `level` startes from `0`, `field` does not have a value for the array element. Library provides two build-in implementations: `allExpanded` and `collapseAllNested` (see below) |
 
 ### Extra exported
 
@@ -94,20 +96,21 @@ https://codesandbox.io/s/react-json-view-lite-example-wvdjl
 
 ### StyleProps
 
-| Name            | Type   | Description                                                                                                       |
-| --------------- | ------ | ----------------------------------------------------------------------------------------------------------------- |
-| container       | string | CSS class name for rendering parent block                                                                         |
-| basicChildStyle | string | CSS class name for property block containing property name and value                                              |
-| expander        | string | CSS class name for rendering button expanding/collapsing Object and Array nodes                                   |
-| label           | string | CSS class name for rendering property names                                                                       |
-| nullValue       | string | CSS class name for rendering null values                                                                          |
-| undefinedValue  | string | CSS class name for rendering undefined values                                                                     |
-| numberValue     | string | CSS class name for rendering numeric values                                                                       |
-| stringValue     | string | CSS class name for rendering string values                                                                        |
-| booleanValue    | string | CSS class name for rendering boolean values                                                                       |
-| otherValue      | string | CSS class name for rendering all other values except Object, Arrray, null, undefined, numeric, boolean and string |
-| punctuation     | string | CSS class name for rendering `,`, `[`, `]`, `{`, `}`, `...`                                                       |
-| pointer         | string | extra CSS class name for parts which are used for expanding/collapsing: `▸`, `▾` and `...`                        |
+| Name             | Type   | Description                                                                                                       |
+| ---------------- | ------ | ----------------------------------------------------------------------------------------------------------------- |
+| container        | string | CSS class name for rendering parent block                                                                         |
+| basicChildStyle  | string | CSS class name for property block containing property name and value                                              |
+| collapseIcon     | string | CSS class name for rendering button collapsing Object and Array nodes. Default content is `▾`.                    |
+| expandIcon       | string | CSS class name for rendering button expanding Object and Array nodes. Default content is `▸`.                     |
+| collapsedContent | string | CSS class name for rendering placeholder when Object and Array nodes are collapsed. Default contents is `...`.    |
+| label            | string | CSS class name for rendering property names                                                                       |
+| nullValue        | string | CSS class name for rendering null values                                                                          |
+| undefinedValue   | string | CSS class name for rendering undefined values                                                                     |
+| numberValue      | string | CSS class name for rendering numeric values                                                                       |
+| stringValue      | string | CSS class name for rendering string values                                                                        |
+| booleanValue     | string | CSS class name for rendering boolean values                                                                       |
+| otherValue       | string | CSS class name for rendering all other values except Object, Arrray, null, undefined, numeric, boolean and string |
+| punctuation      | string | CSS class name for rendering `,`, `[`, `]`, `{`, `}`                                                              |
 
 ## Comparison with other libraries
 

@@ -24,7 +24,7 @@ export interface JsonRenderProps<T> {
   lastElement: boolean;
   level: number;
   style: StyleProps;
-  shouldInitiallyExpand: (level: number, value: any, field?: string) => boolean;
+  shouldExpandNode: (level: number, value: any, field?: string) => boolean;
 }
 
 export interface ExpandableRenderProps {
@@ -36,7 +36,7 @@ export interface ExpandableRenderProps {
   lastElement: boolean;
   level: number;
   style: StyleProps;
-  shouldInitiallyExpand: (level: number, value: any, field?: string) => boolean;
+  shouldExpandNode: (level: number, value: any, field?: string) => boolean;
 }
 
 function ExpandableObject({
@@ -48,21 +48,21 @@ function ExpandableObject({
   closeBracket,
   level,
   style,
-  shouldInitiallyExpand
+  shouldExpandNode
 }: ExpandableRenderProps) {
-  const shouldInitiallyExpandCalledRef = React.useRef(false);
+  const shouldExpandNodeCalledRef = React.useRef(false);
   const [expanded, toggleExpanded, setExpanded] = useBool(() =>
-    shouldInitiallyExpand(level, value, field)
+    shouldExpandNode(level, value, field)
   );
 
   React.useEffect(() => {
-    if (!shouldInitiallyExpandCalledRef.current) {
-      shouldInitiallyExpandCalledRef.current = true;
+    if (!shouldExpandNodeCalledRef.current) {
+      shouldExpandNodeCalledRef.current = true;
     } else {
-      setExpanded(shouldInitiallyExpand(level, value, field));
+      setExpanded(shouldExpandNode(level, value, field));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldInitiallyExpand]);
+  }, [shouldExpandNode]);
 
   const expanderIconStyle = expanded ? style.collapseIcon : style.expandIcon;
   const childLevel = level + 1;
@@ -96,7 +96,7 @@ function ExpandableObject({
               style={style}
               lastElement={index === lastIndex}
               level={childLevel}
-              shouldInitiallyExpand={shouldInitiallyExpand}
+              shouldExpandNode={shouldExpandNode}
             />
           ))}
         </div>
@@ -121,7 +121,7 @@ function JsonObject({
   value,
   style,
   lastElement,
-  shouldInitiallyExpand,
+  shouldExpandNode,
   level
 }: JsonRenderProps<Object>) {
   return ExpandableObject({
@@ -132,7 +132,7 @@ function JsonObject({
     openBracket: '{',
     closeBracket: '}',
     style,
-    shouldInitiallyExpand,
+    shouldExpandNode,
     data: Object.keys(value).map((key) => [key, value[key as keyof typeof value]])
   });
 }
@@ -143,7 +143,7 @@ function JsonArray({
   style,
   lastElement,
   level,
-  shouldInitiallyExpand
+  shouldExpandNode
 }: JsonRenderProps<Array<any>>) {
   return ExpandableObject({
     field,
@@ -153,7 +153,7 @@ function JsonArray({
     openBracket: '[',
     closeBracket: ']',
     style,
-    shouldInitiallyExpand,
+    shouldExpandNode,
     data: value.map((element) => [undefined, element])
   });
 }

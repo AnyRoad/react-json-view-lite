@@ -22,13 +22,13 @@ describe('JsonView', () => {
     expect(screen.getByText('true')).toBeInTheDocument();
   });
 
-  it('should render object and call shouldInitiallyExpand only once', () => {
+  it('should render object and call shouldExpandNode only once', () => {
     let invoked = 0;
-    const shouldInitiallyExpand = () => {
+    const shouldExpandNode = () => {
       ++invoked;
       return true;
     };
-    render(<JsonView data={{ test: true }} shouldInitiallyExpand={shouldInitiallyExpand} />);
+    render(<JsonView data={{ test: true }} shouldExpandNode={shouldExpandNode} />);
     expect(screen.getByText(/test/)).toBeInTheDocument();
     expect(screen.getByText('true')).toBeInTheDocument();
     expect(invoked).toBe(1);
