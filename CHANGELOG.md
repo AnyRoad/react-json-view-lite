@@ -1,3 +1,13 @@
+## 1.0.0
+
+### Breaking changes
+
+1. Property `shouldInitiallyExpand` has different name `shouldExpandNode` in order to emphasize that it will be called every time properties change.
+2. If you use custom styles:
+   - `pointer` and `expander` are no longer used
+   - component uses `collapseIcon`, `expandIcon`, `collapsedContent` styles in order to customize expand/collapse icon and collpased content placeholder which were previously hardcode to the `▸`, `▾` and `...`.
+     Default style values use `::after` pseudo-classes to set the content.
+
 ## 0.9.8
 
 ### Bug Fixes
