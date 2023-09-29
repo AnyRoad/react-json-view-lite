@@ -202,6 +202,23 @@ function JsonPrimitiveValue({
   );
 }
 
+function DateValue({ field, value, style, lastElement }: JsonRenderProps<Date>) {
+  const stringValue = value.toISOString();
+  const valueStyle = style.otherValue;
+
+  if (field === '') {
+    field = '""';
+  }
+
+  return (
+    <div className={style.basicChildStyle} role='listitem'>
+      {field && <span className={style.label}>{field}:</span>}
+      <span className={valueStyle}>{stringValue}</span>
+      {!lastElement && <span className={style.punctuation}>,</span>}
+    </div>
+  );
+}
+
 export default function DataRender(props: JsonRenderProps<any>) {
   const value = props.value;
   if (DataTypeDetection.isArray(value)) {
@@ -209,6 +226,9 @@ export default function DataRender(props: JsonRenderProps<any>) {
   }
 
   if (DataTypeDetection.isObject(value)) {
+    if (DataTypeDetection.isDate(value)) {
+      return <DateValue {...props} />;
+    }
     return <JsonObject {...props} />;
   }
 

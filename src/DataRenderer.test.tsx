@@ -60,6 +60,12 @@ describe('DataRender', () => {
     expect(screen.getByText('42n')).toBeInTheDocument();
   });
 
+  it('should render dates', () => {
+    render(<DataRender {...commonProps} value={{ test: new Date(0) }} />);
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+    expect(screen.getByText('1970-01-01T00:00:00.000Z')).toBeInTheDocument();
+  });
+
   it('should render nulls', () => {
     render(<DataRender {...commonProps} value={{ test: null }} />);
     expect(screen.getByText(/test/)).toBeInTheDocument();
