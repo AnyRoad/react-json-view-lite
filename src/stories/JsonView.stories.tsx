@@ -42,6 +42,7 @@ export default {
 
 const Template: StoryFn<typeof JsonView> = (args) => <JsonView {...args} />;
 
+// @ts-expect-error toJSON does not exist
 // eslint-disable-next-line no-extend-native
 BigInt.prototype.toJSON = function () {
   return this.toString();
@@ -52,6 +53,7 @@ const jsonData = {
   '': 'empty name property',
   'bigint property': BigInt('9007199254740991'),
   'number property': 42.42,
+  'date property': new Date(0),
   'boolean property': true,
   'null property': null,
   'array propery': [1, 2, 3, 4, 5],
