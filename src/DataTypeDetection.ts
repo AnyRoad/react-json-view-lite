@@ -10,7 +10,7 @@ export const isBigInt = (data: any) => {
   return typeof data === 'bigint' || data instanceof BigInt;
 };
 
-export const isDate = (data: any) => {
+export const isDate = (data: unknown): data is Date => {
   return !!data && data instanceof Date;
 };
 

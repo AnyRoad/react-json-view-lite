@@ -163,7 +163,7 @@ function JsonPrimitiveValue({
   value,
   style,
   lastElement
-}: JsonRenderProps<string | number | boolean | null | undefined>) {
+}: JsonRenderProps<string | number | boolean | Date | null | undefined>) {
   let stringValue = value;
   let valueStyle = style.otherValue;
 
@@ -185,26 +185,11 @@ function JsonPrimitiveValue({
   } else if (DataTypeDetection.isBigInt(value)) {
     stringValue = `${value.toString()}n`;
     valueStyle = style.numberValue;
+  } else if (DataTypeDetection.isDate(value)) {
+    stringValue = value.toISOString();
   } else {
     stringValue = value.toString();
   }
-
-  if (field === '') {
-    field = '""';
-  }
-
-  return (
-    <div className={style.basicChildStyle} role='listitem'>
-      {field && <span className={style.label}>{field}:</span>}
-      <span className={valueStyle}>{stringValue}</span>
-      {!lastElement && <span className={style.punctuation}>,</span>}
-    </div>
-  );
-}
-
-function DateValue({ field, value, style, lastElement }: JsonRenderProps<Date>) {
-  const stringValue = value.toISOString();
-  const valueStyle = style.otherValue;
 
   if (field === '') {
     field = '""';
@@ -225,10 +210,7 @@ export default function DataRender(props: JsonRenderProps<any>) {
     return <JsonArray {...props} />;
   }
 
-  if (DataTypeDetection.isObject(value)) {
-    if (DataTypeDetection.isDate(value)) {
-      return <DateValue {...props} />;
-    }
+  if (DataTypeDetection.isObject(value) && !DataTypeDetection.isDate(value)) {
     return <JsonObject {...props} />;
   }
 
