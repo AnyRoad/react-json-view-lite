@@ -1,3 +1,9 @@
+## 1.0.1
+
+### Bug Fixes
+
+- [Fixed](https://github.com/AnyRoad/react-json-view-lite/pull/14) collapse/expand button style
+
 ## 1.0.0
 
 ### Breaking changes
