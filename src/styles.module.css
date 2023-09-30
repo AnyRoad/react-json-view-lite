@@ -91,7 +91,7 @@
 
 .collapse-icon-light {
   composes: expander-base;
-  composes: expand-icon;
+  composes: collapse-icon;
   color: #000000;
 }
 
