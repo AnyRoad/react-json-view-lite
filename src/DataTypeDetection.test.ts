@@ -189,3 +189,25 @@ describe('isBigInt', () => {
     expect(DataTypeDetection.isBigInt(symbolValue)).toBe(false);
   });
 });
+
+describe('isDate', () => {
+  it('should return `true` for date values', () => {
+    expect(DataTypeDetection.isDate(dateValue)).toBe(true);
+  });
+
+  it('should return `false` for non-date values', () => {
+    expect(DataTypeDetection.isDate(stringValue)).toBe(false);
+    expect(DataTypeDetection.isDate(numberValue)).toBe(false);
+    expect(DataTypeDetection.isDate(floatNumberValue)).toBe(false);
+    expect(DataTypeDetection.isDate(trueValue)).toBe(false);
+    expect(DataTypeDetection.isDate(falseValue)).toBe(false);
+    expect(DataTypeDetection.isDate(objectValue)).toBe(false);
+    expect(DataTypeDetection.isDate(arrayValue)).toBe(false);
+    expect(DataTypeDetection.isDate(nullValue)).toBe(false);
+    expect(DataTypeDetection.isDate(undefinedValue)).toBe(false);
+    expect(DataTypeDetection.isDate(errorValue)).toBe(false);
+    expect(DataTypeDetection.isDate(regExValue)).toBe(false);
+    expect(DataTypeDetection.isDate(symbolValue)).toBe(false);
+    expect(DataTypeDetection.isDate(bigintValue)).toBe(false);
+  });
+});
