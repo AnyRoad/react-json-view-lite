@@ -1,3 +1,9 @@
+## 1.1.0
+
+### New Feature
+
+- [Render Date as an ISO-formatted string](https://github.com/AnyRoad/react-json-view-lite/pull/13)
+
 ## 1.0.1
 
 ### Bug Fixes
