@@ -86,7 +86,7 @@ function ExpandableObject({
         tabIndex={0}
         aria-label={ariaLabel}
         aria-expanded={expanded}
-        aria-controls={contentsId}
+        aria-controls={expanded ? contentsId : undefined}
       />
       {field && <span className={style.label}>{field}:</span>}
       <span className={style.punctuation}>{openBracket}</span>
@@ -108,14 +108,12 @@ function ExpandableObject({
       ) : (
         <span
           className={style.collapsedContent}
-          id={contentsId}
           onClick={toggleExpanded}
           onKeyDown={onKeyDown}
           role='button'
+          tabIndex={-1} // No need to be able to tab to this button, can just use the other button
+          aria-hidden={true} // No need for screen readers to see this button, they can just use the other button
           aria-label={ariaLabel}
-          // No need for screen readers to use this div button to expand, they can just use the other button
-          tabIndex={-1}
-          aria-hidden={true}
           aria-expanded={expanded}
         />
       )}
