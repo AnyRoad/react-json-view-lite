@@ -201,6 +201,7 @@ describe('DataRender', () => {
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     const buttons = testButtonsCollapsed();
     fireEvent.click(buttons[1]);
+    testButtonsExpanded();
     expect(screen.getByText(/test/)).toBeInTheDocument();
   });
 
@@ -220,6 +221,7 @@ describe('DataRender', () => {
     expect(screen.queryByText('1')).not.toBeInTheDocument();
     const buttons = testButtonsCollapsed();
     fireEvent.click(buttons[1]);
+    testButtonsExpanded();
     expect(screen.getByText('1')).toBeInTheDocument();
   });
 
