@@ -65,6 +65,8 @@ function ExpandableObject({
   }, [shouldExpandNode]);
 
   const expanderIconStyle = expanded ? style.collapseIcon : style.expandIcon;
+  const ariaLabel = expanded ? 'collapse JSON' : 'expand JSON';
+  const contentsId = React.useId();
   const childLevel = level + 1;
   const lastIndex = data.length - 1;
 
@@ -78,16 +80,19 @@ function ExpandableObject({
     <div className={style.basicChildStyle} role='list'>
       <span
         className={expanderIconStyle}
-        role='button'
         onClick={toggleExpanded}
         onKeyDown={onKeyDown}
+        role='button'
         tabIndex={0}
+        aria-label={ariaLabel}
+        aria-expanded={expanded}
+        aria-controls={expanded ? contentsId : undefined}
       />
       {field && <span className={style.label}>{field}:</span>}
       <span className={style.punctuation}>{openBracket}</span>
 
       {expanded ? (
-        <div>
+        <div id={contentsId}>
           {data.map((dataElement, index) => (
             <DataRender
               key={dataElement[0] || index}
@@ -103,10 +108,13 @@ function ExpandableObject({
       ) : (
         <span
           className={style.collapsedContent}
-          role='button'
-          tabIndex={0}
           onClick={toggleExpanded}
           onKeyDown={onKeyDown}
+          role='button'
+          tabIndex={-1} // No need to be able to tab to this button, can just use the other button
+          aria-hidden={true} // No need for screen readers to see this button, they can just use the other button
+          aria-label={ariaLabel}
+          aria-expanded={expanded}
         />
       )}
 

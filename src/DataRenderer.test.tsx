@@ -29,6 +29,21 @@ const commonProps: JsonRenderProps<any> = {
 
 const collapseAll = () => false;
 
+const testButtonsCollapsed = () => {
+  const buttons = screen.getAllByRole('button', { hidden: true });
+  expect(buttons.length).toBe(2);
+  expect(buttons[0]).toHaveClass('expand-icon-light');
+  expect(buttons[1]).toHaveClass('collapsed-content-light');
+  return buttons;
+};
+
+const testButtonsExpanded = () => {
+  const buttons = screen.getAllByRole('button', { hidden: true });
+  expect(buttons.length).toBe(1);
+  expect(buttons[0]).toHaveClass('collapse-icon-light');
+  return buttons;
+};
+
 describe('DataRender', () => {
   it('should render booleans: true', () => {
     render(<DataRender {...commonProps} value={{ test: true }} />);
@@ -170,114 +185,86 @@ describe('DataRender', () => {
     expect(screen.queryByText('123')).not.toBeInTheDocument();
   });
 
-  it('should collapse ojbects', () => {
+  it('should collapse and expand objects by clicking on icon', () => {
     render(<DataRender {...commonProps} value={{ test: true }} />);
     expect(screen.getByText(/test/)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button'));
+    let buttons = testButtonsExpanded();
+    fireEvent.click(buttons[0]);
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-    const buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    buttons = testButtonsCollapsed();
     fireEvent.click(buttons[0]);
     expect(screen.getByText(/test/)).toBeInTheDocument();
   });
 
-  it('should collapse arrays', () => {
+  it('should expand objects by clicking on collapsed content', () => {
+    render(<DataRender {...commonProps} value={{ test: true }} shouldExpandNode={collapseAll} />);
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+    const buttons = testButtonsCollapsed();
+    fireEvent.click(buttons[1]);
+    testButtonsExpanded();
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+  });
+
+  it('should collapse and expand arrays by clicking on icon', () => {
     render(<DataRender {...commonProps} value={[1, 2, 3]} />);
     expect(screen.getByText('1')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button'));
+    let buttons = testButtonsExpanded();
+    fireEvent.click(buttons[0]);
     expect(screen.queryByText('1')).not.toBeInTheDocument();
-    const buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    buttons = testButtonsCollapsed();
     fireEvent.click(buttons[0]);
     expect(screen.getByText('1')).toBeInTheDocument();
   });
 
-  it('should expand objects by clicking on', () => {
+  it('should expand arrays by clicking on collapsed content', () => {
+    render(<DataRender {...commonProps} value={[1, 2, 3]} shouldExpandNode={collapseAll} />);
+    expect(screen.queryByText('1')).not.toBeInTheDocument();
+    const buttons = testButtonsCollapsed();
+    fireEvent.click(buttons[1]);
+    testButtonsExpanded();
+    expect(screen.getByText('1')).toBeInTheDocument();
+  });
+
+  it('should expand objects by pressing Spacebar on icon', () => {
     render(<DataRender {...commonProps} value={{ test: true }} shouldExpandNode={collapseAll} />);
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-    const buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    const buttons = testButtonsCollapsed();
     fireEvent.keyDown(buttons[0], { key: ' ', code: 'Space' });
+    testButtonsExpanded();
     expect(screen.getByText(/test/)).toBeInTheDocument();
   });
 
-  it('should expand objects by pressing Spacebar on', () => {
+  it('should not expand objects by pressing other keys on icon', () => {
     render(<DataRender {...commonProps} value={{ test: true }} shouldExpandNode={collapseAll} />);
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-    const buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
-    fireEvent.keyDown(buttons[1], { key: ' ', code: 'Space' });
-
-    expect(screen.getByText(/test/)).toBeInTheDocument();
-  });
-
-  it('should not expand objects by pressing other keys on', () => {
-    render(<DataRender {...commonProps} value={{ test: true }} shouldExpandNode={collapseAll} />);
-    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-    let buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
-    fireEvent.keyDown(buttons[1], { key: 'Enter', code: 'Enter' });
-    buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    const buttons = testButtonsCollapsed();
+    fireEvent.keyDown(buttons[0], { key: 'Enter', code: 'Enter' });
+    testButtonsCollapsed();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
   });
 
-  it('should expand arrays by clicking on', () => {
+  it('should expand arrays by pressing Spacebar on icon', () => {
     render(
       <DataRender {...commonProps} value={['test', 'array']} shouldExpandNode={collapseAll} />
     );
-    let buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    const buttons = testButtonsCollapsed();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
-    fireEvent.click(buttons[0]);
-    buttons = screen.getAllByRole('button');
-    expect(buttons.length).toBe(1);
-    expect(buttons[0]).toHaveClass('collapse-icon-light');
+    fireEvent.keyDown(buttons[0], { key: ' ', code: 'Space' });
+    testButtonsExpanded();
     expect(screen.getByText(/test/)).toBeInTheDocument();
     expect(screen.getByText(/array/)).toBeInTheDocument();
   });
 
-  it('should expand arrays by pressing Spacebar on', () => {
+  it('should not expand arrays by pressing other keys on icon', () => {
     render(
       <DataRender {...commonProps} value={['test', 'array']} shouldExpandNode={collapseAll} />
     );
-    let buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
+    const buttons = testButtonsCollapsed();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
-
-    fireEvent.keyDown(buttons[1], { key: ' ', code: 'Space' });
-    buttons = screen.getAllByRole('button');
-    expect(buttons.length).toBe(1);
-    expect(buttons[0]).toHaveClass('collapse-icon-light');
-    expect(screen.getByText(/test/)).toBeInTheDocument();
-    expect(screen.getByText(/array/)).toBeInTheDocument();
-  });
-
-  it('should not expand arrays by pressing other keys on', () => {
-    render(
-      <DataRender {...commonProps} value={['test', 'array']} shouldExpandNode={collapseAll} />
-    );
-    let buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
-    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/array/)).not.toBeInTheDocument();
-
-    fireEvent.keyDown(buttons[1], { key: 'Enter', code: 'Enter' });
-    buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveClass('expand-icon-light');
-    expect(buttons[1]).toHaveClass('collapsed-content-light');
-
+    fireEvent.keyDown(buttons[0], { key: 'Enter', code: 'Enter' });
+    testButtonsCollapsed();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
   });
