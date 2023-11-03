@@ -129,7 +129,8 @@ Here is the size benchmark (using [bundlephobia.com](https://bundlephobia.com)) 
 
 ### Performance
 
-Performance was mesaures using the [react-component-benchmark](https://github.com/paularmstrong/react-component-benchmark) library. Every component was rendered 50 times using the [300Kb json file](https://github.com/AnyRoad/react-json-view-lite/blob/release/example/src/hugeJson.json) as data source. All numbers are in milliseconds. Tests were performed on Macbook Air M1 16Gb RAM usging Chrome v96.0.4664.110(official build, arm64). Every component was tested 2 times but there was no significant differences in the results.
+Performance was mesaured using the [react-component-benchmark](https://github.com/paularmstrong/react-component-benchmark) library. Every component was rendered 50 times using the [300Kb json file](https://github.com/AnyRoad/react-json-view-lite-benchmark/blob/main/src/hugeJson.json) as data source, please refer to source code of the [benchmark project](https://github.com/AnyRoad/react-json-view-lite-benchmark).
+All numbers are in milliseconds. Tests were performed on Macbook Air M1 16Gb RAM usging Chrome v96.0.4664.110(official build, arm64). Every component was tested 2 times but there was no significant differences in the results.
 
 | Library                  | Min   | Max   | Average | Median | P90   |
 | ------------------------ | ----- | ----- | ------- | ------ | ----- |

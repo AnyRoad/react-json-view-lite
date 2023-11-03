@@ -1,3 +1,9 @@
+## 1.2.0
+
+### New Feature
+
+- [Improved accessibility support](https://github.com/AnyRoad/react-json-view-lite/pull/16)
+
 ## 1.1.0
 
 ### New Feature
