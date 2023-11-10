@@ -25,8 +25,7 @@ export interface JsonRenderProps<T> {
   level: number;
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
-  onNodeExpanded?: (level: number, value: any, field?: string) => void;
-  onNodeCollapsed?: (level: number, value: any, field?: string) => void;
+  onNodeExpandToggled?: (expanded: boolean, level: number, value: any, field?: string) => void;
 }
 
 export interface ExpandableRenderProps {
@@ -39,8 +38,7 @@ export interface ExpandableRenderProps {
   level: number;
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
-  onNodeExpanded?: (level: number, value: any, field?: string) => void;
-  onNodeCollapsed?: (level: number, value: any, field?: string) => void;
+  onNodeExpandToggled?: (expanded: boolean, level: number, value: any, field?: string) => void;
 }
 
 function ExpandableObject({
@@ -53,8 +51,7 @@ function ExpandableObject({
   level,
   style,
   shouldExpandNode,
-  onNodeExpanded,
-  onNodeCollapsed
+  onNodeExpandToggled
 }: ExpandableRenderProps) {
   const shouldExpandNodeCalledRef = React.useRef(false);
   const [expanded, toggleExpanded, setExpanded] = useBool(() =>
@@ -65,18 +62,12 @@ function ExpandableObject({
     if (!shouldExpandNodeCalledRef.current) {
       shouldExpandNodeCalledRef.current = true;
     } else {
-      const shouldExpand = shouldExpandNode(level, value, field)
-
-      if (shouldExpand) {
-        onNodeExpanded?.(level, value, field);
-      } else {
-        onNodeCollapsed?.(level, value, field);
-      }
-
+      const shouldExpand = shouldExpandNode(level, value, field);
+      onNodeExpandToggled?.(shouldExpand, level, value, field);
       setExpanded(shouldExpand);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldExpandNode, onNodeExpanded, onNodeCollapsed]);
+  }, [shouldExpandNode]);
 
   const expanderIconStyle = expanded ? style.collapseIcon : style.expandIcon;
   const ariaLabel = expanded ? 'collapse JSON' : 'expand JSON';
@@ -85,20 +76,14 @@ function ExpandableObject({
   const lastIndex = data.length - 1;
 
   const handleToggleExpanded = () => {
-    const newValue = !expanded
-
-    if (newValue) {
-      onNodeExpanded?.(level, value, field);
-    } else {
-      onNodeCollapsed?.(level, value, field);
-    }
-
+    const newValue = !expanded;
+    onNodeExpandToggled?.(newValue, level, value, field);
     toggleExpanded();
-  }
+  };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     if (e.key === ' ') {
-      handleToggleExpanded()
+      handleToggleExpanded();
     }
   };
 
@@ -128,8 +113,7 @@ function ExpandableObject({
               lastElement={index === lastIndex}
               level={childLevel}
               shouldExpandNode={shouldExpandNode}
-              onNodeExpanded={onNodeExpanded}
-              onNodeCollapsed={onNodeCollapsed}
+              onNodeExpandToggled={onNodeExpandToggled}
             />
           ))}
         </div>
@@ -158,8 +142,7 @@ function JsonObject({
   style,
   lastElement,
   shouldExpandNode,
-  onNodeExpanded,
-  onNodeCollapsed,
+  onNodeExpandToggled,
   level
 }: JsonRenderProps<Object>) {
   return ExpandableObject({
@@ -171,8 +154,7 @@ function JsonObject({
     closeBracket: '}',
     style,
     shouldExpandNode,
-    onNodeExpanded,
-    onNodeCollapsed,
+    onNodeExpandToggled,
     data: Object.keys(value).map((key) => [key, value[key as keyof typeof value]])
   });
 }
@@ -184,8 +166,7 @@ function JsonArray({
   lastElement,
   level,
   shouldExpandNode,
-  onNodeExpanded,
-  onNodeCollapsed
+  onNodeExpandToggled
 }: JsonRenderProps<Array<any>>) {
   return ExpandableObject({
     field,
@@ -196,8 +177,7 @@ function JsonArray({
     closeBracket: ']',
     style,
     shouldExpandNode,
-    onNodeExpanded,
-    onNodeCollapsed,
+    onNodeExpandToggled,
     data: value.map((element) => [undefined, element])
   });
 }

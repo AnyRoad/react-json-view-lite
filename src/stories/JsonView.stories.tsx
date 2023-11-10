@@ -19,6 +19,12 @@ export default {
       description:
         'Function which will be initially called for each Object and Array of the data in order to calculate should if this node be expanded. `level` startes from `0`, `field` does not have a value for the array element. Library provides two build-in implementations: `allExpanded` and `collapseAllNested`'
     },
+    onNodeExpandToggled: {
+      source: {
+        type: 'code'
+      },
+      description: 'Optional. This function will be called any time a node is expanded or closed.'
+    },
     style: {
       name: 'style',
       defaultValue: defaultStyles,
@@ -95,4 +101,12 @@ CollapsedRoot.args = {
   data: jsonData,
   style: defaultStyles,
   shouldExpandNode: collapseAll
+};
+
+export const OnNodeExpandToggled = Template.bind({});
+
+OnNodeExpandToggled.args = {
+  data: jsonData,
+  style: defaultStyles,
+  onNodeExpandToggled: (expanded) => alert(`Node was ${expanded ? 'expanded' : 'collapsed'}`)
 };
