@@ -1,3 +1,9 @@
+## 1.2.1
+
+### Bug Fixes
+
+- [Fixed](https://github.com/AnyRoad/react-json-view-lite/issues/20) component didn't work with React 16 and React 17
+
 ## 1.2.0
 
 ### New Feature
