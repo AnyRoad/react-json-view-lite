@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useBool } from './hooks';
+import { useBool, useComponentId } from './hooks';
 
 import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
@@ -64,4 +64,34 @@ describe('useBool', () => {
     });
     expect(value!).toBe(true);
   });
+});
+
+describe('useComponentId', () => {
+  let id1 = '';
+  let id1AfterFirstRender = '';
+
+  let id2 = '';
+  let id2AfterFirstRender = '';
+
+  const HookComponent1 = ({ text }: { text: string }) => {
+    id1 = useComponentId();
+    return <div>{text}</div>;
+  };
+
+  const HookComponent2 = ({ text }: { text: string }) => {
+    id2 = useComponentId();
+    return <div>{text}</div>;
+  };
+
+  const { rerender: rerender1 } = render(<HookComponent1 text={'component1'} />);
+  id1AfterFirstRender = id1;
+  rerender1(<HookComponent1 text={'component1 second render'} />);
+
+  const { rerender: rerender2 } = render(<HookComponent2 text={'component2'} />);
+  id2AfterFirstRender = id2;
+  rerender2(<HookComponent2 text={'component2 second render'} />);
+
+  expect(id1).toBe(id1AfterFirstRender);
+  expect(id2).toBe(id2AfterFirstRender);
+  expect(id1).not.toBe(id2);
 });
