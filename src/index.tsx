@@ -6,6 +6,7 @@ export interface Props {
   data: Object | Array<any>;
   style?: StyleProps;
   shouldExpandNode?: (level: number, value: any, field?: string) => boolean;
+  onNodeExpandToggled?: (expanded: boolean, level: number, value: any, field?: string) => void;
 }
 
 export const defaultStyles: StyleProps = {
@@ -46,7 +47,8 @@ export const collapseAllNested = (level: number) => level < 1;
 export const JsonView = ({
   data,
   style = defaultStyles,
-  shouldExpandNode = allExpanded
+  shouldExpandNode = allExpanded,
+  onNodeExpandToggled
 }: Props) => {
   return (
     <div className={style.container}>
@@ -56,6 +58,7 @@ export const JsonView = ({
         lastElement
         level={0}
         shouldExpandNode={shouldExpandNode}
+        onNodeExpandToggled={onNodeExpandToggled}
       />
     </div>
   );

@@ -25,6 +25,7 @@ export interface JsonRenderProps<T> {
   level: number;
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
+  onNodeExpandToggled?: (expanded: boolean, level: number, value: any, field?: string) => void;
 }
 
 export interface ExpandableRenderProps {
@@ -37,6 +38,7 @@ export interface ExpandableRenderProps {
   level: number;
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
+  onNodeExpandToggled?: (expanded: boolean, level: number, value: any, field?: string) => void;
 }
 
 function ExpandableObject({
@@ -48,7 +50,8 @@ function ExpandableObject({
   closeBracket,
   level,
   style,
-  shouldExpandNode
+  shouldExpandNode,
+  onNodeExpandToggled
 }: ExpandableRenderProps) {
   const shouldExpandNodeCalledRef = React.useRef(false);
   const [expanded, toggleExpanded, setExpanded] = useBool(() =>
@@ -59,7 +62,9 @@ function ExpandableObject({
     if (!shouldExpandNodeCalledRef.current) {
       shouldExpandNodeCalledRef.current = true;
     } else {
-      setExpanded(shouldExpandNode(level, value, field));
+      const shouldExpand = shouldExpandNode(level, value, field);
+      onNodeExpandToggled?.(shouldExpand, level, value, field);
+      setExpanded(shouldExpand);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldExpandNode]);
@@ -70,9 +75,15 @@ function ExpandableObject({
   const childLevel = level + 1;
   const lastIndex = data.length - 1;
 
+  const handleToggleExpanded = () => {
+    const newValue = !expanded;
+    onNodeExpandToggled?.(newValue, level, value, field);
+    toggleExpanded();
+  };
+
   const onKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     if (e.key === ' ') {
-      toggleExpanded();
+      handleToggleExpanded();
     }
   };
 
@@ -80,7 +91,7 @@ function ExpandableObject({
     <div className={style.basicChildStyle} role='list'>
       <span
         className={expanderIconStyle}
-        onClick={toggleExpanded}
+        onClick={handleToggleExpanded}
         onKeyDown={onKeyDown}
         role='button'
         tabIndex={0}
@@ -102,13 +113,14 @@ function ExpandableObject({
               lastElement={index === lastIndex}
               level={childLevel}
               shouldExpandNode={shouldExpandNode}
+              onNodeExpandToggled={onNodeExpandToggled}
             />
           ))}
         </div>
       ) : (
         <span
           className={style.collapsedContent}
-          onClick={toggleExpanded}
+          onClick={handleToggleExpanded}
           onKeyDown={onKeyDown}
           role='button'
           tabIndex={-1} // No need to be able to tab to this button, can just use the other button
@@ -130,6 +142,7 @@ function JsonObject({
   style,
   lastElement,
   shouldExpandNode,
+  onNodeExpandToggled,
   level
 }: JsonRenderProps<Object>) {
   return ExpandableObject({
@@ -141,6 +154,7 @@ function JsonObject({
     closeBracket: '}',
     style,
     shouldExpandNode,
+    onNodeExpandToggled,
     data: Object.keys(value).map((key) => [key, value[key as keyof typeof value]])
   });
 }
@@ -151,7 +165,8 @@ function JsonArray({
   style,
   lastElement,
   level,
-  shouldExpandNode
+  shouldExpandNode,
+  onNodeExpandToggled
 }: JsonRenderProps<Array<any>>) {
   return ExpandableObject({
     field,
@@ -162,6 +177,7 @@ function JsonArray({
     closeBracket: ']',
     style,
     shouldExpandNode,
+    onNodeExpandToggled,
     data: value.map((element) => [undefined, element])
   });
 }
