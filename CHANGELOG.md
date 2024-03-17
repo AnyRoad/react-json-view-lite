@@ -1,3 +1,9 @@
+## 1.3.0
+
+### New Feature
+
+- [New style parameter for not adding double quotes to rendered strings](https://github.com/AnyRoad/react-json-view-lite/issues/22)
+
 ## 1.2.1
 
 ### Bug Fixes

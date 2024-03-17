@@ -21,7 +21,8 @@ export const defaultStyles: StyleProps = {
   punctuation: styles['punctuation-light'],
   collapseIcon: styles['collapse-icon-light'],
   expandIcon: styles['expand-icon-light'],
-  collapsedContent: styles['collapsed-content-light']
+  collapsedContent: styles['collapsed-content-light'],
+  noQuotesForStringValues: false
 };
 
 export const darkStyles: StyleProps = {
@@ -37,7 +38,8 @@ export const darkStyles: StyleProps = {
   punctuation: styles['punctuation-dark'],
   collapseIcon: styles['collapse-icon-dark'],
   expandIcon: styles['expand-icon-dark'],
-  collapsedContent: styles['collapsed-content-dark']
+  collapsedContent: styles['collapsed-content-dark'],
+  noQuotesForStringValues: false
 };
 
 export const allExpanded = () => true;

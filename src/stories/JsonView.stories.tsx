@@ -96,3 +96,9 @@ CollapsedRoot.args = {
   style: defaultStyles,
   shouldExpandNode: collapseAll
 };
+
+export const RenderStringsWithoutObjects = Template.bind({});
+RenderStringsWithoutObjects.args = {
+  data: jsonData,
+  style: { ...defaultStyles, noQuotesForStringValues: true }
+};

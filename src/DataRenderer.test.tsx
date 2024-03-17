@@ -20,7 +20,8 @@ const commonProps: JsonRenderProps<any> = {
     punctuation: '',
     expandIcon: defaultStyles.expandIcon,
     collapseIcon: defaultStyles.collapseIcon,
-    collapsedContent: defaultStyles.collapsedContent
+    collapsedContent: defaultStyles.collapsedContent,
+    noQuotesForStringValues: false
   },
   shouldExpandNode: allExpanded,
   value: undefined,
@@ -59,6 +60,31 @@ describe('DataRender', () => {
 
   it('should render strings', () => {
     render(<DataRender {...commonProps} value={{ test: 'string' }} />);
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+    expect(screen.getByText(`"string"`)).toBeInTheDocument();
+  });
+
+  it('should render strings without quotes', () => {
+    render(
+      <DataRender
+        {...commonProps}
+        style={{ ...defaultStyles, noQuotesForStringValues: true }}
+        value={{ test: 'string' }}
+      />
+    );
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+    expect(screen.getByText(`string`)).toBeInTheDocument();
+    expect(screen.queryByText(`"string"`)).not.toBeInTheDocument();
+  });
+
+  it('should render strings with quotes if noQuotesForStringValues is undefined', () => {
+    render(
+      <DataRender
+        {...commonProps}
+        style={{ ...defaultStyles, noQuotesForStringValues: undefined }}
+        value={{ test: 'string' }}
+      />
+    );
     expect(screen.getByText(/test/)).toBeInTheDocument();
     expect(screen.getByText(`"string"`)).toBeInTheDocument();
   });

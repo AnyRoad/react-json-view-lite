@@ -16,6 +16,7 @@ export interface StyleProps {
   expandIcon: string;
   collapseIcon: string;
   collapsedContent: string;
+  noQuotesForStringValues: boolean;
 }
 
 export interface JsonRenderProps<T> {
@@ -182,7 +183,7 @@ function JsonPrimitiveValue({
     stringValue = 'undefined';
     valueStyle = style.undefinedValue;
   } else if (DataTypeDetection.isString(value)) {
-    stringValue = `"${value}"`;
+    stringValue = style.noQuotesForStringValues ? (value as string) : `"${value}"`;
     valueStyle = style.stringValue;
   } else if (DataTypeDetection.isBoolean(value)) {
     stringValue = value ? 'true' : 'false';
