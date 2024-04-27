@@ -6,12 +6,14 @@ export interface Props {
   data: Object | Array<any>;
   style?: StyleProps;
   shouldExpandNode?: (level: number, value: any, field?: string) => boolean;
+  clickToExpandNode?: boolean;
 }
 
 export const defaultStyles: StyleProps = {
   container: styles['container-light'],
   basicChildStyle: styles['basic-element-style'],
   label: styles['label-light'],
+  clickableLabel: styles['clickable-label-light'],
   nullValue: styles['value-null-light'],
   undefinedValue: styles['value-undefined-light'],
   stringValue: styles['value-string-light'],
@@ -29,6 +31,7 @@ export const darkStyles: StyleProps = {
   container: styles['container-dark'],
   basicChildStyle: styles['basic-element-style'],
   label: styles['label-dark'],
+  clickableLabel: styles['clickable-label-dark'],
   nullValue: styles['value-null-dark'],
   undefinedValue: styles['value-undefined-dark'],
   stringValue: styles['value-string-dark'],
@@ -48,7 +51,8 @@ export const collapseAllNested = (level: number) => level < 1;
 export const JsonView = ({
   data,
   style = defaultStyles,
-  shouldExpandNode = allExpanded
+  shouldExpandNode = allExpanded,
+  clickToExpandNode = false
 }: Props) => {
   return (
     <div className={style.container}>
@@ -58,6 +62,7 @@ export const JsonView = ({
         lastElement
         level={0}
         shouldExpandNode={shouldExpandNode}
+        clickToExpandNode={clickToExpandNode}
       />
     </div>
   );

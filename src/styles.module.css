@@ -60,6 +60,11 @@
   color: #000000;
 }
 
+.clickable-label-light {
+  composes: label-light;
+  composes: pointer;
+}
+
 .punctuation-light {
   composes: punctuation-base;
   color: #000000;
@@ -133,6 +138,11 @@
   font-weight: bolder;
   margin-right: 5px;
   color: rgb(253, 246, 227);
+}
+
+.clickable-label-dark {
+  composes: label-dark;
+  composes: pointer;
 }
 
 .punctuation-dark {
