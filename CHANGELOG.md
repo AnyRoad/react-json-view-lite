@@ -1,3 +1,9 @@
+## 1.3.1
+
+### Bug Fixes
+
+- [Fixed](https://github.com/AnyRoad/react-json-view-lite/issues/24) pressing the spacebar expands/collapses and "pages down" in the browser
+
 ## 1.3.0
 
 ### New Feature
