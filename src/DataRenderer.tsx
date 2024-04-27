@@ -73,6 +73,7 @@ function ExpandableObject({
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     if (e.key === ' ') {
+      e.preventDefault();
       toggleExpanded();
     }
   };
