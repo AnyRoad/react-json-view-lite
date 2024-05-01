@@ -1,3 +1,9 @@
+## 1.4.0
+
+### New Feature
+
+- [Click on field name to expand node](https://github.com/AnyRoad/react-json-view-lite/pull/27)
+
 ## 1.3.1
 
 ### Bug Fixes

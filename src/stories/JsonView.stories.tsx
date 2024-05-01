@@ -102,3 +102,10 @@ RenderStringsWithoutObjects.args = {
   data: jsonData,
   style: { ...defaultStyles, noQuotesForStringValues: true }
 };
+
+export const ClickOnFieldNameToExpand = Template.bind({});
+ClickOnFieldNameToExpand.args = {
+  data: jsonData,
+  style: { ...defaultStyles },
+  clickToExpandNode: true
+};
