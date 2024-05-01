@@ -6,6 +6,7 @@ export interface StyleProps {
   container: string;
   basicChildStyle: string;
   label: string;
+  clickableLabel: string;
   nullValue: string;
   undefinedValue: string;
   numberValue: string;
@@ -26,6 +27,7 @@ export interface JsonRenderProps<T> {
   level: number;
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
+  clickToExpandNode: boolean;
 }
 
 export interface ExpandableRenderProps {
@@ -38,6 +40,7 @@ export interface ExpandableRenderProps {
   level: number;
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
+  clickToExpandNode: boolean;
 }
 
 function ExpandableObject({
@@ -49,7 +52,8 @@ function ExpandableObject({
   closeBracket,
   level,
   style,
-  shouldExpandNode
+  shouldExpandNode,
+  clickToExpandNode
 }: ExpandableRenderProps) {
   const shouldExpandNodeCalledRef = React.useRef(false);
   const [expanded, toggleExpanded, setExpanded] = useBool(() =>
@@ -90,7 +94,20 @@ function ExpandableObject({
         aria-expanded={expanded}
         aria-controls={expanded ? contentsId : undefined}
       />
-      {field && <span className={style.label}>{field}:</span>}
+      {field &&
+        (clickToExpandNode ? (
+          <span
+            className={style.clickableLabel}
+            onClick={toggleExpanded}
+            onKeyDown={onKeyDown}
+            role='button'
+            tabIndex={-1}
+          >
+            {field}:
+          </span>
+        ) : (
+          <span className={style.label}>{field}:</span>
+        ))}
       <span className={style.punctuation}>{openBracket}</span>
 
       {expanded ? (
@@ -104,6 +121,7 @@ function ExpandableObject({
               lastElement={index === lastIndex}
               level={childLevel}
               shouldExpandNode={shouldExpandNode}
+              clickToExpandNode={clickToExpandNode}
             />
           ))}
         </div>
@@ -132,6 +150,7 @@ function JsonObject({
   style,
   lastElement,
   shouldExpandNode,
+  clickToExpandNode,
   level
 }: JsonRenderProps<Object>) {
   return ExpandableObject({
@@ -143,6 +162,7 @@ function JsonObject({
     closeBracket: '}',
     style,
     shouldExpandNode,
+    clickToExpandNode,
     data: Object.keys(value).map((key) => [key, value[key as keyof typeof value]])
   });
 }
@@ -153,7 +173,8 @@ function JsonArray({
   style,
   lastElement,
   level,
-  shouldExpandNode
+  shouldExpandNode,
+  clickToExpandNode
 }: JsonRenderProps<Array<any>>) {
   return ExpandableObject({
     field,
@@ -164,6 +185,7 @@ function JsonArray({
     closeBracket: ']',
     style,
     shouldExpandNode,
+    clickToExpandNode,
     data: value.map((element) => [undefined, element])
   });
 }

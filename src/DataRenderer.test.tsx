@@ -11,6 +11,7 @@ const commonProps: JsonRenderProps<any> = {
     container: '',
     basicChildStyle: '',
     label: '',
+    clickableLabel: defaultStyles.clickableLabel,
     nullValue: '',
     undefinedValue: '',
     numberValue: '',
@@ -24,6 +25,7 @@ const commonProps: JsonRenderProps<any> = {
     noQuotesForStringValues: false
   },
   shouldExpandNode: allExpanded,
+  clickToExpandNode: false,
   value: undefined,
   field: undefined
 };
@@ -42,6 +44,16 @@ const testButtonsExpanded = () => {
   const buttons = screen.getAllByRole('button', { hidden: true });
   expect(buttons.length).toBe(1);
   expect(buttons[0]).toHaveClass('collapse-icon-light');
+  return buttons;
+};
+
+const testClickableNodeCollapsed = () => {
+  const buttons = screen.getAllByRole('button', { hidden: true });
+  expect(buttons.length).toBe(4);
+  expect(buttons[0]).toHaveClass('collapse-icon-light');
+  expect(buttons[1]).toHaveClass('expand-icon-light');
+  expect(buttons[2]).toHaveClass('clickable-label-light');
+  expect(buttons[3]).toHaveClass('collapsed-content-light');
   return buttons;
 };
 
@@ -220,6 +232,28 @@ describe('DataRender', () => {
     buttons = testButtonsCollapsed();
     fireEvent.click(buttons[0]);
     expect(screen.getByText(/test/)).toBeInTheDocument();
+  });
+
+  it('should collapse and expand objects by clicking on node', () => {
+    render(
+      <DataRender
+        {...{ ...commonProps, clickToExpandNode: true }}
+        value={{ test: { child: true } }}
+        shouldExpandNode={collapseAll}
+      />
+    );
+
+    // open the 'test' node by clicking the icon
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/child/)).not.toBeInTheDocument();
+    const buttons = testButtonsCollapsed();
+    fireEvent.click(buttons[0]);
+    testClickableNodeCollapsed();
+    expect(screen.getByText(/test/)).toBeInTheDocument();
+    expect(screen.queryByText(/child/)).not.toBeInTheDocument();
+    fireEvent.click(buttons[0]);
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/child/)).not.toBeInTheDocument();
   });
 
   it('should expand objects by clicking on collapsed content', () => {
