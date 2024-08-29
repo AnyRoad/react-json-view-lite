@@ -31,7 +31,7 @@ export interface JsonRenderProps<T> {
 }
 
 export interface ExpandableRenderProps {
-  field?: string;
+  field: string | undefined;
   value: Array<any> | object;
   data: Array<[string | undefined, any]>;
   openBracket: string;
@@ -144,6 +144,25 @@ function ExpandableObject({
   );
 }
 
+export interface EmptyRenderProps {
+  field: string | undefined;
+  openBracket: string;
+  closeBracket: string;
+  lastElement: boolean;
+  style: StyleProps;
+}
+
+function EmptyObject({ field, openBracket, closeBracket, lastElement, style }: EmptyRenderProps) {
+  return (
+    <div className={style.basicChildStyle} role='listitem'>
+      {field && <span className={style.label}>{field}:</span>}
+      <span className={style.punctuation}>{openBracket}</span>
+      <span className={style.punctuation}>{closeBracket}</span>
+      {!lastElement && <span className={style.punctuation}>,</span>}
+    </div>
+  );
+}
+
 function JsonObject({
   field,
   value,
@@ -153,6 +172,16 @@ function JsonObject({
   clickToExpandNode,
   level
 }: JsonRenderProps<Object>) {
+  if (Object.keys(value).length === 0) {
+    return EmptyObject({
+      field,
+      openBracket: '{',
+      closeBracket: '}',
+      lastElement,
+      style
+    });
+  }
+
   return ExpandableObject({
     field,
     value,
@@ -176,6 +205,16 @@ function JsonArray({
   shouldExpandNode,
   clickToExpandNode
 }: JsonRenderProps<Array<any>>) {
+  if (value.length === 0) {
+    return EmptyObject({
+      field,
+      openBracket: '[',
+      closeBracket: ']',
+      lastElement,
+      style
+    });
+  }
+
   return ExpandableObject({
     field,
     value,

@@ -47,6 +47,12 @@ const testButtonsExpanded = () => {
   return buttons;
 };
 
+const testButtonsIfEmpty = () => {
+  expect(() => {
+    screen.getAllByRole('button', { hidden: true });
+  }).toThrow();
+};
+
 const testClickableNodeCollapsed = () => {
   const buttons = screen.getAllByRole('button', { hidden: true });
   expect(buttons.length).toBe(4);
@@ -141,6 +147,52 @@ describe('DataRender', () => {
     render(<DataRender {...commonProps} value={{ '': 'empty key' }} />);
     expect(screen.getByText(/""/)).toBeInTheDocument();
     expect(screen.getByText(/empty key/)).toBeInTheDocument();
+  });
+
+  it('should render empty objects', () => {
+    render(<DataRender {...commonProps} value={{}} />);
+    expect(screen.getByText('{')).toBeInTheDocument();
+    expect(screen.getByText('}')).toBeInTheDocument();
+  });
+
+  it('should render nested empty objects', () => {
+    render(<DataRender {...commonProps} value={{ nested: [] }} />);
+    expect(screen.getByText('nested:')).toBeInTheDocument();
+    expect(screen.getByText('{')).toBeInTheDocument();
+    expect(screen.getByText('}')).toBeInTheDocument();
+  });
+
+  it('should not expand empty objects', () => {
+    render(<DataRender {...commonProps} value={{}} shouldExpandNode={allExpanded} />);
+    testButtonsIfEmpty();
+  });
+
+  it('should not collapse empty objects', () => {
+    render(<DataRender {...commonProps} value={{}} shouldExpandNode={collapseAll} />);
+    testButtonsIfEmpty();
+  });
+
+  it('should render empty arrays', () => {
+    render(<DataRender {...commonProps} value={[]} />);
+    expect(screen.getByText('[')).toBeInTheDocument();
+    expect(screen.getByText(']')).toBeInTheDocument();
+  });
+
+  it('should render nested empty arrays', () => {
+    render(<DataRender {...commonProps} value={{ nested: [] }} />);
+    expect(screen.getByText('nested:')).toBeInTheDocument();
+    expect(screen.getByText('[')).toBeInTheDocument();
+    expect(screen.getByText(']')).toBeInTheDocument();
+  });
+
+  it('should not expand empty arrays', () => {
+    render(<DataRender {...commonProps} value={[]} shouldExpandNode={allExpanded} />);
+    testButtonsIfEmpty();
+  });
+
+  it('should not collapse empty arrays', () => {
+    render(<DataRender {...commonProps} value={[]} shouldExpandNode={collapseAll} />);
+    testButtonsIfEmpty();
   });
 
   it('should render arrays', () => {
