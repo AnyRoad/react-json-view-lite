@@ -1,6 +1,6 @@
 {
   "name": "react-json-view-lite",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "JSON viewer component for React focused on performance for large volume input while still providing few customiziation features",
   "homepage": "https://github.com/AnyRoad/react-json-view-lite",
   "author": "AnyRoad",

@@ -1,3 +1,9 @@
+## 1.5.0
+
+### Bug Fixes
+
+- [Fixed](https://github.com/AnyRoad/react-json-view-lite/issues/28): Improves empty objects and empty arrays. Also fixes too wide space between two spans having the `punctuation` class (e.g. `] ,` or `[  ]`)
+
 ## 1.4.0
 
 ### New Feature
