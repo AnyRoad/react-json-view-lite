@@ -56,7 +56,9 @@ const jsonData = {
   'date property': new Date(0),
   'boolean property': true,
   'null property': null,
+  'empty array': [],
   'array propery': [1, 2, 3, 4, 5],
+  'empty object': {},
   'nested object': {
     first: true,
     second: 'another value',
