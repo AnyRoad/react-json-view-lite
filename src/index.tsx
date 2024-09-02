@@ -24,7 +24,8 @@ export const defaultStyles: StyleProps = {
   collapseIcon: styles['collapse-icon-light'],
   expandIcon: styles['expand-icon-light'],
   collapsedContent: styles['collapsed-content-light'],
-  noQuotesForStringValues: false
+  noQuotesForStringValues: false,
+  quotesForFieldNames: false
 };
 
 export const darkStyles: StyleProps = {
@@ -42,7 +43,8 @@ export const darkStyles: StyleProps = {
   collapseIcon: styles['collapse-icon-dark'],
   expandIcon: styles['expand-icon-dark'],
   collapsedContent: styles['collapsed-content-dark'],
-  noQuotesForStringValues: false
+  noQuotesForStringValues: false,
+  quotesForFieldNames: false
 };
 
 export const allExpanded = () => true;
