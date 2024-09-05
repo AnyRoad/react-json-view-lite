@@ -17,7 +17,8 @@ export interface StyleProps {
   expandIcon: string;
   collapseIcon: string;
   collapsedContent: string;
-  noQuotesForStringValues: boolean;
+  noQuotesForStringValues?: boolean;
+  quotesForFieldNames?: boolean;
 }
 
 export interface JsonRenderProps<T> {
@@ -41,6 +42,14 @@ export interface ExpandableRenderProps {
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
   clickToExpandNode: boolean;
+}
+
+function quoteString(value: string, quoted = false) {
+  if (!value || quoted) {
+    return `"${value}"`;
+  }
+
+  return value;
 }
 
 function ExpandableObject({
@@ -94,7 +103,7 @@ function ExpandableObject({
         aria-expanded={expanded}
         aria-controls={expanded ? contentsId : undefined}
       />
-      {field &&
+      {(field || field === '') &&
         (clickToExpandNode ? (
           <span
             className={style.clickableLabel}
@@ -103,10 +112,10 @@ function ExpandableObject({
             role='button'
             tabIndex={-1}
           >
-            {field}:
+            {quoteString(field, style.quotesForFieldNames)}:
           </span>
         ) : (
-          <span className={style.label}>{field}:</span>
+          <span className={style.label}>{quoteString(field, style.quotesForFieldNames)}:</span>
         ))}
       <span className={style.punctuation}>{openBracket}</span>
 
@@ -155,7 +164,9 @@ export interface EmptyRenderProps {
 function EmptyObject({ field, openBracket, closeBracket, lastElement, style }: EmptyRenderProps) {
   return (
     <div className={style.basicChildStyle} role='listitem'>
-      {field && <span className={style.label}>{field}:</span>}
+      {(field || field === '') && (
+        <span className={style.label}>{quoteString(field, style.quotesForFieldNames)}:</span>
+      )}
       <span className={style.punctuation}>{openBracket}</span>
       <span className={style.punctuation}>{closeBracket}</span>
       {!lastElement && <span className={style.punctuation}>,</span>}
@@ -235,7 +246,7 @@ function JsonPrimitiveValue({
   style,
   lastElement
 }: JsonRenderProps<string | number | boolean | Date | null | undefined>) {
-  let stringValue = value;
+  let stringValue;
   let valueStyle = style.otherValue;
 
   if (value === null) {
@@ -245,7 +256,7 @@ function JsonPrimitiveValue({
     stringValue = 'undefined';
     valueStyle = style.undefinedValue;
   } else if (DataTypeDetection.isString(value)) {
-    stringValue = style.noQuotesForStringValues ? (value as string) : `"${value}"`;
+    stringValue = quoteString(value, !style.noQuotesForStringValues);
     valueStyle = style.stringValue;
   } else if (DataTypeDetection.isBoolean(value)) {
     stringValue = value ? 'true' : 'false';
@@ -259,16 +270,14 @@ function JsonPrimitiveValue({
   } else if (DataTypeDetection.isDate(value)) {
     stringValue = value.toISOString();
   } else {
-    stringValue = value.toString();
-  }
-
-  if (field === '') {
-    field = '""';
+    stringValue = (value as any).toString();
   }
 
   return (
     <div className={style.basicChildStyle} role='listitem'>
-      {field && <span className={style.label}>{field}:</span>}
+      {(field || field === '') && (
+        <span className={style.label}>{quoteString(field, style.quotesForFieldNames)}:</span>
+      )}
       <span className={valueStyle}>{stringValue}</span>
       {!lastElement && <span className={style.punctuation}>,</span>}
     </div>
