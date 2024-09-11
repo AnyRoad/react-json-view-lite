@@ -1,8 +1,8 @@
 import * as React from 'react';
-import DataRender, { StyleProps } from './DataRenderer';
+import DataRender, { getButtonElements, setButtonTabIndex, StyleProps } from './DataRenderer';
 import styles from './styles.module.css';
 
-export interface Props {
+export interface Props extends React.AriaAttributes {
   data: Object | Array<any>;
   style?: StyleProps;
   shouldExpandNode?: (level: number, value: any, field?: string) => boolean;
@@ -54,10 +54,21 @@ export const JsonView = ({
   data,
   style = defaultStyles,
   shouldExpandNode = allExpanded,
-  clickToExpandNode = false
+  clickToExpandNode = false,
+  ...ariaAttrs
 }: Props) => {
+  const outerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const outerElement = outerRef.current;
+    if (!outerElement) return;
+    const buttonElements = getButtonElements(outerElement);
+    // on first render, set first button to tabIndex=0.
+    setButtonTabIndex(buttonElements, 0);
+  }, [outerRef]);
+
   return (
-    <div className={style.container}>
+    <div {...ariaAttrs} className={style.container} ref={outerRef} role='tree'>
       <DataRender
         value={data}
         style={style}
@@ -65,6 +76,7 @@ export const JsonView = ({
         level={0}
         shouldExpandNode={shouldExpandNode}
         clickToExpandNode={clickToExpandNode}
+        outerRef={outerRef}
       />
     </div>
   );
