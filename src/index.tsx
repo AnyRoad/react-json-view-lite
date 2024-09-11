@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DataRender, { getButtonElements, setButtonTabIndex, StyleProps } from './DataRenderer';
+import DataRender, { getButtonElements, setTabbableButton, StyleProps } from './DataRenderer';
 import styles from './styles.module.css';
 
 export interface Props extends React.AriaAttributes {
@@ -59,12 +59,12 @@ export const JsonView = ({
 }: Props) => {
   const outerRef = React.useRef<HTMLDivElement>(null);
 
+  // on first render, set first button to tabIndex=0.
   React.useEffect(() => {
     const outerElement = outerRef.current;
     if (!outerElement) return;
     const buttonElements = getButtonElements(outerElement);
-    // on first render, set first button to tabIndex=0.
-    setButtonTabIndex(buttonElements, 0);
+    setTabbableButton(buttonElements, 0);
   }, [outerRef]);
 
   return (

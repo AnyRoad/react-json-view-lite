@@ -55,7 +55,7 @@ export function getButtonElements(outerElement: HTMLDivElement) {
   return Array.from(outerElement.querySelectorAll<HTMLElement>('[role=button]'));
 }
 
-export function setButtonTabIndex(buttonElements: HTMLElement[], index: number) {
+export function setTabbableButton(buttonElements: HTMLElement[], index: number) {
   buttonElements.forEach((buttonElement, i) => {
     buttonElement.tabIndex = i === index ? 0 : -1;
   });
@@ -116,7 +116,7 @@ function ExpandableObject({
       if (currentIndex < 0) return;
 
       const nextIndex = (currentIndex + direction + buttonElements.length) % buttonElements.length; // auto-wrap
-      setButtonTabIndex(buttonElements, nextIndex);
+      setTabbableButton(buttonElements, nextIndex);
       buttonElements[nextIndex].focus();
     }
   };
@@ -129,7 +129,7 @@ function ExpandableObject({
     if (!buttonElement) return;
     const buttonElements = getButtonElements(outerElement);
     const currentIndex = buttonElements.indexOf(buttonElement);
-    setButtonTabIndex(buttonElements, currentIndex);
+    setTabbableButton(buttonElements, currentIndex);
   };
 
   return (
