@@ -68,7 +68,13 @@ export const JsonView = ({
   }, [outerRef]);
 
   return (
-    <div {...ariaAttrs} className={style.container} ref={outerRef} role='tree'>
+    <div
+      aria-label='JSON view'
+      {...ariaAttrs}
+      className={style.container}
+      ref={outerRef}
+      role='tree'
+    >
       <DataRender
         value={data}
         style={style}
