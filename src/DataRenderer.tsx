@@ -51,7 +51,9 @@ function quoteString(value: string, quoted = false) {
   return value;
 }
 
-export function getButtonElements(outerElement: HTMLDivElement) {
+export function getButtonElements(outerRef: React.RefObject<HTMLElement>) {
+  const outerElement = outerRef.current;
+  if (!outerElement) return;
   return Array.from(outerElement.querySelectorAll<HTMLElement>('[role=button]'));
 }
 
@@ -106,13 +108,10 @@ function ExpandableObject({
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
       const direction = e.key === 'ArrowUp' ? -1 : 1;
-      const outerElement = outerRef.current;
-      if (!outerElement) return;
-      const selectedElement = outerElement.querySelectorAll<HTMLElement>('[tabindex="0"]')[0];
-      if (!selectedElement) return;
 
-      const buttonElements = getButtonElements(outerElement);
-      const currentIndex = buttonElements.indexOf(selectedElement);
+      const buttonElements = getButtonElements(outerRef);
+      if (!buttonElements) return;
+      const currentIndex = buttonElements.findIndex((el) => el.tabIndex === 0);
       if (currentIndex < 0) return;
 
       const nextIndex = (currentIndex + direction + buttonElements.length) % buttonElements.length; // auto-wrap
@@ -123,12 +122,11 @@ function ExpandableObject({
 
   const onClick = () => {
     toggleExpanded();
-    const outerElement = outerRef.current;
-    if (!outerElement) return;
-    const buttonElement = expanderButtonRef.current;
-    if (!buttonElement) return;
-    const buttonElements = getButtonElements(outerElement);
-    const currentIndex = buttonElements.indexOf(buttonElement);
+    const buttonElements = getButtonElements(outerRef);
+    if (!buttonElements) return;
+    const currentButtonElement = expanderButtonRef.current;
+    if (!currentButtonElement) return;
+    const currentIndex = buttonElements.indexOf(currentButtonElement);
     setTabbableButton(buttonElements, currentIndex);
   };
 

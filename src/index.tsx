@@ -61,9 +61,8 @@ export const JsonView = ({
 
   // on first render, set first button to tabIndex=0.
   React.useEffect(() => {
-    const outerElement = outerRef.current;
-    if (!outerElement) return;
-    const buttonElements = getButtonElements(outerElement);
+    const buttonElements = getButtonElements(outerRef);
+    if (!buttonElements) return;
     setTabbableButton(buttonElements, 0);
   }, [outerRef]);
 
