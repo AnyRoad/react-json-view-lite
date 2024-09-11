@@ -133,7 +133,12 @@ function ExpandableObject({
   };
 
   return (
-    <div className={style.basicChildStyle} role='treeitem' aria-selected={false}>
+    <div
+      className={style.basicChildStyle}
+      role='treeitem'
+      aria-expanded={expanded}
+      aria-selected={undefined}
+    >
       <span
         className={expanderIconStyle}
         onClick={onClick}
@@ -198,7 +203,7 @@ export interface EmptyRenderProps {
 
 function EmptyObject({ field, openBracket, closeBracket, lastElement, style }: EmptyRenderProps) {
   return (
-    <div className={style.basicChildStyle} role='treeitem' aria-selected={false}>
+    <div className={style.basicChildStyle} role='treeitem' aria-selected={undefined}>
       {(field || field === '') && (
         <span className={style.label}>{quoteString(field, style.quotesForFieldNames)}:</span>
       )}
@@ -313,7 +318,7 @@ function JsonPrimitiveValue({
   }
 
   return (
-    <div className={style.basicChildStyle} role='treeitem' aria-selected={false}>
+    <div className={style.basicChildStyle} role='treeitem' aria-selected={undefined}>
       {(field || field === '') && (
         <span className={style.label}>{quoteString(field, style.quotesForFieldNames)}:</span>
       )}
