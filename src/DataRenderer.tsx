@@ -100,12 +100,10 @@ function ExpandableObject({
   const lastIndex = data.length - 1;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
-    if ((e.key === 'ArrowRight' && !expanded) || (e.key === 'ArrowLeft' && expanded)) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
       e.preventDefault();
-      toggleExpanded();
-    }
-
-    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      setExpanded(e.key === 'ArrowRight');
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
       const direction = e.key === 'ArrowUp' ? -1 : 1;
 

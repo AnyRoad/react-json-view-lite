@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DataRender, { JsonRenderProps } from './DataRenderer';
+import DataRender, { getButtonElements, JsonRenderProps } from './DataRenderer';
 import { allExpanded, collapseAllNested, defaultStyles } from './index';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -311,6 +311,8 @@ describe('DataRender', () => {
     expect(buttons.length).toBe(2);
     expect(buttons[0]).toHaveClass('collapse-icon-light');
     expect(buttons[1]).toHaveClass('expand-icon-light');
+    expect(buttons[0].tabIndex).toEqual(0);
+    expect(buttons[1].tabIndex).toEqual(-1);
     expect(container.getElementsByClassName('clickable-label-light')).toHaveLength(1);
     expect(container.getElementsByClassName('collapsed-content-light')).toHaveLength(1);
     expect(screen.getByText(/test:/)).toBeInTheDocument();
@@ -355,13 +357,19 @@ describe('DataRender', () => {
     expect(screen.getByText('1')).toBeInTheDocument();
   });
 
-  it('should expand objects by pressing ArrowRight on icon', () => {
+  it('should expand objects by pressing ArrowRight on icon, collapse objects by pressing ArrowLeft on icon', () => {
     render(<WrappedDataRenderer value={{ test: true }} shouldExpandNode={collapseAll} />);
-    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+
     const buttons = testButtonsCollapsed();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+
     fireEvent.keyDown(buttons[0], { key: 'ArrowRight', code: 'ArrowRight' });
     testButtonsExpanded();
     expect(screen.getByText(/test:/)).toBeInTheDocument();
+
+    fireEvent.keyDown(buttons[0], { key: 'ArrowLeft', code: 'ArrowLeft' });
+    testButtonsCollapsed();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
   });
 
   it('should not expand objects by pressing other keys on icon', () => {
@@ -374,15 +382,22 @@ describe('DataRender', () => {
     expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
   });
 
-  it('should expand arrays by pressing ArrowRight on icon', () => {
+  it('should expand arrays by pressing ArrowRight on icon, collapse arrays by pressing ArrowLeft on icon', () => {
     render(<WrappedDataRenderer value={['test', 'array']} shouldExpandNode={collapseAll} />);
+
     const buttons = testButtonsCollapsed();
     expect(screen.queryByText(/test/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
+
     fireEvent.keyDown(buttons[0], { key: 'ArrowRight', code: 'ArrowRight' });
     testButtonsExpanded();
     expect(screen.getByText(/test/)).toBeInTheDocument();
     expect(screen.getByText(/array/)).toBeInTheDocument();
+
+    fireEvent.keyDown(buttons[0], { key: 'ArrowLeft', code: 'ArrowLeft' });
+    testButtonsCollapsed();
+    expect(screen.queryByText(/test/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/array/)).not.toBeInTheDocument();
   });
 
   it('should not expand arrays by pressing other keys on icon', () => {
@@ -395,5 +410,10 @@ describe('DataRender', () => {
     testButtonsCollapsed();
     expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
+  });
+
+  it('getButtonElements returns undefined if no outerRef', () => {
+    const emptyRef = React.createRef<HTMLDivElement>();
+    expect(getButtonElements(emptyRef)).toBeUndefined();
   });
 });
