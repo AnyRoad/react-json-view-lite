@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DataRender, { getButtonElements, JsonRenderProps } from './DataRenderer';
+import DataRender, { JsonRenderProps } from './DataRenderer';
 import { allExpanded, collapseAllNested, defaultStyles } from './index';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -410,10 +410,5 @@ describe('DataRender', () => {
     testButtonsCollapsed();
     expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
-  });
-
-  it('getButtonElements returns undefined if no outerRef', () => {
-    const emptyRef = React.createRef<HTMLDivElement>();
-    expect(getButtonElements(emptyRef)).toBeUndefined();
   });
 });

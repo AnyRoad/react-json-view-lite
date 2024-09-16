@@ -51,18 +51,6 @@ function quoteString(value: string, quoted = false) {
   return value;
 }
 
-export function getButtonElements(outerRef: React.RefObject<HTMLElement>) {
-  const outerElement = outerRef.current;
-  if (!outerElement) return;
-  return Array.from(outerElement.querySelectorAll<HTMLElement>('[role=button]'));
-}
-
-export function setTabbableButton(buttonElements: HTMLElement[], index: number) {
-  buttonElements.forEach((buttonElement, i) => {
-    buttonElement.tabIndex = i === index ? 0 : -1;
-  });
-}
-
 function ExpandableObject({
   field,
   value,
@@ -107,25 +95,33 @@ function ExpandableObject({
       e.preventDefault();
       const direction = e.key === 'ArrowUp' ? -1 : 1;
 
-      const buttonElements = getButtonElements(outerRef);
-      if (!buttonElements) return;
+      if (!outerRef.current) return;
+      const buttonElements = Array.from(
+        outerRef.current.querySelectorAll<HTMLElement>('[role=button]')
+      );
       const currentIndex = buttonElements.findIndex((el) => el.tabIndex === 0);
       if (currentIndex < 0) return;
 
       const nextIndex = (currentIndex + direction + buttonElements.length) % buttonElements.length; // auto-wrap
-      setTabbableButton(buttonElements, nextIndex);
+      buttonElements[currentIndex].tabIndex = -1;
+      buttonElements[nextIndex].tabIndex = 0;
       buttonElements[nextIndex].focus();
     }
   };
 
   const onClick = () => {
     toggleExpanded();
-    const buttonElements = getButtonElements(outerRef);
-    if (!buttonElements) return;
-    const currentButtonElement = expanderButtonRef.current;
-    if (!currentButtonElement) return;
-    const currentIndex = buttonElements.indexOf(currentButtonElement);
-    setTabbableButton(buttonElements, currentIndex);
+
+    const buttonElement = expanderButtonRef.current;
+    if (!buttonElement) return;
+    const prevButtonElement = outerRef.current?.querySelector<HTMLElement>(
+      '[role=button][tabindex="0"]'
+    );
+    if (prevButtonElement) {
+      prevButtonElement.tabIndex = -1;
+    }
+    buttonElement.tabIndex = 0;
+    buttonElement.focus();
   };
 
   return (
@@ -144,7 +140,7 @@ function ExpandableObject({
         aria-expanded={expanded}
         aria-controls={expanded ? contentsId : undefined}
         ref={expanderButtonRef}
-        // tabIndex gets set on this component by setButtonTabIndex
+        // tabIndex=0 gets set by js
         tabIndex={-1}
       />
       {(field || field === '') &&
