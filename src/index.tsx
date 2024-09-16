@@ -58,15 +58,6 @@ export const JsonView = ({
   ...ariaAttrs
 }: Props) => {
   const outerRef = React.useRef<HTMLDivElement>(null);
-
-  // on first render, set first button to tabIndex=0.
-  React.useEffect(() => {
-    const firstButton = outerRef.current?.querySelector<HTMLElement>('[role=button]');
-    if (firstButton) {
-      firstButton.tabIndex = 0;
-    }
-  }, [outerRef]);
-
   return (
     <div
       aria-label='JSON view'

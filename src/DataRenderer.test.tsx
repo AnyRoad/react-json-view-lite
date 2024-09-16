@@ -411,4 +411,14 @@ describe('DataRender', () => {
     expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
     expect(screen.queryByText(/array/)).not.toBeInTheDocument();
   });
+
+  it('only one item with tabindex=0 if level=0, none if level>0', () => {
+    const data = { test: [1, 2, 3], test2: [1, 2, 3], test3: { a: 'b', c: { d: '1', a: 2 } } };
+
+    const { container, rerender } = render(<WrappedDataRenderer value={data} level={0} />);
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+
+    rerender(<WrappedDataRenderer value={data} level={1} />);
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(0);
+  });
 });

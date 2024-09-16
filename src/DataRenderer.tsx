@@ -23,6 +23,7 @@ export interface StyleProps {
 
 interface CommonRenderProps {
   lastElement: boolean;
+  /** There should only be one node with `level==0`. */
   level: number;
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
@@ -140,8 +141,8 @@ function ExpandableObject({
         aria-expanded={expanded}
         aria-controls={expanded ? contentsId : undefined}
         ref={expanderButtonRef}
-        // tabIndex=0 gets set by js
-        tabIndex={-1}
+        // tabIndex gets changed by js. There should only be one node (top level) with level==0.
+        tabIndex={level === 0 ? 0 : -1}
       />
       {(field || field === '') &&
         (clickToExpandNode ? (

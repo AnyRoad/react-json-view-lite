@@ -47,7 +47,9 @@ describe('JsonView', () => {
   });
 
   it('should go to next node on ArrowDown, prev node with ArrowUp, tabindex should change', () => {
-    render(<JsonView data={{ test: [1, 2, 3], test2: [1, 2, 3] }} />);
+    const { container } = render(<JsonView data={{ test: [1, 2, 3], test2: [1, 2, 3] }} />);
+
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
     const buttons = screen.getAllByRole('button', { hidden: true });
     expect(buttons).toHaveLength(3);
 
