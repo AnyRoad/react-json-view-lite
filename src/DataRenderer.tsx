@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as DataTypeDetection from './DataTypeDetection';
-import { useBool, useComponentId } from './hooks';
+import { useBool } from './hooks';
 
 export interface StyleProps {
   container: string;
@@ -80,7 +80,7 @@ function ExpandableObject({
 
   const expanderIconStyle = expanded ? style.collapseIcon : style.expandIcon;
   const ariaLabel = expanded ? 'collapse JSON' : 'expand JSON';
-  const contentsId = useComponentId();
+  const contentsId = React.useId();
   const childLevel = level + 1;
   const lastIndex = data.length - 1;
 
