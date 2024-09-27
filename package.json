@@ -20,7 +20,7 @@
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
@@ -39,34 +39,26 @@
   "peerDependencies": {
     "react": "^16.13.1 || ^17.0.0 || ^18.0.0"
   },
-  "resolutions": {
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0"
-  },
   "devDependencies": {
-    "@babel/core": "^7.22.11",
-    "@babel/preset-env": "^7.22.14",
-    "@babel/preset-react": "^7.22.5",
-    "@babel/preset-typescript": "^7.22.11",
-    "@storybook/addon-actions": "^7.4.0",
-    "@storybook/addon-essentials": "^7.4.0",
-    "@storybook/addon-interactions": "^7.4.0",
-    "@storybook/addon-links": "^7.4.0",
-    "@storybook/addons": "^7.4.0",
-    "@storybook/react": "^7.4.0",
-    "@storybook/react-webpack5": "^7.4.0",
-    "@storybook/testing-library": "0.2.0",
-    "@storybook/theming": "^7.4.0",
+    "@babel/preset-typescript": "^7.24.7",
+    "@chromatic-com/storybook": "^1.9.0",
+    "@storybook/addon-essentials": "^8.3.3",
+    "@storybook/addon-interactions": "^8.3.3",
+    "@storybook/addon-links": "^8.3.3",
+    "@storybook/addon-onboarding": "^8.3.3",
+    "@storybook/blocks": "^8.3.3",
+    "@storybook/react": "^8.3.3",
+    "@storybook/react-vite": "^8.3.3",
+    "@storybook/test": "^8.3.3",
     "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.0",
+    "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.0",
     "@types/jest": "29.5.13",
     "@types/node": "18.19.50",
     "@types/react": "18.3.5",
     "@types/react-dom": "18.2.7",
-    "@typescript-eslint/eslint-plugin": "8.5.0",
-    "@typescript-eslint/parser": "8.5.0",
-    "babel-eslint": "10.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
     "cross-env": "7.0.3",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
@@ -80,16 +72,17 @@
     "eslint-plugin-promise": "^7.1.0",
     "eslint-plugin-react": "^7.36.0",
     "eslint-plugin-standard": "5.0.0",
-    "gh-pages": "6.0.0",
+    "eslint-plugin-storybook": "^0.8.0",
+    "gh-pages": "6.1.1",
     "microbundle-crl": "0.13.11",
     "npm-run-all": "4.1.5",
+    "postcss": "^8.4.47",
     "prettier": "3.3.3",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "storybook": "^7.4.0",
-    "storybook-css-modules": "^1.0.8",
-    "typescript": "5.2.2"
+    "storybook": "^8.3.3",
+    "typescript": "5.5.4"
   },
   "files": [
     "dist"
@@ -100,5 +93,10 @@
       "!<rootDir>/node_modules/"
     ]
   },
-  "packageManager": "yarn@3.6.3"
+  "packageManager": "yarn@3.6.3",
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
+  }
 }
