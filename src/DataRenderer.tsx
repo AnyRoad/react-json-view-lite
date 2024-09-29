@@ -99,10 +99,16 @@ function ExpandableObject({
       if (!outerRef.current) return;
       const buttonElements = outerRef.current.querySelectorAll<HTMLElement>('[role=button]');
       let currentIndex = -1;
-      buttonElements.forEach((el, i) => {
-        if (el.tabIndex === 0) currentIndex = i;
-      });
-      if (currentIndex < 0) return;
+
+      for (let i = 0; i < buttonElements.length; i++) {
+        if (buttonElements[i].tabIndex === 0) {
+          currentIndex = i;
+          break;
+        }
+      }
+      if (currentIndex < 0) {
+        return;
+      }
 
       const nextIndex = (currentIndex + direction + buttonElements.length) % buttonElements.length; // auto-wrap
       buttonElements[currentIndex].tabIndex = -1;

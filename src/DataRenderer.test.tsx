@@ -39,6 +39,15 @@ const WrappedDataRenderer = (testProps: Partial<JsonRenderProps<any>>) => {
   );
 };
 
+const NoRefWrappedDataRenderer = (testProps: Partial<JsonRenderProps<any>>) => {
+  const ref = React.useRef(null);
+  return (
+    <div>
+      <DataRender outerRef={ref} {...commonProps} {...testProps} />
+    </div>
+  );
+};
+
 const collapseAll = () => false;
 
 const testButtonsCollapsed = () => {
@@ -357,6 +366,29 @@ describe('DataRender', () => {
     expect(screen.getByText('1')).toBeInTheDocument();
   });
 
+  it('should handle node click event without outerRef value', () => {
+    const { container } = render(
+      <NoRefWrappedDataRenderer value={[1, 2, 3]} shouldExpandNode={collapseAll} />
+    );
+    expect(screen.queryByText('1')).not.toBeInTheDocument();
+    testButtonsCollapsed();
+    const collapsedContent = container.getElementsByClassName(commonProps.style.collapsedContent);
+    fireEvent.click(collapsedContent[0]);
+    testButtonsExpanded();
+    expect(screen.getByText('1')).toBeInTheDocument();
+  });
+
+  it('should handle node click without current tabIndex=0 element', () => {
+    const { container } = render(
+      <WrappedDataRenderer value={[1, 2, 3]} shouldExpandNode={collapseAll} level={1} />
+    );
+    expect(container.querySelectorAll('[role=button][tabindex="0"]')).toHaveLength(0);
+    const collapsedContent = container.getElementsByClassName(commonProps.style.collapsedContent);
+    fireEvent.click(collapsedContent[0]);
+    testButtonsExpanded();
+    expect(screen.getByText('1')).toBeInTheDocument();
+  });
+
   it('should expand objects by pressing ArrowRight on icon, collapse objects by pressing ArrowLeft on icon', () => {
     render(<WrappedDataRenderer value={{ test: true }} shouldExpandNode={collapseAll} />);
 
@@ -420,5 +452,51 @@ describe('DataRender', () => {
 
     rerender(<WrappedDataRenderer value={data} level={1} />);
     expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(0);
+  });
+
+  it('maintain only one item with tabindex=0 after pressing up and down arrow keys', () => {
+    const data = { test: [1, 2, 3], test2: [1, 2, 3], test3: { a: 'b', c: { d: '1', a: 2 } } };
+
+    const { container } = render(<WrappedDataRenderer value={data} level={0} />);
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+
+    const buttons = screen.getAllByRole('button', { hidden: true });
+    fireEvent.keyDown(buttons[0], { key: 'ArrowDown', code: 'ArrowDown' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+    fireEvent.keyDown(buttons[1], { key: 'ArrowDown', code: 'ArrowDown' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+
+    fireEvent.keyDown(buttons[1], { key: 'ArrowUp', code: 'ArrowUp' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+    fireEvent.keyDown(buttons[0], { key: 'ArrowUp', code: 'ArrowUp' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+  });
+
+  it('maintain only one item with tabindex=0 after pressing up and down arrow keys without current element', () => {
+    const data = { test: [1, 2, 3], test2: [1, 2, 3], test3: { a: 'b', c: { d: '1', a: 2 } } };
+
+    const { container } = render(<WrappedDataRenderer value={data} level={1} />);
+
+    const buttons = screen.getAllByRole('button', { hidden: true });
+    fireEvent.keyDown(buttons[0], { key: 'ArrowDown', code: 'ArrowDown' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(0);
+  });
+
+  it('handle pressing up and down arrow keys without outer ref', () => {
+    const data = { test: [1, 2, 3], test2: [1, 2, 3], test3: { a: 'b', c: { d: '1', a: 2 } } };
+
+    const { container } = render(<NoRefWrappedDataRenderer value={data} level={0} />);
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+
+    const buttons = screen.getAllByRole('button', { hidden: true });
+    fireEvent.keyDown(buttons[0], { key: 'ArrowDown', code: 'ArrowDown' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+    fireEvent.keyDown(buttons[1], { key: 'ArrowDown', code: 'ArrowDown' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+
+    fireEvent.keyDown(buttons[1], { key: 'ArrowUp', code: 'ArrowUp' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+    fireEvent.keyDown(buttons[0], { key: 'ArrowUp', code: 'ArrowUp' });
+    expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
   });
 });
