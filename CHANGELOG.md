@@ -1,3 +1,17 @@
+## 2.0.0
+
+Major version upgrade.
+
+### Breaking Changes
+
+- Dropped support of React 16 and React 17. Please use versions 1.x.x if your project uses React 16 or React 17.
+- Expanding and collapsing nodes with the "space" button changed to navigation and expanding using arrow keys. Left and Right to collapse/expand, Up and Down to move to previous/next collapsable element.
+
+### New Features
+
+- [Always quote objects property names with quotesForFieldNames property](https://github.com/AnyRoad/react-json-view-lite/pull/31)
+- [Improved a11y support](https://github.com/AnyRoad/react-json-view-lite/pull/32)
+
 ## 1.5.0
 
 ### Bug Fixes

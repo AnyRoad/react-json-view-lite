@@ -37,6 +37,11 @@
 npm install --save react-json-view-lite
 ```
 
+## Version 2.x.x
+
+Versions 2.x.x supports only React 18 and later. Please use 1.5.0 if your project uses React 16 or 17.
+Also version 2 provides better a11y support, collapsing/expanding and navigation through nested elements using arrow keys ("Space" button does not collapse/expand element anymore), but library size increased about 20%.
+
 ## Migration from the 0.9.x versions
 
 1. Property `shouldInitiallyExpand` has different name `shouldExpandNode` in order to emphasize that it will be called every time properties change.
@@ -114,6 +119,7 @@ https://anyroad.github.io/react-json-view-lite/
 | otherValue              | string  | CSS class name for rendering all other values except Object, Arrray, null, undefined, numeric, boolean and string |
 | punctuation             | string  | CSS class name for rendering `,`, `[`, `]`, `{`, `}`                                                              |
 | noQuotesForStringValues | boolean | whether or not to add double quotes when rendering string values, default value is `false`                        |
+| quotesForFieldNames     | boolean | whether or not to add double quotes when rendering field names, default value is `false`                          |
 
 ## Comparison with other libraries
 

@@ -99,10 +99,16 @@ CollapsedRoot.args = {
   shouldExpandNode: collapseAll
 };
 
-export const RenderStringsWithoutObjects = Template.bind({});
-RenderStringsWithoutObjects.args = {
+export const RenderStringsWithoutQuotes = Template.bind({});
+RenderStringsWithoutQuotes.args = {
   data: jsonData,
   style: { ...defaultStyles, noQuotesForStringValues: true }
+};
+
+export const RenderFieldNamesWithQuotes = Template.bind({});
+RenderFieldNamesWithQuotes.args = {
+  data: jsonData,
+  style: { ...defaultStyles, quotesForFieldNames: true }
 };
 
 export const ClickOnFieldNameToExpand = Template.bind({});
