@@ -5,7 +5,7 @@ export function useBool(
 ): [boolean, () => void, (value: boolean) => void] {
   const [value, setValue] = useState(initialValueCreator());
 
-  const tooggle = () => setValue((currentValue) => !currentValue);
+  const toggle = () => setValue((currentValue) => !currentValue);
 
-  return [value, tooggle, setValue];
+  return [value, toggle, setValue];
 }

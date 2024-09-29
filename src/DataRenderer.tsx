@@ -21,27 +21,27 @@ export interface StyleProps {
   quotesForFieldNames?: boolean;
 }
 
-export interface JsonRenderProps<T> {
-  field?: string;
-  value: T;
+interface CommonRenderProps {
   lastElement: boolean;
+  /** There should only be one node with `level==0`. */
   level: number;
   style: StyleProps;
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
   clickToExpandNode: boolean;
+  outerRef: React.RefObject<HTMLDivElement>;
 }
 
-export interface ExpandableRenderProps {
+export interface JsonRenderProps<T> extends CommonRenderProps {
+  field?: string;
+  value: T;
+}
+
+export interface ExpandableRenderProps extends CommonRenderProps {
   field: string | undefined;
   value: Array<any> | object;
   data: Array<[string | undefined, any]>;
   openBracket: string;
   closeBracket: string;
-  lastElement: boolean;
-  level: number;
-  style: StyleProps;
-  shouldExpandNode: (level: number, value: any, field?: string) => boolean;
-  clickToExpandNode: boolean;
 }
 
 function quoteString(value: string, quoted = false) {
@@ -62,12 +62,16 @@ function ExpandableObject({
   level,
   style,
   shouldExpandNode,
-  clickToExpandNode
+  clickToExpandNode,
+  outerRef
 }: ExpandableRenderProps) {
+  // follows tree example for role structure and keypress actions: https://www.w3.org/WAI/ARIA/apg/patterns/treeview/examples/treeview-1a/
+
   const shouldExpandNodeCalledRef = React.useRef(false);
   const [expanded, toggleExpanded, setExpanded] = useBool(() =>
     shouldExpandNode(level, value, field)
   );
+  const expanderButtonRef = React.useRef<HTMLSpanElement>(null);
 
   React.useEffect(() => {
     if (!shouldExpandNodeCalledRef.current) {
@@ -85,33 +89,68 @@ function ExpandableObject({
   const lastIndex = data.length - 1;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
-    if (e.key === ' ') {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
       e.preventDefault();
-      toggleExpanded();
+      setExpanded(e.key === 'ArrowRight');
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const direction = e.key === 'ArrowUp' ? -1 : 1;
+
+      if (!outerRef.current) return;
+      const buttonElements = outerRef.current.querySelectorAll<HTMLElement>('[role=button]');
+      let currentIndex = -1;
+      buttonElements.forEach((el, i) => {
+        if (el.tabIndex === 0) currentIndex = i;
+      });
+      if (currentIndex < 0) return;
+
+      const nextIndex = (currentIndex + direction + buttonElements.length) % buttonElements.length; // auto-wrap
+      buttonElements[currentIndex].tabIndex = -1;
+      buttonElements[nextIndex].tabIndex = 0;
+      buttonElements[nextIndex].focus();
     }
   };
 
+  const onClick = () => {
+    toggleExpanded();
+
+    const buttonElement = expanderButtonRef.current;
+    if (!buttonElement) return;
+    const prevButtonElement = outerRef.current?.querySelector<HTMLElement>(
+      '[role=button][tabindex="0"]'
+    );
+    if (prevButtonElement) {
+      prevButtonElement.tabIndex = -1;
+    }
+    buttonElement.tabIndex = 0;
+    buttonElement.focus();
+  };
+
   return (
-    <div className={style.basicChildStyle} role='list'>
+    <div
+      className={style.basicChildStyle}
+      role='treeitem'
+      aria-expanded={expanded}
+      aria-selected={undefined}
+    >
       <span
         className={expanderIconStyle}
-        onClick={toggleExpanded}
+        onClick={onClick}
         onKeyDown={onKeyDown}
         role='button'
-        tabIndex={0}
         aria-label={ariaLabel}
         aria-expanded={expanded}
         aria-controls={expanded ? contentsId : undefined}
+        ref={expanderButtonRef}
+        // tabIndex gets changed by js. There should only be one node (top level) with level==0.
+        tabIndex={level === 0 ? 0 : -1}
       />
       {(field || field === '') &&
         (clickToExpandNode ? (
-          <span
-            className={style.clickableLabel}
-            onClick={toggleExpanded}
-            onKeyDown={onKeyDown}
-            role='button'
-            tabIndex={-1}
-          >
+          // don't apply role="button" or tabIndex even though has onClick, because has same
+          // function as the +/- expander button (so just expose that button to keyboard and a11y tree)
+          // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+          <span className={style.clickableLabel} onClick={onClick} onKeyDown={onKeyDown}>
             {quoteString(field, style.quotesForFieldNames)}:
           </span>
         ) : (
@@ -120,7 +159,7 @@ function ExpandableObject({
       <span className={style.punctuation}>{openBracket}</span>
 
       {expanded ? (
-        <div id={contentsId}>
+        <ul id={contentsId} role='group'>
           {data.map((dataElement, index) => (
             <DataRender
               key={dataElement[0] || index}
@@ -131,20 +170,15 @@ function ExpandableObject({
               level={childLevel}
               shouldExpandNode={shouldExpandNode}
               clickToExpandNode={clickToExpandNode}
+              outerRef={outerRef}
             />
           ))}
-        </div>
+        </ul>
       ) : (
-        <span
-          className={style.collapsedContent}
-          onClick={toggleExpanded}
-          onKeyDown={onKeyDown}
-          role='button'
-          tabIndex={-1} // No need to be able to tab to this button, can just use the other button
-          aria-hidden={true} // No need for screen readers to see this button, they can just use the other button
-          aria-label={ariaLabel}
-          aria-expanded={expanded}
-        />
+        // don't apply role="button" or tabIndex even though has onClick, because has same
+        // function as the +/- expander button (so just expose that button to keyboard and a11y tree)
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        <span className={style.collapsedContent} onClick={onClick} onKeyDown={onKeyDown} />
       )}
 
       <span className={style.punctuation}>{closeBracket}</span>
@@ -163,7 +197,7 @@ export interface EmptyRenderProps {
 
 function EmptyObject({ field, openBracket, closeBracket, lastElement, style }: EmptyRenderProps) {
   return (
-    <div className={style.basicChildStyle} role='listitem'>
+    <div className={style.basicChildStyle} role='treeitem' aria-selected={undefined}>
       {(field || field === '') && (
         <span className={style.label}>{quoteString(field, style.quotesForFieldNames)}:</span>
       )}
@@ -181,7 +215,8 @@ function JsonObject({
   lastElement,
   shouldExpandNode,
   clickToExpandNode,
-  level
+  level,
+  outerRef
 }: JsonRenderProps<Object>) {
   if (Object.keys(value).length === 0) {
     return EmptyObject({
@@ -203,7 +238,8 @@ function JsonObject({
     style,
     shouldExpandNode,
     clickToExpandNode,
-    data: Object.keys(value).map((key) => [key, value[key as keyof typeof value]])
+    data: Object.keys(value).map((key) => [key, value[key as keyof typeof value]]),
+    outerRef
   });
 }
 
@@ -214,7 +250,8 @@ function JsonArray({
   lastElement,
   level,
   shouldExpandNode,
-  clickToExpandNode
+  clickToExpandNode,
+  outerRef
 }: JsonRenderProps<Array<any>>) {
   if (value.length === 0) {
     return EmptyObject({
@@ -236,7 +273,8 @@ function JsonArray({
     style,
     shouldExpandNode,
     clickToExpandNode,
-    data: value.map((element) => [undefined, element])
+    data: value.map((element) => [undefined, element]),
+    outerRef
   });
 }
 
@@ -274,7 +312,7 @@ function JsonPrimitiveValue({
   }
 
   return (
-    <div className={style.basicChildStyle} role='listitem'>
+    <div className={style.basicChildStyle} role='treeitem' aria-selected={undefined}>
       {(field || field === '') && (
         <span className={style.label}>{quoteString(field, style.quotesForFieldNames)}:</span>
       )}
