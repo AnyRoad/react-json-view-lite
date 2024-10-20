@@ -57,6 +57,11 @@
   padding: 0;
 }
 
+.basic-element-style > ul {
+  margin: 0;
+  padding: 0;
+}
+
 /* default light style */
 .label-light {
   font-weight: 600;

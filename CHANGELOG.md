@@ -1,3 +1,9 @@
+## 2.0.1
+
+### Bug Fixes
+
+- Fixes margin and padding for the expandable elements (because `div` element changed to the `ul`)
+
 ## 2.0.0
 
 Major version upgrade.
