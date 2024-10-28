@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 export interface Props extends React.AriaAttributes {
   data: Object | Array<any>;
-  style?: StyleProps;
+  style?: Partial<StyleProps>;
   shouldExpandNode?: (level: number, value: any, field?: string) => boolean;
   clickToExpandNode?: boolean;
 }
@@ -68,7 +68,7 @@ export const JsonView = ({
     >
       <DataRender
         value={data}
-        style={style}
+        style={{ ...defaultStyles, ...style }}
         lastElement
         level={0}
         shouldExpandNode={shouldExpandNode}

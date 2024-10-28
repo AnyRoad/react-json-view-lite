@@ -45,11 +45,7 @@ export interface ExpandableRenderProps extends CommonRenderProps {
 }
 
 function quoteString(value: string, quoted = false) {
-  if (!value || quoted) {
-    return `"${value}"`;
-  }
-
-  return value;
+  return !value || quoted ? `"${value}"` : value;
 }
 
 function ExpandableObject({
