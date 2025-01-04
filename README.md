@@ -115,6 +115,7 @@ https://anyroad.github.io/react-json-view-lite/
 | Name                    | Type    | Description                                                                                                       |
 | ----------------------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
 | container               | string  | CSS class name for rendering parent block                                                                         |
+| childFieldsContainer    | string  | CSS class name for rendering parent block of array or object                                                      |
 | basicChildStyle         | string  | CSS class name for property block containing property name and value                                              |
 | collapseIcon            | string  | CSS class name for rendering button collapsing Object and Array nodes. Default content is `▾`.                    |
 | expandIcon              | string  | CSS class name for rendering button expanding Object and Array nodes. Default content is `▸`.                     |

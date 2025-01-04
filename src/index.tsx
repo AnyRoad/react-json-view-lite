@@ -12,6 +12,7 @@ export interface Props extends React.AriaAttributes {
 export const defaultStyles: StyleProps = {
   container: styles['container-light'],
   basicChildStyle: styles['basic-element-style'],
+  childFieldsContainer: styles['child-fields-container'],
   label: styles['label-light'],
   clickableLabel: styles['clickable-label-light'],
   nullValue: styles['value-null-light'],
@@ -31,6 +32,7 @@ export const defaultStyles: StyleProps = {
 export const darkStyles: StyleProps = {
   container: styles['container-dark'],
   basicChildStyle: styles['basic-element-style'],
+  childFieldsContainer: styles['child-fields-container'],
   label: styles['label-dark'],
   clickableLabel: styles['clickable-label-dark'],
   nullValue: styles['value-null-dark'],

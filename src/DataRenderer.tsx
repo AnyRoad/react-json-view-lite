@@ -17,6 +17,7 @@ export interface StyleProps {
   expandIcon: string;
   collapseIcon: string;
   collapsedContent: string;
+  childFieldsContainer: string;
   noQuotesForStringValues?: boolean;
   quotesForFieldNames?: boolean;
 }
@@ -161,7 +162,7 @@ function ExpandableObject({
       <span className={style.punctuation}>{openBracket}</span>
 
       {expanded ? (
-        <ul id={contentsId} role='group'>
+        <ul id={contentsId} role='group' className={style.childFieldsContainer}>
           {data.map((dataElement, index) => (
             <DataRender
               key={dataElement[0] || index}

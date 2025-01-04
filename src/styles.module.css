@@ -53,11 +53,11 @@
 }
 
 .basic-element-style {
-  margin: 0 10px;
-  padding: 0;
+  margin: 0;
+  padding: 0 10px;
 }
 
-.basic-element-style > ul {
+.child-fields-container {
   margin: 0;
   padding: 0;
 }
