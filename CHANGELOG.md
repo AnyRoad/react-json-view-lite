@@ -1,3 +1,9 @@
+## 2.1.0
+
+### New Features
+
+- Adds separate style for the expandable elements container (`childFieldsContainer`)
+
 ## 2.0.1
 
 ### Bug Fixes
