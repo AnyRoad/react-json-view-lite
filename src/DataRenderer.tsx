@@ -286,7 +286,7 @@ function JsonPrimitiveValue({
   value,
   style,
   lastElement
-}: JsonRenderProps<string | number | boolean | Date | null | undefined>) {
+}: JsonRenderProps<string | number | boolean | Date | Function | null | undefined>) {
   let stringValue;
   let valueStyle = style.otherValue;
 
@@ -310,6 +310,8 @@ function JsonPrimitiveValue({
     valueStyle = style.numberValue;
   } else if (DataTypeDetection.isDate(value)) {
     stringValue = value.toISOString();
+  } else if (DataTypeDetection.isFunction(value)) {
+    stringValue = 'function() { }';
   } else {
     stringValue = (value as any).toString();
   }
@@ -331,7 +333,11 @@ export default function DataRender(props: JsonRenderProps<any>) {
     return <JsonArray {...props} />;
   }
 
-  if (DataTypeDetection.isObject(value) && !DataTypeDetection.isDate(value)) {
+  if (
+    DataTypeDetection.isObject(value) &&
+    !DataTypeDetection.isDate(value) &&
+    !DataTypeDetection.isFunction(value)
+  ) {
     return <JsonObject {...props} />;
   }
 

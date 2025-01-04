@@ -148,6 +148,12 @@ describe('DataRender', () => {
     expect(screen.getByText('42n')).toBeInTheDocument();
   });
 
+  it('should render functions', () => {
+    render(<WrappedDataRenderer value={{ func: () => {} }} />);
+    expect(screen.getByText(/func:/)).toBeInTheDocument();
+    expect(screen.getByText('function() { }')).toBeInTheDocument();
+  });
+
   it('should render dates', () => {
     render(<WrappedDataRenderer value={{ test: new Date(0) }} />);
     expect(screen.getByText(/test:/)).toBeInTheDocument();

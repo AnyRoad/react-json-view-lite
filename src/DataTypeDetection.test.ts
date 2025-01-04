@@ -14,6 +14,9 @@ const errorValue = new Error();
 const regExValue = /test/;
 const symbolValue = Symbol('s');
 const bigintValue = BigInt(42);
+const func = function (param: number): number {
+  return param * 2;
+};
 
 describe('isBoolean', () => {
   it('should return `true` for boolean values', () => {
@@ -35,6 +38,7 @@ describe('isBoolean', () => {
     expect(DataTypeDetection.isBoolean(regExValue)).toBe(false);
     expect(DataTypeDetection.isBoolean(symbolValue)).toBe(false);
     expect(DataTypeDetection.isBoolean(bigintValue)).toBe(false);
+    expect(DataTypeDetection.isBoolean(func)).toBe(false);
   });
 });
 
@@ -59,6 +63,7 @@ describe('isNumber', () => {
     expect(DataTypeDetection.isNumber(regExValue)).toBe(false);
     expect(DataTypeDetection.isNumber(symbolValue)).toBe(false);
     expect(DataTypeDetection.isNumber(bigintValue)).toBe(false);
+    expect(DataTypeDetection.isNumber(func)).toBe(false);
   });
 });
 
@@ -82,6 +87,7 @@ describe('isString', () => {
     expect(DataTypeDetection.isString(regExValue)).toBe(false);
     expect(DataTypeDetection.isString(symbolValue)).toBe(false);
     expect(DataTypeDetection.isString(bigintValue)).toBe(false);
+    expect(DataTypeDetection.isString(func)).toBe(false);
   });
 });
 
@@ -103,6 +109,7 @@ describe('isNull', () => {
     expect(DataTypeDetection.isNull(regExValue)).toBe(false);
     expect(DataTypeDetection.isNull(symbolValue)).toBe(false);
     expect(DataTypeDetection.isNull(bigintValue)).toBe(false);
+    expect(DataTypeDetection.isNull(func)).toBe(false);
   });
 });
 
@@ -124,6 +131,7 @@ describe('isUndefined', () => {
     expect(DataTypeDetection.isUndefined(regExValue)).toBe(false);
     expect(DataTypeDetection.isUndefined(symbolValue)).toBe(false);
     expect(DataTypeDetection.isUndefined(bigintValue)).toBe(false);
+    expect(DataTypeDetection.isUndefined(func)).toBe(false);
   });
 });
 
@@ -145,6 +153,7 @@ describe('isArray', () => {
     expect(DataTypeDetection.isArray(regExValue)).toBe(false);
     expect(DataTypeDetection.isArray(symbolValue)).toBe(false);
     expect(DataTypeDetection.isArray(bigintValue)).toBe(false);
+    expect(DataTypeDetection.isArray(func)).toBe(false);
   });
 });
 
@@ -187,6 +196,7 @@ describe('isBigInt', () => {
     expect(DataTypeDetection.isBigInt(nullValue)).toBe(false);
     expect(DataTypeDetection.isBigInt(undefinedValue)).toBe(false);
     expect(DataTypeDetection.isBigInt(symbolValue)).toBe(false);
+    expect(DataTypeDetection.isBigInt(func)).toBe(false);
   });
 });
 
@@ -209,5 +219,29 @@ describe('isDate', () => {
     expect(DataTypeDetection.isDate(regExValue)).toBe(false);
     expect(DataTypeDetection.isDate(symbolValue)).toBe(false);
     expect(DataTypeDetection.isDate(bigintValue)).toBe(false);
+    expect(DataTypeDetection.isDate(func)).toBe(false);
+  });
+});
+
+describe('isFunc', () => {
+  it('should return `true` for function values', () => {
+    expect(DataTypeDetection.isFunction(func)).toBe(true);
+  });
+
+  it('should return `false` for non-function values', () => {
+    expect(DataTypeDetection.isFunction(stringValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(numberValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(floatNumberValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(trueValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(falseValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(objectValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(arrayValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(nullValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(undefinedValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(errorValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(regExValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(symbolValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(bigintValue)).toBe(false);
+    expect(DataTypeDetection.isFunction(dateValue)).toBe(false);
   });
 });

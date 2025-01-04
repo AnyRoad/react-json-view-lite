@@ -33,3 +33,7 @@ export const isNull = (data: any): data is null => {
 export const isUndefined = (data: any): data is undefined => {
   return data === undefined;
 };
+
+export const isFunction = (data: unknown): data is Function => {
+  return !!data && data instanceof Object && typeof data === 'function';
+};
