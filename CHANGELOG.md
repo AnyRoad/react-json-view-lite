@@ -1,3 +1,9 @@
+## 2.3.0
+
+### Bug Fixes
+
+- [ noQuotesForStringValues not applied to empty string](https://github.com/AnyRoad/react-json-view-lite/issues/45)
+
 ## 2.2.0
 
 ### New Features
