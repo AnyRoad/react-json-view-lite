@@ -97,12 +97,14 @@ describe('DataRender', () => {
     render(
       <WrappedDataRenderer
         style={{ ...defaultStyles, noQuotesForStringValues: true }}
-        value={{ test: 'string' }}
+        value={{ test: 'string', emtpy: '' }}
       />
     );
     expect(screen.getByText(/test:/)).toBeInTheDocument();
     expect(screen.getByText(`string`)).toBeInTheDocument();
     expect(screen.queryByText(`"string"`)).not.toBeInTheDocument();
+    expect(screen.getByText(/emtpy:/)).toBeInTheDocument();
+    expect(screen.queryByText(`""`)).not.toBeInTheDocument();
   });
 
   it('should render strings with quotes if noQuotesForStringValues is undefined', () => {

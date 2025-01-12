@@ -45,8 +45,16 @@ export interface ExpandableRenderProps extends CommonRenderProps {
   closeBracket: string;
 }
 
+// still keep quotes for the field names if it is empty string
+// but do not wrap with quotes for the empty string values
+// in the quoteStringValue function because it can cause
+// double quotes for the custom css styles.
 function quoteString(value: string, quoted = false) {
   return !value || quoted ? `"${value}"` : value;
+}
+
+function quoteStringValue(value: string, quoted: boolean) {
+  return quoted ? `"${value}"` : value;
 }
 
 function ExpandableObject({
@@ -297,7 +305,7 @@ function JsonPrimitiveValue({
     stringValue = 'undefined';
     valueStyle = style.undefinedValue;
   } else if (DataTypeDetection.isString(value)) {
-    stringValue = quoteString(value, !style.noQuotesForStringValues);
+    stringValue = quoteStringValue(value, !style.noQuotesForStringValues);
     valueStyle = style.stringValue;
   } else if (DataTypeDetection.isBoolean(value)) {
     stringValue = value ? 'true' : 'false';
