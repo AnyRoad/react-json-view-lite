@@ -23,7 +23,7 @@ export const isArray = (data: any): data is Array<any> => {
 };
 
 export const isObject = (data: any): data is object => {
-  return typeof data === "object" && data !== null;
+  return typeof data === 'object' && data !== null;
 };
 
 export const isNull = (data: any): data is null => {

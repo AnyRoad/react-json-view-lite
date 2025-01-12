@@ -1,3 +1,14 @@
+## 2.2.0
+
+### New Features
+
+- [Officially adds support for the React 19](https://github.com/AnyRoad/react-json-view-lite/pull/43)
+- Adds render for the `function` fields
+
+### Bug Fixes
+
+- [Fixes object type detection](https://github.com/AnyRoad/react-json-view-lite/pull/44)
+
 ## 2.1.0
 
 ### New Features

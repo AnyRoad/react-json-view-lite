@@ -41,10 +41,10 @@ npm install --save react-json-view-lite
 
 Versions 2.x.x supports only React 18 and later. Please use 1.5.0 if your project uses React 16 or 17.
 Also version 2 provides better a11y support, collapsing/expanding and navigation through nested elements using arrow keys ("Space" button does not collapse/expand element anymore), but library size increased about 20%.
-If your project uses custom styles you might need to update the css for the `basicChildStyle` property like below:
+If your project uses custom styles you will need to add the css for the `childFieldsContainer` property like below:
 
 ```css
-.basic-child-style > ul {
+.child-fields-container {
   margin: 0;
   padding: 0;
 }
