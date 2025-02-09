@@ -1,7 +1,15 @@
 import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import { StoryFn, Meta, StoryObj } from '@storybook/react';
+import { useArgs } from '@storybook/preview-api';
 
-import { JsonView, defaultStyles, darkStyles, allExpanded, collapseAllNested } from '../index';
+import {
+  JsonView,
+  defaultStyles,
+  darkStyles,
+  allExpanded,
+  collapseAllNested,
+  NodeExpandingEvent
+} from '../index';
 
 export default {
   title: 'Json View',
@@ -117,4 +125,37 @@ ClickOnFieldNameToExpand.args = {
   data: jsonData,
   style: { ...defaultStyles },
   clickToExpandNode: true
+};
+
+type JsonViewStory = StoryObj<typeof JsonView>;
+
+export const ExpandOnlyFirstLevelWhenClickOnRoot: JsonViewStory = {
+  args: {
+    data: jsonData,
+    style: { ...defaultStyles },
+    shouldExpandNode: collapseAll,
+    clickToExpandNode: true
+  },
+  argTypes: {},
+  name: 'Expand only first level on root click (using beforeExpandChange)',
+
+  render: function Render(args) {
+    const [{ shouldExpandNode }, updateArgs] = useArgs();
+
+    const beforeExpandChange = (event: NodeExpandingEvent) => {
+      if (event.level === 0 && event.newExpandValue) {
+        updateArgs({ shouldExpandNode: (level: number) => level < 1 });
+        return false;
+      }
+      return true;
+    };
+
+    return (
+      <JsonView
+        {...args}
+        beforeExpandChange={beforeExpandChange}
+        shouldExpandNode={shouldExpandNode}
+      />
+    );
+  }
 };

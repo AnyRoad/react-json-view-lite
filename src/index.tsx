@@ -2,11 +2,19 @@ import * as React from 'react';
 import DataRender, { StyleProps } from './DataRenderer';
 import styles from './styles.module.css';
 
+export interface NodeExpandingEvent {
+  level: number;
+  value: any;
+  field?: string;
+  newExpandValue: boolean;
+}
+
 export interface Props extends React.AriaAttributes {
   data: Object | Array<any>;
   style?: Partial<StyleProps>;
   shouldExpandNode?: (level: number, value: any, field?: string) => boolean;
   clickToExpandNode?: boolean;
+  beforeExpandChange?: (event: NodeExpandingEvent) => boolean;
 }
 
 export const defaultStyles: StyleProps = {
@@ -57,6 +65,7 @@ export const JsonView = ({
   style = defaultStyles,
   shouldExpandNode = allExpanded,
   clickToExpandNode = false,
+  beforeExpandChange,
   ...ariaAttrs
 }: Props) => {
   const outerRef = React.useRef<HTMLDivElement>(null);
@@ -76,6 +85,7 @@ export const JsonView = ({
         shouldExpandNode={shouldExpandNode}
         clickToExpandNode={clickToExpandNode}
         outerRef={outerRef}
+        beforeExpandChange={beforeExpandChange}
       />
     </div>
   );

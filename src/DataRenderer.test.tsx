@@ -9,6 +9,7 @@ const commonProps: Omit<JsonRenderProps<any>, 'outerRef'> = {
   level: 0,
   style: {
     container: '',
+    childFieldsContainer: '',
     basicChildStyle: '',
     label: '',
     clickableLabel: defaultStyles.clickableLabel,
@@ -506,5 +507,93 @@ describe('DataRender', () => {
     expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
     fireEvent.keyDown(buttons[0], { key: 'ArrowUp', code: 'ArrowUp' });
     expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+  });
+
+  it('should stop expanding if beforeExpandChange returned false', () => {
+    const { container } = render(
+      <WrappedDataRenderer
+        value={{ obj: { test: 123 } }}
+        shouldExpandNode={collapseAll}
+        beforeExpandChange={() => false}
+      />
+    );
+    expect(screen.queryByText(/obj/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+
+    testButtonsCollapsed();
+    const collapsedContent = container.getElementsByClassName(commonProps.style.collapsedContent);
+    fireEvent.click(collapsedContent[0]);
+    testButtonsCollapsed();
+    expect(screen.queryByText(/obj/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+  });
+
+  it('should continue expanding if beforeExpandChange returned true', () => {
+    const { container } = render(
+      <WrappedDataRenderer
+        value={{ obj: { test: 123 } }}
+        shouldExpandNode={collapseAll}
+        beforeExpandChange={() => true}
+      />
+    );
+    expect(screen.queryByText(/obj/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+
+    testButtonsCollapsed();
+    const collapsedContent = container.getElementsByClassName(commonProps.style.collapsedContent);
+    fireEvent.click(collapsedContent[0]);
+    expect(screen.getByText(/obj/)).toBeInTheDocument();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+  });
+
+  it('should stop expanding if beforeExpandChange returned false and render with new shouldExpandNode value', () => {
+    let level = null;
+    let field = null;
+    let value = null;
+    let expanded = null;
+    const inputData = { obj: { test: 123 } };
+
+    const { container, rerender } = render(
+      <WrappedDataRenderer
+        value={inputData}
+        shouldExpandNode={collapseAll}
+        beforeExpandChange={(event) => {
+          level = event.level;
+          field = event.field;
+          value = event.value;
+          expanded = event.newExpandValue;
+          return false;
+        }}
+      />
+    );
+    expect(screen.queryByText(/obj/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+
+    testButtonsCollapsed();
+    const collapsedContent = container.getElementsByClassName(commonProps.style.collapsedContent);
+    fireEvent.click(collapsedContent[0]);
+    testButtonsCollapsed();
+
+    expect(level).toBe(0);
+    expect(expanded).toBe(true);
+    expect(field).toBeUndefined();
+    expect(value).toBe(inputData);
+
+    rerender(
+      <WrappedDataRenderer
+        value={{ obj: { test: 123 } }}
+        shouldExpandNode={collapseAllNested}
+        beforeExpandChange={() => false}
+      />
+    );
+
+    expect(screen.getByText(/obj/)).toBeInTheDocument();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
   });
 });

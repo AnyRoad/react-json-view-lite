@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as DataTypeDetection from './DataTypeDetection';
-import { useBool } from './hooks';
+import { NodeExpandingEvent } from '.';
 
 export interface StyleProps {
   container: string;
@@ -30,6 +30,7 @@ interface CommonRenderProps {
   shouldExpandNode: (level: number, value: any, field?: string) => boolean;
   clickToExpandNode: boolean;
   outerRef: React.RefObject<HTMLDivElement>;
+  beforeExpandChange?: (event: NodeExpandingEvent) => boolean;
 }
 
 export interface JsonRenderProps<T> extends CommonRenderProps {
@@ -68,14 +69,21 @@ function ExpandableObject({
   style,
   shouldExpandNode,
   clickToExpandNode,
-  outerRef
+  outerRef,
+  beforeExpandChange
 }: ExpandableRenderProps) {
   // follows tree example for role structure and keypress actions: https://www.w3.org/WAI/ARIA/apg/patterns/treeview/examples/treeview-1a/
 
   const shouldExpandNodeCalledRef = React.useRef(false);
-  const [expanded, toggleExpanded, setExpanded] = useBool(() =>
-    shouldExpandNode(level, value, field)
-  );
+  const [expanded, setExpanded] = React.useState(() => shouldExpandNode(level, value, field));
+  const setExpandWithCallback = (newExpandValue: boolean) => {
+    if (
+      expanded !== newExpandValue &&
+      (!beforeExpandChange || beforeExpandChange({ level, value, field, newExpandValue }))
+    ) {
+      setExpanded(newExpandValue);
+    }
+  };
   const expanderButtonRef = React.useRef<HTMLSpanElement>(null);
 
   React.useEffect(() => {
@@ -96,7 +104,7 @@ function ExpandableObject({
   const onKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
       e.preventDefault();
-      setExpanded(e.key === 'ArrowRight');
+      setExpandWithCallback(e.key === 'ArrowRight');
     } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
       const direction = e.key === 'ArrowUp' ? -1 : 1;
@@ -123,7 +131,7 @@ function ExpandableObject({
   };
 
   const onClick = () => {
-    toggleExpanded();
+    setExpandWithCallback(!expanded);
 
     const buttonElement = expanderButtonRef.current;
     if (!buttonElement) return;
@@ -227,7 +235,8 @@ function JsonObject({
   shouldExpandNode,
   clickToExpandNode,
   level,
-  outerRef
+  outerRef,
+  beforeExpandChange
 }: JsonRenderProps<Object>) {
   if (Object.keys(value).length === 0) {
     return EmptyObject({
@@ -250,7 +259,8 @@ function JsonObject({
     shouldExpandNode,
     clickToExpandNode,
     data: Object.keys(value).map((key) => [key, value[key as keyof typeof value]]),
-    outerRef
+    outerRef,
+    beforeExpandChange
   });
 }
 
@@ -262,7 +272,8 @@ function JsonArray({
   level,
   shouldExpandNode,
   clickToExpandNode,
-  outerRef
+  outerRef,
+  beforeExpandChange
 }: JsonRenderProps<Array<any>>) {
   if (value.length === 0) {
     return EmptyObject({
@@ -285,7 +296,8 @@ function JsonArray({
     shouldExpandNode,
     clickToExpandNode,
     data: value.map((element) => [undefined, element]),
-    outerRef
+    outerRef,
+    beforeExpandChange
   });
 }
 
