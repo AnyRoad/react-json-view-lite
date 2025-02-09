@@ -110,6 +110,12 @@ https://anyroad.github.io/react-json-view-lite/
 | field | string? | Field name |
 | newExpandValue | boolean | if node is about to be expanded (`true`) or collapsed (`false`) |
 
+## interface AriaLabels
+
+| Field Name | Type | Description |
+| collapseJson | string | `aria-label` property for the "collapse" node button. Default value is "collapse JSON". |
+| expandJson | string | `aria-label` property for the "expand" node button. Default value is "expand JSON". |
+
 ### Extra exported
 
 | Name              | Type                         | Description                                         |
@@ -121,25 +127,26 @@ https://anyroad.github.io/react-json-view-lite/
 
 ### StyleProps
 
-| Name                    | Type    | Description                                                                                                       |
-| ----------------------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
-| container               | string  | CSS class name for rendering parent block                                                                         |
-| childFieldsContainer    | string  | CSS class name for rendering parent block of array or object                                                      |
-| basicChildStyle         | string  | CSS class name for property block containing property name and value                                              |
-| collapseIcon            | string  | CSS class name for rendering button collapsing Object and Array nodes. Default content is `▾`.                    |
-| expandIcon              | string  | CSS class name for rendering button expanding Object and Array nodes. Default content is `▸`.                     |
-| collapsedContent        | string  | CSS class name for rendering placeholder when Object and Array nodes are collapsed. Default contents is `...`.    |
-| label                   | string  | CSS class name for rendering property names                                                                       |
-| clickableLabel          | string  | CSS class name for rendering clickable property names (requires the `clickToExpandNode` prop to be true)          |
-| nullValue               | string  | CSS class name for rendering null values                                                                          |
-| undefinedValue          | string  | CSS class name for rendering undefined values                                                                     |
-| numberValue             | string  | CSS class name for rendering numeric values                                                                       |
-| stringValue             | string  | CSS class name for rendering string values                                                                        |
-| booleanValue            | string  | CSS class name for rendering boolean values                                                                       |
-| otherValue              | string  | CSS class name for rendering all other values except Object, Arrray, null, undefined, numeric, boolean and string |
-| punctuation             | string  | CSS class name for rendering `,`, `[`, `]`, `{`, `}`                                                              |
-| noQuotesForStringValues | boolean | whether or not to add double quotes when rendering string values, default value is `false`                        |
-| quotesForFieldNames     | boolean | whether or not to add double quotes when rendering field names, default value is `false`                          |
+| Name                    | Type       | Description                                                                                                       |
+| ----------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------- |
+| container               | string     | CSS class name for rendering parent block                                                                         |
+| childFieldsContainer    | string     | CSS class name for rendering parent block of array or object                                                      |
+| basicChildStyle         | string     | CSS class name for property block containing property name and value                                              |
+| collapseIcon            | string     | CSS class name for rendering button collapsing Object and Array nodes. Default content is `▾`.                    |
+| expandIcon              | string     | CSS class name for rendering button expanding Object and Array nodes. Default content is `▸`.                     |
+| collapsedContent        | string     | CSS class name for rendering placeholder when Object and Array nodes are collapsed. Default contents is `...`.    |
+| label                   | string     | CSS class name for rendering property names                                                                       |
+| clickableLabel          | string     | CSS class name for rendering clickable property names (requires the `clickToExpandNode` prop to be true)          |
+| nullValue               | string     | CSS class name for rendering null values                                                                          |
+| undefinedValue          | string     | CSS class name for rendering undefined values                                                                     |
+| numberValue             | string     | CSS class name for rendering numeric values                                                                       |
+| stringValue             | string     | CSS class name for rendering string values                                                                        |
+| booleanValue            | string     | CSS class name for rendering boolean values                                                                       |
+| otherValue              | string     | CSS class name for rendering all other values except Object, Arrray, null, undefined, numeric, boolean and string |
+| punctuation             | string     | CSS class name for rendering `,`, `[`, `]`, `{`, `}`                                                              |
+| noQuotesForStringValues | boolean    | whether or not to add double quotes when rendering string values, default value is `false`                        |
+| quotesForFieldNames     | boolean    | whether or not to add double quotes when rendering field names, default value is `false`                          |
+| ariaLables              | AriaLables | Text to use for the `aria-label` properties                                                                       |
 
 ## Comparison with other libraries
 

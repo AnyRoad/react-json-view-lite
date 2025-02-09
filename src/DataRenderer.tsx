@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as DataTypeDetection from './DataTypeDetection';
-import { NodeExpandingEvent } from '.';
+import { AriaLabels, NodeExpandingEvent } from '.';
 
 export interface StyleProps {
   container: string;
@@ -20,6 +20,7 @@ export interface StyleProps {
   childFieldsContainer: string;
   noQuotesForStringValues?: boolean;
   quotesForFieldNames?: boolean;
+  ariaLables: AriaLabels;
 }
 
 interface CommonRenderProps {
@@ -96,7 +97,7 @@ function ExpandableObject({
   }, [shouldExpandNode]);
 
   const expanderIconStyle = expanded ? style.collapseIcon : style.expandIcon;
-  const ariaLabel = expanded ? 'collapse JSON' : 'expand JSON';
+  const ariaLabel = expanded ? style.ariaLables.collapseJson : style.ariaLables.expandJson;
   const contentsId = React.useId();
   const childLevel = level + 1;
   const lastIndex = data.length - 1;

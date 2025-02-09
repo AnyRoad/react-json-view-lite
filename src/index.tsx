@@ -9,6 +9,16 @@ export interface NodeExpandingEvent {
   newExpandValue: boolean;
 }
 
+export interface AriaLabels {
+  collapseJson: string;
+  expandJson: string;
+}
+
+const defaultAriaLables: AriaLabels = {
+  collapseJson: 'collapse JSON',
+  expandJson: 'expand JSON'
+};
+
 export interface Props extends React.AriaAttributes {
   data: Object | Array<any>;
   style?: Partial<StyleProps>;
@@ -34,7 +44,8 @@ export const defaultStyles: StyleProps = {
   expandIcon: styles['expand-icon-light'],
   collapsedContent: styles['collapsed-content-light'],
   noQuotesForStringValues: false,
-  quotesForFieldNames: false
+  quotesForFieldNames: false,
+  ariaLables: defaultAriaLables
 };
 
 export const darkStyles: StyleProps = {
@@ -54,7 +65,8 @@ export const darkStyles: StyleProps = {
   expandIcon: styles['expand-icon-dark'],
   collapsedContent: styles['collapsed-content-dark'],
   noQuotesForStringValues: false,
-  quotesForFieldNames: false
+  quotesForFieldNames: false,
+  ariaLables: defaultAriaLables
 };
 
 export const allExpanded = () => true;

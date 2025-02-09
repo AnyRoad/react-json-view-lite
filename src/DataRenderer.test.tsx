@@ -23,7 +23,11 @@ const commonProps: Omit<JsonRenderProps<any>, 'outerRef'> = {
     expandIcon: defaultStyles.expandIcon,
     collapseIcon: defaultStyles.collapseIcon,
     collapsedContent: defaultStyles.collapsedContent,
-    noQuotesForStringValues: false
+    noQuotesForStringValues: false,
+    ariaLables: {
+      expandJson: 'expand',
+      collapseJson: 'collapse'
+    }
   },
   shouldExpandNode: allExpanded,
   clickToExpandNode: false,
