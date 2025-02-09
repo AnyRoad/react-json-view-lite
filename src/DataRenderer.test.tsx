@@ -27,7 +27,8 @@ const commonProps: Omit<JsonRenderProps<any>, 'outerRef'> = {
     ariaLables: {
       expandJson: 'expand',
       collapseJson: 'collapse'
-    }
+    },
+    stringifyStringValues: false
   },
   shouldExpandNode: allExpanded,
   clickToExpandNode: false,
@@ -96,6 +97,19 @@ describe('DataRender', () => {
     render(<WrappedDataRenderer value={{ test: 'string' }} />);
     expect(screen.getByText(/test:/)).toBeInTheDocument();
     expect(screen.getByText(`"string"`)).toBeInTheDocument();
+  });
+
+  it('should render and stringify strings', () => {
+    render(
+      <WrappedDataRenderer
+        style={{ ...defaultStyles, stringifyStringValues: true }}
+        value={{ test: 'one\n\'two\'\tthree.\r\n"another line"' }}
+      />
+    );
+    expect(screen.getByText(/test:/)).toBeInTheDocument();
+    expect(
+      screen.queryByText('"one\\n\'two\'\\tthree.\\r\\n\\"another line\\""')
+    ).toBeInTheDocument();
   });
 
   it('should render strings without quotes', () => {

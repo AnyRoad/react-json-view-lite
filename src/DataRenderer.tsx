@@ -21,6 +21,7 @@ export interface StyleProps {
   noQuotesForStringValues?: boolean;
   quotesForFieldNames?: boolean;
   ariaLables: AriaLabels;
+  stringifyStringValues: boolean;
 }
 
 interface CommonRenderProps {
@@ -55,7 +56,10 @@ function quoteString(value: string, quoted = false) {
   return !value || quoted ? `"${value}"` : value;
 }
 
-function quoteStringValue(value: string, quoted: boolean) {
+function quoteStringValue(value: string, quoted: boolean, stringify: boolean) {
+  if (stringify) {
+    return JSON.stringify(value);
+  }
   return quoted ? `"${value}"` : value;
 }
 
@@ -318,7 +322,11 @@ function JsonPrimitiveValue({
     stringValue = 'undefined';
     valueStyle = style.undefinedValue;
   } else if (DataTypeDetection.isString(value)) {
-    stringValue = quoteStringValue(value, !style.noQuotesForStringValues);
+    stringValue = quoteStringValue(
+      value,
+      !style.noQuotesForStringValues,
+      style.stringifyStringValues
+    );
     valueStyle = style.stringValue;
   } else if (DataTypeDetection.isBoolean(value)) {
     stringValue = value ? 'true' : 'false';

@@ -120,6 +120,12 @@ RenderFieldNamesWithQuotes.args = {
   style: { ...defaultStyles, quotesForFieldNames: true }
 };
 
+export const StringifyStringValues = Template.bind({});
+StringifyStringValues.args = {
+  data: { valueWithEscapedCharacters: 'one\n\'two\'\tthree.\r\n"another line"' },
+  style: { ...defaultStyles, stringifyStringValues: true }
+};
+
 export const ClickOnFieldNameToExpand = Template.bind({});
 ClickOnFieldNameToExpand.args = {
   data: jsonData,

@@ -45,7 +45,8 @@ export const defaultStyles: StyleProps = {
   collapsedContent: styles['collapsed-content-light'],
   noQuotesForStringValues: false,
   quotesForFieldNames: false,
-  ariaLables: defaultAriaLables
+  ariaLables: defaultAriaLables,
+  stringifyStringValues: false
 };
 
 export const darkStyles: StyleProps = {
@@ -66,7 +67,8 @@ export const darkStyles: StyleProps = {
   collapsedContent: styles['collapsed-content-dark'],
   noQuotesForStringValues: false,
   quotesForFieldNames: false,
-  ariaLables: defaultAriaLables
+  ariaLables: defaultAriaLables,
+  stringifyStringValues: false
 };
 
 export const allExpanded = () => true;
