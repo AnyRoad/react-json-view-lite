@@ -1,3 +1,11 @@
+## 2.4.0
+
+### New Features
+
+- [adds beforeExpandChange hook property](https://github.com/AnyRoad/react-json-view-lite/issues/39)
+- [adds properties for aria-label of the collapse/expand toggle](https://github.com/AnyRoad/react-json-view-lite/issues/46)
+- [adds style prop to stringify String values to keep escaped characters](https://github.com/AnyRoad/react-json-view-lite/issues/42)
+
 ## 2.3.0
 
 ### Bug Fixes
