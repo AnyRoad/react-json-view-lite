@@ -104,17 +104,19 @@ https://anyroad.github.io/react-json-view-lite/
 
 ## interface NodeExpandingEvent
 
-| Field Name | Type | Description |
-| level | number | level of expanded/collapsed node |
-| value | any | Field value (object or array) to be expaneded/collapsed |
-| field | string? | Field name |
+| Field Name     | Type    | Description                                                     |
+| -------------- | ------- | --------------------------------------------------------------- |
+| level          | number  | level of expanded/collapsed node                                |
+| value          | any     | Field value (object or array) to be expaneded/collapsed         |
+| field          | string? | Field name                                                      |
 | newExpandValue | boolean | if node is about to be expanded (`true`) or collapsed (`false`) |
 
 ## interface AriaLabels
 
-| Field Name | Type | Description |
+| Field Name   | Type   | Description                                                                             |
+| ------------ | ------ | --------------------------------------------------------------------------------------- |
 | collapseJson | string | `aria-label` property for the "collapse" node button. Default value is "collapse JSON". |
-| expandJson | string | `aria-label` property for the "expand" node button. Default value is "expand JSON". |
+| expandJson   | string | `aria-label` property for the "expand" node button. Default value is "expand JSON".     |
 
 ### Extra exported
 
