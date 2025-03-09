@@ -81,14 +81,6 @@ function ExpandableObject({
 
   const shouldExpandNodeCalledRef = React.useRef(false);
   const [expanded, setExpanded] = React.useState(() => shouldExpandNode(level, value, field));
-  const setExpandWithCallback = (newExpandValue: boolean) => {
-    if (
-      expanded !== newExpandValue &&
-      (!beforeExpandChange || beforeExpandChange({ level, value, field, newExpandValue }))
-    ) {
-      setExpanded(newExpandValue);
-    }
-  };
   const expanderButtonRef = React.useRef<HTMLSpanElement>(null);
 
   React.useEffect(() => {
@@ -100,11 +92,25 @@ function ExpandableObject({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldExpandNode]);
 
+  const contentsId = React.useId();
+
+  if (data.length === 0) {
+    return EmptyObject({ field, openBracket, closeBracket, lastElement, style });
+  }
+
   const expanderIconStyle = expanded ? style.collapseIcon : style.expandIcon;
   const ariaLabel = expanded ? style.ariaLables.collapseJson : style.ariaLables.expandJson;
-  const contentsId = React.useId();
   const childLevel = level + 1;
   const lastIndex = data.length - 1;
+
+  const setExpandWithCallback = (newExpandValue: boolean) => {
+    if (
+      expanded !== newExpandValue &&
+      (!beforeExpandChange || beforeExpandChange({ level, value, field, newExpandValue }))
+    ) {
+      setExpanded(newExpandValue);
+    }
+  };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
@@ -243,16 +249,6 @@ function JsonObject({
   outerRef,
   beforeExpandChange
 }: JsonRenderProps<Object>) {
-  if (Object.keys(value).length === 0) {
-    return EmptyObject({
-      field,
-      openBracket: '{',
-      closeBracket: '}',
-      lastElement,
-      style
-    });
-  }
-
   return ExpandableObject({
     field,
     value,
@@ -280,16 +276,6 @@ function JsonArray({
   outerRef,
   beforeExpandChange
 }: JsonRenderProps<Array<any>>) {
-  if (value.length === 0) {
-    return EmptyObject({
-      field,
-      openBracket: '[',
-      closeBracket: ']',
-      lastElement,
-      style
-    });
-  }
-
   return ExpandableObject({
     field,
     value,
