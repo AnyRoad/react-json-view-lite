@@ -1,3 +1,9 @@
+## 2.4.1
+
+### Bug Fixes
+
+- [React warning when rendering empty array or object and then changing the `data` property](https://github.com/AnyRoad/react-json-view-lite/issues/47)
+
 ## 2.4.0
 
 ### New Features
