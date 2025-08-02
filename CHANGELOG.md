@@ -1,3 +1,9 @@
+## 2.4.2
+
+### Bug Fixes
+
+- [beforeExpandChange was not propagated to the child objects](https://github.com/AnyRoad/react-json-view-lite/pull/52)
+
 ## 2.4.1
 
 ### Bug Fixes

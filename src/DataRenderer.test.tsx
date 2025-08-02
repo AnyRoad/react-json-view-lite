@@ -568,6 +568,25 @@ describe('DataRender', () => {
     expect(screen.queryByText('123')).not.toBeInTheDocument();
   });
 
+  it('should stop expanding for the nested object if beforeExpandChange returned true', () => {
+    const { container } = render(
+      <WrappedDataRenderer
+        value={{ obj: { test: 123 } }}
+        shouldExpandNode={collapseAllNested}
+        beforeExpandChange={() => false}
+      />
+    );
+    expect(screen.queryByText(/obj/)).toBeInTheDocument();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+
+    const collapsedContent = container.getElementsByClassName(commonProps.style.collapsedContent);
+    fireEvent.click(collapsedContent[0]);
+    expect(screen.getByText(/obj/)).toBeInTheDocument();
+    expect(screen.queryByText(/test:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('123')).not.toBeInTheDocument();
+  });
+
   it('should stop expanding if beforeExpandChange returned false and render with new shouldExpandNode value', () => {
     let level = null;
     let field = null;
