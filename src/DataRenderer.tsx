@@ -200,6 +200,7 @@ function ExpandableObject({
               level={childLevel}
               shouldExpandNode={shouldExpandNode}
               clickToExpandNode={clickToExpandNode}
+              beforeExpandChange={beforeExpandChange}
               outerRef={outerRef}
             />
           ))}
