@@ -1,6 +1,7 @@
 import * as React from 'react';
 import DataRender, { StyleProps } from './DataRenderer';
 import styles from './styles.module.css';
+import { isObject } from './DataTypeDetection';
 
 export interface NodeExpandingEvent {
   level: number;
@@ -25,6 +26,7 @@ export interface Props extends React.AriaAttributes {
   shouldExpandNode?: (level: number, value: any, field?: string) => boolean;
   clickToExpandNode?: boolean;
   beforeExpandChange?: (event: NodeExpandingEvent) => boolean;
+  compactTopLevel?: boolean;
 }
 
 export const defaultStyles: StyleProps = {
@@ -80,6 +82,7 @@ export const JsonView = ({
   shouldExpandNode = allExpanded,
   clickToExpandNode = false,
   beforeExpandChange,
+  compactTopLevel,
   ...ariaAttrs
 }: Props) => {
   const outerRef = React.useRef<HTMLDivElement>(null);
@@ -91,16 +94,33 @@ export const JsonView = ({
       ref={outerRef}
       role='tree'
     >
-      <DataRender
-        value={data}
-        style={{ ...defaultStyles, ...style }}
-        lastElement
-        level={0}
-        shouldExpandNode={shouldExpandNode}
-        clickToExpandNode={clickToExpandNode}
-        outerRef={outerRef}
-        beforeExpandChange={beforeExpandChange}
-      />
+      {compactTopLevel && isObject(data) ? (
+        Object.entries(data).map(([key, value]) => (
+          <DataRender
+            key={key}
+            field={key}
+            value={value}
+            style={{ ...defaultStyles, ...style }}
+            lastElement={true}
+            level={1}
+            shouldExpandNode={shouldExpandNode}
+            clickToExpandNode={clickToExpandNode}
+            beforeExpandChange={beforeExpandChange}
+            outerRef={outerRef}
+          />
+        ))
+      ) : (
+        <DataRender
+          value={data}
+          style={{ ...defaultStyles, ...style }}
+          lastElement
+          level={0}
+          shouldExpandNode={shouldExpandNode}
+          clickToExpandNode={clickToExpandNode}
+          outerRef={outerRef}
+          beforeExpandChange={beforeExpandChange}
+        />
+      )}
     </div>
   );
 };

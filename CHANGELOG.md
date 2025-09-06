@@ -1,3 +1,9 @@
+## 2.5.0
+
+### New Features
+
+- `compactTopLevel` property to render an Object without top level "collapse" button and indentation.
+
 ## 2.4.2
 
 ### Bug Fixes

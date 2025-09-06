@@ -11,6 +11,15 @@ describe('JsonView', () => {
     expect(screen.getByText('true')).toBeDefined();
   });
 
+  it('should render object with top level compacted', () => {
+    render(<JsonView style={defaultStyles} data={{ test: true }} compactTopLevel />);
+    expect(screen.getByText(/test/)).toBeDefined();
+    expect(screen.getByText('true')).toBeDefined();
+    expect(() => {
+      screen.getAllByRole('button', { hidden: true });
+    }).toThrow();
+  });
+
   it('should render object with default styles', () => {
     render(<JsonView data={{ test: true }} />);
     expect(screen.getByText(/test/)).toBeInTheDocument();

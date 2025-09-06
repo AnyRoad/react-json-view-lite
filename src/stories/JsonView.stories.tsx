@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoryFn, Meta, StoryObj } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import { JsonView, defaultStyles, darkStyles, allExpanded, collapseAllNested } from '../index';
 
@@ -125,24 +125,9 @@ ClickOnFieldNameToExpand.args = {
   clickToExpandNode: true
 };
 
-const tmp = {
-  a: <a href='https://www.google.com'>Google</a>
-};
-
-const JsonViewer: React.FC = () => {
-  return (
-    <div>
-      <JsonView data={tmp} shouldExpandNode={collapseAllNested} />
-    </div>
-  );
-};
-
-type JsonViewStory = StoryObj<typeof JsonView>;
-
-export const ExpandOnlyFirstLevelWhenClickOnRoot: JsonViewStory = {
-  name: 'Bug test',
-
-  render: function Render() {
-    return <JsonViewer />;
-  }
+export const CompactRootLevel = Template.bind({});
+CompactRootLevel.args = {
+  data: jsonData,
+  style: { ...defaultStyles },
+  compactTopLevel: true
 };
